@@ -3,6 +3,9 @@
   --color-background-dark: rgb(52, 66, 86);
   --color-primary: rgb(52, 66, 86);
   --color-highlight: rgb(195, 45, 45);
+
+  --font-family-normal: "Open Sans", Arial, Helvetica, sans-serif;
+  --font-family-elegant: "DM Serif Display", "Times New Roman", Times, serif;
 }
 
 html {
@@ -13,13 +16,17 @@ html {
 *::after,
 *::before {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   margin: 4rem;
+  background: var(--color-background-light);
+  font-family: var(--font-family-normal);
 }
 
-/* LOGO AND HEADER.. */
+/* LOGO AND HEADER.. ------------------------------------------------------------------------------------------------*/
 
 .logo__container {
   display: flex;
@@ -28,4 +35,33 @@ body {
 
 .logo {
   width: 100px;
+}
+
+/* HEADINGS AND TEXTS ------------------------------------------------------------------------------------------------ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-primary);
+  font-family: var(--font-family-elegant);
+}
+
+h1 {
+  font-size: clamp(2.8rem, 10vw, 8rem);
+  margin: 2rem 0 1rem;
+}
+
+h2 {
+  font-size: clamp(2.4rem, 6vw, 6rem);
+  margin: 1rem 0 1rem;
+}
+
+p {
+  color: var(--color-primary);
+  font-size: clamp(1.6rem, 4vw, 4rem);
+  margin: 0;
+  line-height: 1.6;
 }

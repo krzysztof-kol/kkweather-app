@@ -14,3 +14,18 @@ html {
 *::before {
   box-sizing: border-box;
 }
+
+body {
+  margin: 4rem;
+}
+
+/* LOGO AND HEADER.. */
+
+.logo__container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+}

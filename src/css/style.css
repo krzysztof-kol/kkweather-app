@@ -65,3 +65,9 @@ p {
   margin: 0;
   line-height: 1.6;
 }
+
+.temperature__big {
+  font-family: var(--font-family-elegant);
+  font-size: clamp(4.8rem, 8vw, 14rem);
+  margin: 1rem 0;
+}

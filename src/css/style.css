@@ -1,0 +1,16 @@
+:root {
+  --color-background-light: rgb(255, 237, 211);
+  --color-background-dark: rgb(52, 66, 86);
+  --color-primary: rgb(52, 66, 86);
+  --color-highlight: rgb(195, 45, 45);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}

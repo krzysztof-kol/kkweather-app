@@ -77,9 +77,49 @@ p {
 /* ICONS ------------------------------------------------------------------------------------------------ */
 
 .icon {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
 }
 .bg-cloud_dark_01 {
   background: url("/src/icons/svg/cloud_dark-01.svg");
+}
+
+/* BUTTONS ------------------------------------------------------------------- */
+
+.btn {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-background-light);
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn_body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn_text {
+  padding: 0 0 0 1rem;
+  font-family: var(--font-family-normal);
+  font-weight: 600;
+}
+
+.btn_icon {
+  width: 30px;
+  height: 30px;
+  background: url("/src/icons/svg/next.svg");
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--color-highlight);
+}
+
+.btn:hover .btn_icon {
+  transform: rotate(90deg);
 }

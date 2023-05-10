@@ -94,16 +94,19 @@ p {
   background: var(--color-primary);
   border: none;
   color: var(--color-background-light);
-  padding: 1rem 2rem;
+  margin-top: 2rem;
+  padding: 1rem 2rem 1rem 1rem;
   border-radius: 100px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 50%;
+  min-width: fit-content;
 }
 
 .btn_body {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .btn_text {
@@ -128,21 +131,41 @@ p {
   transform: rotate(90deg);
 }
 
+/* MAIN INFO */
+
+.main--info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 /* BIG CELSIUS */
 
 .big--celsius {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: -1rem 0 0 2rem;
 }
 
 .big--celsius_text {
   font-family: var(--font-family-elegant);
   font-size: clamp(3rem, 20vw, 8rem);
   color: var(--color-primary);
-  margin: 0 0 0 2rem;
+  margin: 0;
 }
 
 .big--celsius_text::after {
   content: "°C";
+}
+
+/* DATE AND TIME */
+
+.dateData {
+  font-family: var(--font-family-normal);
+  font-size: clamp(2rem, 2vw, 6rem);
+  color: var(--color-primary);
+  line-height: 1.5;
 }

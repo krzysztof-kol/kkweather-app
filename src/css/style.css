@@ -52,8 +52,10 @@ h6 {
 }
 
 h1 {
-  font-size: clamp(2.8rem, 10vw, 8rem);
+  font-size: clamp(2.8rem, 10vw, 6rem);
   margin: 2rem 0 1rem;
+  font-weight: 100;
+  margin: 4rem 0 4rem 0;
 }
 
 h2 {
@@ -135,9 +137,15 @@ p {
 
 .main--info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+@media screen and (min-width: 480px) {
+  .main--info {
+    flex-direction: row;
+  }
 }
 
 /* BIG CELSIUS */
@@ -147,7 +155,13 @@ p {
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  margin: -1rem 0 0 2rem;
+  margin: -2rem 0 0 0rem;
+}
+
+@media screen and (min-width: 480px) {
+  .big--celsius {
+    margin: -1rem 0 0 2rem;
+  }
 }
 
 .big--celsius_text {
@@ -165,7 +179,9 @@ p {
 
 .dateData {
   font-family: var(--font-family-normal);
-  font-size: clamp(2rem, 2vw, 6rem);
+  font-size: clamp(1.6rem, 2vw, 6rem);
   color: var(--color-primary);
   line-height: 1.5;
 }
+
+/* SMALL WEATHER DATA */

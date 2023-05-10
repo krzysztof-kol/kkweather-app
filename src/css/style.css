@@ -77,8 +77,12 @@ p {
 /* ICONS ------------------------------------------------------------------------------------------------ */
 
 .icon {
-  width: 60px;
-  height: 60px;
+  display: inline-block;
+}
+
+.icon_big {
+  width: clamp(3rem, 20vw, 8rem);
+  height: clamp(3rem, 20vw, 8rem);
 }
 .bg-cloud_dark_01 {
   background: url("/src/icons/svg/cloud_dark-01.svg");
@@ -122,4 +126,23 @@ p {
 
 .btn:hover .btn_icon {
   transform: rotate(90deg);
+}
+
+/* BIG CELSIUS */
+
+.big--celsius {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.big--celsius_text {
+  font-family: var(--font-family-elegant);
+  font-size: clamp(3rem, 20vw, 8rem);
+  color: var(--color-primary);
+  margin: 0 0 0 2rem;
+}
+
+.big--celsius_text::after {
+  content: "°C";
 }

@@ -1,0 +1,75 @@
+.icon .bg-cloud {
+  background: url(/icons/css_sprites.png) -10px -10px;
+}
+.icon .bg-cloudy_day {
+  background: url(/icons/css_sprites.png) -542px -10px;
+}
+.icon .bg-cloudy_night {
+  background: url(/icons/css_sprites.png) -10px -542px;
+}
+.icon .bg-cloudy {
+  background: url(/icons/css_sprites.png) -542px -542px;
+}
+.icon .bg-cold {
+  background: url(/icons/css_sprites.png) -1074px -10px;
+}
+.icon .bg-eclipse {
+  background: url(/icons/css_sprites.png) -1074px -542px;
+}
+.icon .bg-hot {
+  background: url(/icons/css_sprites.png) -10px -1074px;
+}
+.icon .bg-humidity {
+  background: url(/icons/css_sprites.png) -542px -1074px;
+}
+.icon .bg-mist {
+  background: url(/icons/css_sprites.png) -1074px -1074px;
+}
+.icon .bg-night {
+  background: url(/icons/css_sprites.png) -1606px -10px;
+}
+.icon .bg-rain {
+  background: url(/icons/css_sprites.png) -1606px -542px;
+}
+.icon .bg-rainbow {
+  background: url(/icons/css_sprites.png) -1606px -1074px;
+}
+.icon .bg-rainy {
+  background: url(/icons/css_sprites.png) -10px -1606px;
+}
+.icon .bg-snow {
+  background: url(/icons/css_sprites.png) -542px -1606px;
+}
+.icon .bg-snowy {
+  background: url(/icons/css_sprites.png) -1074px -1606px;
+}
+.icon .bg-sun {
+  background: url(/icons/css_sprites.png) -1606px -1606px;
+}
+.icon .bg-sunrise {
+  background: url(/icons/css_sprites.png) -2138px -10px;
+}
+.icon .bg-sunset {
+  background: url(/icons/css_sprites.png) -2138px -542px;
+}
+.icon .bg-thunder {
+  background: url(/icons/css_sprites.png) -2138px -1074px;
+}
+.icon .bg-tornado {
+  background: url(/icons/css_sprites.png) -2138px -1606px;
+}
+.icon .bg-umbrella {
+  background: url(/icons/css_sprites.png) -10px -2138px;
+}
+.icon .bg-wind_vane__2_ {
+  background: url(/icons/css_sprites.png) -542px -2138px;
+}
+.icon .bg-wind_vane {
+  background: url(/icons/css_sprites.png) -1074px -2138px;
+}
+.icon .bg-windy__2_ {
+  background: url(/icons/css_sprites.png) -1606px -2138px;
+}
+.icon .bg-windy {
+  background: url(/icons/css_sprites.png) -2138px -2138px;
+}

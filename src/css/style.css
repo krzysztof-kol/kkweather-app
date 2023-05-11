@@ -63,11 +63,11 @@ h2 {
   margin: 1rem 0 1rem;
 }
 
-p {
+.text-normal {
+  font-family: var(--font-family-normal);
+  font-size: clamp(1.4rem, 2vw, 6rem);
   color: var(--color-primary);
-  font-size: clamp(1.6rem, 4vw, 4rem);
-  margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .temperature__big {
@@ -86,8 +86,28 @@ p {
   width: clamp(3rem, 20vw, 8rem);
   height: clamp(3rem, 20vw, 8rem);
 }
+
+.icon_small {
+  width: clamp(0.8rem, 6vw, 3rem);
+  height: clamp(0.8rem, 6vw, 3rem);
+}
+
 .bg-cloud_dark_01 {
   background: url("/src/icons/svg/cloud_dark-01.svg");
+  background-position: center;
+}
+
+.temperature_dark-01 {
+  background: url("/src/icons/svg/temperature_dark-01.svg");
+}
+
+.windspeed_dark-01 {
+  background: url("/src/icons/svg/windspeed_dark-01.svg");
+  background-repeat: no-repeat;
+}
+
+.humidity_dark-01 {
+  background: url("/src/icons/svg/humidity_dark-01.svg");
 }
 
 /* BUTTONS ------------------------------------------------------------------- */
@@ -131,6 +151,14 @@ p {
 
 .btn:hover .btn_icon {
   transform: rotate(90deg);
+}
+
+/* CURRENT LOCATION INFO */
+
+.current-location_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 /* MAIN INFO */
@@ -177,11 +205,33 @@ p {
 
 /* DATE AND TIME */
 
-.dateData {
-  font-family: var(--font-family-normal);
-  font-size: clamp(1.6rem, 2vw, 6rem);
-  color: var(--color-primary);
-  line-height: 1.5;
+/* SMALL WEATHER DATA */
+
+.fahrenheit-text,
+.windspeed-text,
+.humidity-text {
+  margin-left: 1rem;
 }
 
-/* SMALL WEATHER DATA */
+.fahrenheit-text::after {
+  content: " °F";
+}
+
+.windspeed-text::after {
+  content: " km/h";
+}
+
+.humidity-text::after {
+  content: " %";
+}
+
+.smaller-weather-info {
+  margin-left: clamp(0.6rem, 10vw, 10rem);
+}
+
+.smaller-weather-info_element {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 1.2rem;
+}

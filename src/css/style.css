@@ -49,25 +49,24 @@ h5,
 h6 {
   color: var(--color-primary);
   font-family: var(--font-family-elegant);
+  font-weight: 100;
 }
 
 h1 {
   font-size: clamp(2.8rem, 10vw, 6rem);
-  margin: 2rem 0 1rem;
-  font-weight: 100;
   margin: 4rem 0 4rem 0;
 }
 
 h2 {
-  font-size: clamp(2.4rem, 6vw, 6rem);
-  margin: 1rem 0 1rem;
+  font-size: clamp(1.8rem, 4vw, 6rem);
+  margin: 6rem 0 2rem;
 }
 
 .text-normal {
   font-family: var(--font-family-normal);
   font-size: clamp(1.4rem, 2vw, 6rem);
   color: var(--color-primary);
-  line-height: 1.5;
+  line-height: 2;
 }
 
 .temperature__big {
@@ -80,6 +79,8 @@ h2 {
 
 .icon {
   display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .icon_big {
@@ -87,9 +88,14 @@ h2 {
   height: clamp(3rem, 20vw, 8rem);
 }
 
+.icon_medium {
+  width: clamp(2rem, 15vw, 5rem);
+  height: clamp(2rem, 15vw, 5rem);
+}
+
 .icon_small {
-  width: clamp(0.8rem, 6vw, 3rem);
-  height: clamp(0.8rem, 6vw, 3rem);
+  width: clamp(1.2rem, 10vw, 3rem);
+  height: clamp(1.2rem, 10vw, 3rem);
 }
 
 .bg-cloud_dark_01 {
@@ -110,6 +116,10 @@ h2 {
   background: url("/src/icons/svg/humidity_dark-01.svg");
 }
 
+.bg-sun_dark {
+  background: url("/src/icons/svg/sun_dark.svg");
+}
+
 /* BUTTONS ------------------------------------------------------------------- */
 
 .btn {
@@ -117,7 +127,7 @@ h2 {
   border: none;
   color: var(--color-background-light);
   margin-top: 2rem;
-  padding: 1rem 2rem 1rem 1rem;
+  padding: 0.8rem 2rem 0.8rem 1rem;
   border-radius: 100px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -138,8 +148,8 @@ h2 {
 }
 
 .btn_icon {
-  width: 30px;
-  height: 30px;
+  width: 16px;
+  height: 16px;
   background: url("/src/icons/svg/next.svg");
   display: inline-block;
   transition: transform 0.3s ease;
@@ -153,12 +163,11 @@ h2 {
   transform: rotate(90deg);
 }
 
-/* CURRENT LOCATION INFO */
-
-.current-location_info {
+.main--info_numeric-data {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: top;
 }
 
 /* MAIN INFO */
@@ -234,4 +243,47 @@ h2 {
   align-items: center;
   justify-content: flex-start;
   margin-top: 1.2rem;
+}
+
+.smaller-weather-info_element:first-of-type {
+  margin-top: 1rem;
+}
+
+/* DAILY FORECAST */
+
+.daily-forecast_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
+.daily-forecast_btn {
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.daily-forecast_btn:hover,
+.daily-forecast_btn:active,
+.daily-forecast_btn:focus {
+  transform: scale(1.05);
+}
+
+.daily-forecast_element {
+  display: flex;
+  align-items: center;
+  margin: 0 0 2rem;
+}
+
+.daily-forecast_text {
+  margin-left: 1rem;
+}
+
+.daily-forecast_temperature {
+  font-weight: 600;
+}
+
+.daily-forecast_temperature::after {
+  content: "°C";
 }

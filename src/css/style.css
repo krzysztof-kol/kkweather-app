@@ -8,6 +8,8 @@
 
   --font-family-normal: "Open Sans", Arial, Helvetica, sans-serif;
   --font-family-elegant: "DM Serif Display", "Times New Roman", Times, serif;
+
+  /* -webkit-text-size-adjust: auto; */
 }
 
 html {
@@ -26,6 +28,7 @@ body {
   margin: 4rem;
   background: var(--color-background-light);
   font-family: var(--font-family-normal);
+  color: var(--color-primary);
 }
 
 /* LOGO AND HEADER.. ------------------------------------------------------------------------------------------------*/
@@ -46,27 +49,60 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+#h1_input {
   color: var(--color-primary);
   font-family: var(--font-family-elegant);
   font-weight: 100;
 }
 
 h1 {
-  font-size: clamp(2.8rem, 10vw, 6rem);
   margin: 4rem 0 4rem 0;
+  line-height: 1.4;
+}
+
+h1,
+#h1_input {
+  font-size: clamp(2.8rem, 10vw, 6rem);
+}
+
+#h1_input {
+  font-family: var(--font-family-elegant);
+  color: var(--color-highlight);
+  background: none;
+  display: inline-block;
+  width: 7ch;
+  resize: none;
+  border: none;
+}
+
+#h1_input:focus {
+  border: 1px solid black;
+  outline: none;
+}
+
+/* .blink {
+  animation: blink 1s linear infinite;
+} */
+
+::placeholder {
+  color: var(--color-highlight);
 }
 
 h2 {
-  font-size: clamp(1.8rem, 4vw, 6rem);
+  font-size: clamp(1.8rem, 4vw, 4rem);
   margin: 6rem 0 2rem;
 }
 
 .text-normal {
   font-family: var(--font-family-normal);
-  font-size: clamp(1.4rem, 2vw, 6rem);
+  font-size: clamp(1.6rem, 1.2vw, 3rem);
   color: var(--color-primary);
   line-height: 2;
+}
+
+.text-bold {
+  font-weight: 600;
 }
 
 .temperature__big {
@@ -212,11 +248,22 @@ h2 {
   content: "°C";
 }
 
+/* DETAILS */
+
+.details {
+  margin-top: 10rem;
+}
+
+.details__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
 /* DATE AND TIME */
 
 /* SMALL WEATHER DATA */
 
-.fahrenheit-text,
+/* .fahrenheit-text,
 .windspeed-text,
 .humidity-text {
   margin-left: 1rem;
@@ -247,7 +294,7 @@ h2 {
 
 .smaller-weather-info_element:first-of-type {
   margin-top: 1rem;
-}
+} */
 
 /* DAILY FORECAST */
 

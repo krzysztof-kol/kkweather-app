@@ -20,7 +20,10 @@
       </div>
     </header>
     <main>
-      <h1>The weather in London is sunny</h1>
+      <h1>The weather in 
+        <input id = "h1_input" type="text" placeholder = "London" contenteditable oninput = "adjustWidth(h1Input)" autofocus>
+        is sunny
+      </h1>
       <section class = "main--info">
           <div class="icon icon_big bg-cloud_dark_01"></div>
           <div class="main--info_numeric-data">
@@ -37,21 +40,53 @@
                 </button>
               </div>
             </div>
-            <div class="smaller-weather-info">
-              <div class="smaller-weather-info_element">
-                <span class="icon icon_small temperature_dark-01"></span>
-                <span class="text-normal fahrenheit-text">77</span>
-              </div>
-              <div class="smaller-weather-info_element">
-                <span class="icon icon_small windspeed_dark-01"></span>
-                <span class="text-normal windspeed-text">12</span>
-              </div>
-              <div class="smaller-weather-info_element">
-                <span class="icon icon_small humidity_dark-01"></span>
-                <span class="text-normal humidity-text">70</span>
-              </div>
+      </section>
+      <section class="details">
+        <div class="details__grid">
+          <div class="details__element text-normal">
+            <div class="details__label">High</div>
+            <div class = "text-bold">
+              <span class="details__data">30</span>
+              <span class="details__unit">°C</span>
             </div>
           </div>
+          <div class="details__element text-normal">
+            <div class="details__label">FL High</div>
+            <div class = "text-bold">
+              <span class="details__data">27</span>
+              <span class="details__unit">°C</span>
+            </div>
+          </div>
+          <div class="details__element text-normal">
+            <div class="details__label">Wind</div>
+            <div class = "text-bold">
+              <span class="details__data">13</span>
+              <span class="details__unit">km/h</span>
+            </div>
+          </div>
+          <div class="details__element text-normal">
+            <div class="details__label">Low</div>
+            <div class = "text-bold">
+              <span class="details__data">21</span>
+              <span class="details__unit">°C</span>
+            </div>
+          </div>
+          <div class="details__element text-normal">
+            <div class="details__label">FL Low</div>
+            <div class = "text-bold">
+              <span class="details__data">21</span>
+              <span class="details__unit">°C</span>
+            </div>
+          </div>
+          <div class="details__element text-normal">
+            <div class="details__label">Precip</div>
+            <div class = "text-bold">
+              <span class="details__data">0.1</span>
+              <span class="details__unit">cm/m.kw.</span>
+            </div>
+          </div>
+        </div>
+      </div>
       </section>
       <h2>14-day forecast</h2>
       <section class="daily-forecast">
@@ -130,6 +165,6 @@
       </section>
     </div>
     </main>
-    <script src="/src/js/"></script>
+    <script src="/src/js/index.js"></script>
   </body>
 </html>

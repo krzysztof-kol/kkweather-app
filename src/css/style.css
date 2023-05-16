@@ -25,7 +25,7 @@ html {
 }
 
 body {
-  margin: 4rem;
+  margin: clamp(1rem, 5vw, 10rem);
   background: var(--color-background-light);
   font-family: var(--font-family-normal);
   color: var(--color-primary);
@@ -50,7 +50,7 @@ h3,
 h4,
 h5,
 h6,
-#h1_input {
+#h1__input {
   color: var(--color-primary);
   font-family: var(--font-family-elegant);
   font-weight: 100;
@@ -61,44 +61,47 @@ h1 {
   line-height: 1.4;
 }
 
-h1,
-#h1_input {
-  font-size: clamp(2.8rem, 10vw, 6rem);
-}
-
-#h1_input {
-  font-family: var(--font-family-elegant);
+#h1__input {
+  border: none;
+  resize: none;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  height: auto;
+  min-height: 1em; /* Dodaj tę linię */
   color: var(--color-highlight);
   background: none;
-  display: inline-block;
-  width: 7ch;
-  resize: none;
-  border: none;
-}
-
-#h1_input:focus {
-  border: 1px solid black;
   outline: none;
+  line-height: 1.2;
+  align-content: center;
+  display: inline;
 }
 
-/* .blink {
-  animation: blink 1s linear infinite;
-} */
+#h1__container {
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+#h1__input {
+  font-size: clamp(2.8rem, 10vw, 6rem);
+}
 
 ::placeholder {
   color: var(--color-highlight);
 }
 
 h2 {
-  font-size: clamp(1.8rem, 4vw, 4rem);
+  font-size: clamp(2.6rem, 4vw, 4rem);
   margin: 6rem 0 2rem;
 }
 
 .text-normal {
   font-family: var(--font-family-normal);
-  font-size: clamp(1.6rem, 1.2vw, 3rem);
+  font-size: clamp(2rem, 1.2vw, 5rem);
   color: var(--color-primary);
-  line-height: 2;
+  line-height: 1.8;
 }
 
 .text-bold {
@@ -119,17 +122,18 @@ h2 {
   background-repeat: no-repeat;
 }
 
-.icon_big {
+.icon__big {
   width: clamp(3rem, 20vw, 8rem);
   height: clamp(3rem, 20vw, 8rem);
 }
 
-.icon_medium {
+.icon__medium {
   width: clamp(2rem, 15vw, 5rem);
   height: clamp(2rem, 15vw, 5rem);
+  margin-right: 1rem;
 }
 
-.icon_small {
+.icon__small {
   width: clamp(1.2rem, 10vw, 3rem);
   height: clamp(1.2rem, 10vw, 3rem);
 }
@@ -163,29 +167,31 @@ h2 {
   border: none;
   color: var(--color-background-light);
   margin-top: 2rem;
-  padding: 0.8rem 2rem 0.8rem 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: clamp(1.6rem, 1.2vw, 3rem);
+  padding-right: clamp(1.6rem, 1.2vw, 3rem);
   border-radius: 100px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 50%;
   min-width: fit-content;
 }
 
-.btn_body {
+.btn__body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
 
-.btn_text {
+.btn__text {
   padding: 0 0 0 1rem;
   font-family: var(--font-family-normal);
-  font-weight: 600;
+  color: var(--color-background-light);
 }
 
-.btn_icon {
-  width: 16px;
-  height: 16px;
+.btn__icon {
+  width: clamp(1.6rem, 1.2vw, 3rem);
+  height: clamp(1.6rem, 1.2vw, 3rem);
   background: url("/src/icons/svg/next.svg");
   display: inline-block;
   transition: transform 0.3s ease;
@@ -195,35 +201,43 @@ h2 {
   background: var(--color-highlight);
 }
 
-.btn:hover .btn_icon {
+.btn:hover .btn__icon {
   transform: rotate(90deg);
 }
 
-.main--info_numeric-data {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: top;
+/* CURRENT WEATHER */
+
+.current-weather {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  width: clamp(50%, 100%, 100%);
+}
+
+@media screen and (min-width: 600px) {
+  .current-weather {
+    width: 60%;
+  }
 }
 
 /* MAIN INFO */
 
-.main--info {
+.main-info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-@media screen and (min-width: 480px) {
-  .main--info {
-    flex-direction: row;
-  }
+.main-info__data {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: top;
 }
 
-/* BIG CELSIUS */
+/* NUMBER BIG */
 
-.big--celsius {
+.number-big {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -231,106 +245,70 @@ h2 {
   margin: -2rem 0 0 0rem;
 }
 
-@media screen and (min-width: 480px) {
-  .big--celsius {
-    margin: -1rem 0 0 2rem;
-  }
-}
-
-.big--celsius_text {
+.number-big_text {
   font-family: var(--font-family-elegant);
   font-size: clamp(3rem, 20vw, 8rem);
   color: var(--color-primary);
   margin: 0;
 }
 
-.big--celsius_text::after {
+.number-big_text::after {
   content: "°C";
 }
 
 /* DETAILS */
 
-.details {
-  margin-top: 10rem;
+@media screen and (max-width: 1110px) {
+  .details,
+  .btn {
+    margin-top: 4rem;
+  }
 }
 
 .details__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  width: 100%;
 }
-
-/* DATE AND TIME */
-
-/* SMALL WEATHER DATA */
-
-/* .fahrenheit-text,
-.windspeed-text,
-.humidity-text {
-  margin-left: 1rem;
-}
-
-.fahrenheit-text::after {
-  content: " °F";
-}
-
-.windspeed-text::after {
-  content: " km/h";
-}
-
-.humidity-text::after {
-  content: " %";
-}
-
-.smaller-weather-info {
-  margin-left: clamp(0.6rem, 10vw, 10rem);
-}
-
-.smaller-weather-info_element {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 1.2rem;
-}
-
-.smaller-weather-info_element:first-of-type {
-  margin-top: 1rem;
-} */
 
 /* DAILY FORECAST */
 
-.daily-forecast_grid {
+.daily-forecast__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(fit-content, 1fr));
+  width: 100%;
 }
 
-.daily-forecast_btn {
+.daily-forecast__btn {
   background: none;
   border: none;
   text-align: left;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  /* padding: 1rem; */
+  border-radius: 7px;
 }
 
-.daily-forecast_btn:hover,
-.daily-forecast_btn:active,
-.daily-forecast_btn:focus {
+.daily-forecast__btn:first-of-type {
+  padding-left: 0;
+}
+
+.daily-forecast__btn:hover,
+.daily-forecast__btn:active,
+.daily-forecast__btn:focus {
   transform: scale(1.05);
 }
 
-.daily-forecast_element {
+.daily-forecast__element {
   display: flex;
   align-items: center;
   margin: 0 0 2rem;
 }
 
-.daily-forecast_text {
-  margin-left: 1rem;
+.daily-forecast__text {
+  margin-right: 4rem;
 }
 
-.daily-forecast_temperature {
-  font-weight: 600;
-}
-
-.daily-forecast_temperature::after {
+.daily-forecast__temperature::after {
   content: "°C";
 }

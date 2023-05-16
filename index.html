@@ -20,143 +20,150 @@
       </div>
     </header>
     <main>
-      <h1>The weather in 
-        <input id = "h1_input" type="text" placeholder = "London" contenteditable oninput = "adjustWidth(h1Input)" autofocus>
-        is sunny
+
+      <h1 id = "h1__container">
+        <span>The weather in</span>
+        <textarea id="h1__input" autofocus placeholder ="London" oninput="adjusth1InputHeight()" rows="1"></textarea>
+        <span>is sunny</span>
       </h1>
-      <section class = "main--info">
-          <div class="icon icon_big bg-cloud_dark_01"></div>
-          <div class="main--info_numeric-data">
-            <div class="big--celsius">
-              <div class="big--celsius_text">19</div>
-              <div class="date">
-                <div class="text-normal">May 6, 2023</div>
-                <div class="text-normal">Saturday 9:37PM</div>
-                <button class="btn">
-                  <div class="btn_body">
-                    <span class="btn_icon"></span>
-                    <span class="btn_text">Details</span>
+      <section>
+        <div class="current-weather">
+          <div class = "main-info">
+              <div class="icon icon__big bg-cloud_dark_01"></div>
+              <div class="main-info__data">
+                <div class="number-big">
+                  <div id="current-temp" class="number-big_text">19</div>
+                  <div class="date">
+                    <div class="text-normal">May 6, 2023</div>
+                    <div class="text-normal">Saturday 9:37PM</div>
                   </div>
-                </button>
+                </div>
               </div>
             </div>
-      </section>
-      <section class="details">
-        <div class="details__grid">
-          <div class="details__element text-normal">
-            <div class="details__label">High</div>
-            <div class = "text-bold">
-              <span class="details__data">30</span>
-              <span class="details__unit">°C</span>
-            </div>
-          </div>
-          <div class="details__element text-normal">
-            <div class="details__label">FL High</div>
-            <div class = "text-bold">
-              <span class="details__data">27</span>
-              <span class="details__unit">°C</span>
-            </div>
-          </div>
-          <div class="details__element text-normal">
-            <div class="details__label">Wind</div>
-            <div class = "text-bold">
-              <span class="details__data">13</span>
-              <span class="details__unit">km/h</span>
-            </div>
-          </div>
-          <div class="details__element text-normal">
-            <div class="details__label">Low</div>
-            <div class = "text-bold">
-              <span class="details__data">21</span>
-              <span class="details__unit">°C</span>
-            </div>
-          </div>
-          <div class="details__element text-normal">
-            <div class="details__label">FL Low</div>
-            <div class = "text-bold">
-              <span class="details__data">21</span>
-              <span class="details__unit">°C</span>
-            </div>
-          </div>
-          <div class="details__element text-normal">
-            <div class="details__label">Precip</div>
-            <div class = "text-bold">
-              <span class="details__data">0.1</span>
-              <span class="details__unit">cm/m.kw.</span>
+            <div class="details">
+              <div class="details__grid">
+                <div class="details__element text-normal">
+                  <div class="details__label">High</div>
+                  <div class = "text-bold">
+                    <span class="details__data">30</span>
+                    <span class="details__unit">°C</span>
+                  </div>
+                </div>
+                <div class="details__element text-normal">
+                  <div class="details__label">FL High</div>
+                  <div class = "text-bold">
+                    <span class="details__data">27</span>
+                    <span class="details__unit">°C</span>
+                  </div>
+                </div>
+                <div class="details__element text-normal">
+                  <div class="details__label">Wind</div>
+                  <div class = "text-bold">
+                    <span class="details__data">13</span>
+                    <span class="details__unit">km/h</span>
+                  </div>
+                </div>
+                <div class="details__element text-normal">
+                  <div class="details__label">Low</div>
+                  <div class = "text-bold">
+                    <span class="details__data">21</span>
+                    <span class="details__unit">°C</span>
+                  </div>
+                </div>
+                <div class="details__element text-normal">
+                  <div class="details__label">FL Low</div>
+                  <div class = "text-bold">
+                    <span class="details__data">21</span>
+                    <span class="details__unit">°C</span>
+                  </div>
+                </div>
+                <div class="details__element text-normal">
+                  <div class="details__label">Precip</div>
+                  <div class = "text-bold">
+                    <span class="details__data">0.1</span>
+                    <span class="details__unit">cm/m<sup>2</sup></span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <button class="btn">
+          <div class="btn__body">
+            <span class="btn__icon"></span>
+            <span class="text-normal text-bold btn__text">Hourly forecast</span>
+          </div>
+        </button>
       </section>
       <h2>14-day forecast</h2>
       <section class="daily-forecast">
-        <div class="daily-forecast_grid">
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+        <div class="daily-forecast___grid">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
 
-          <button class = daily-forecast_btn>
-            <div class="daily-forecast_element">
-              <span class="icon icon_medium bg-sun_dark"></span>
-              <div class="daily-forecast_text">
+          <button class = daily-forecast__btn>
+            <div class="daily-forecast__element">
+              <span class="icon icon__medium bg-sun_dark"></span>
+              <div class="daily-forecast__text">
                 <div class="text-normal">Sun, May 7</div>
-                <div class="text-normal daily-forecast_temperature">17</div>
+                <div class="text-normal daily-forecast__temperature text-bold">17</div>
               </div>
             </div>
           </button>
@@ -165,6 +172,8 @@
       </section>
     </div>
     </main>
-    <script src="/src/js/index.js"></script>
+    <script type="module" src="/src/js/index.js"></script>
+    <!-- <script type = "module" src="/src/js/weather.js"></script> -->
+    <!-- <script src="/src/js/brudnopis.js"></script> -->
   </body>
 </html>

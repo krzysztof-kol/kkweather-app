@@ -23,7 +23,7 @@
 
       <h1 id = "h1__container">
         <span>The weather in</span>
-        <textarea id="h1__input" autofocus placeholder ="Your location" oninput="adjusth1InputHeight()" rows="1"></textarea>
+        <textarea id="h1__input" autofocus rows = 1 placeholder = "Your location"></textarea>
         <!-- <input id="h1__input" autofocus placeholder ="London" oninput="adjusth1InputHeight()" rows="1"> -->
         <span>is sunny</span>
       </h1>
@@ -33,7 +33,7 @@
               <div class="icon icon__big bg-cloud_dark_01"></div>
               <div class="main-info__data">
                 <div class="number-big">
-                  <div id="current-temp" class="number-big_text">19</div>
+                  <div id="current-temp" class="number-big_text"></div>
                   <div class="date">
                     <div class="text-normal">May 6, 2023</div>
                     <div class="text-normal">Saturday 9:37PM</div>
@@ -46,42 +46,42 @@
                 <div class="details__element text-normal">
                   <div class="details__label">High</div>
                   <div class = "text-bold">
-                    <span class="details__data">30</span>
+                    <span id ="current-high-temp" class="details__data">30</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div class="details__label">FL High</div>
+                  <div  class="details__label">FL High</div>
                   <div class = "text-bold">
-                    <span class="details__data">27</span>
+                    <span id = "current-fl-high-temp" class="details__data">27</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
                   <div class="details__label">Wind</div>
                   <div class = "text-bold">
-                    <span class="details__data">13</span>
+                    <span id = "current-windspeed" class="details__data">13</span>
                     <span class="details__unit">km/h</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
                   <div class="details__label">Low</div>
                   <div class = "text-bold">
-                    <span class="details__data">21</span>
+                    <span id = "current-low-temp" class="details__data">21</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
                   <div class="details__label">FL Low</div>
                   <div class = "text-bold">
-                    <span class="details__data">21</span>
+                    <span id = "current-fl-low-temp" class="details__data">21</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
                   <div class="details__label">Precip</div>
                   <div class = "text-bold">
-                    <span class="details__data">0.1</span>
+                    <span id = "current-precip" class="details__data">0.1</span>
                     <span class="details__unit">cm/m<sup>2</sup></span>
                   </div>
                 </div>
@@ -298,7 +298,8 @@
       </section>
     </div>
     </main>
-    <script type="module" src="/src/js/index.js"></script>
+    <!-- <script type="module" src="/src/js/index.js"></script> -->
+    <script type="module" src="src/js/index.js"></script>
     <!-- <script type = "module" src="/src/js/weather.js"></script> -->
     <!-- <script src="/src/js/brudnopis.js"></script> -->
   </body>

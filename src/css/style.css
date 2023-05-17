@@ -114,7 +114,8 @@ h2 {
   margin: 1rem 0;
 }
 
-.temperature__small::after {
+.temperature__small::after,
+.temperature__big::after {
   font-size: inherit;
   font-family: inherit;
   content: "℃";

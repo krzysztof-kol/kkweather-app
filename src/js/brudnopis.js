@@ -1,41 +1,48 @@
-function adjusth1InputHeight() {
-  const h1Input = document.getElementById("h1__input");
-  h1Input.style.height = "auto";
-  h1Input.style.height = h1Input.scrollHeight + "px";
-}
+const xs = [];
+const ys = [];
 
-function setInitialh1InputHeight() {
-  const h1Input = document.getElementById("h1__input");
-  h1Input.style.height = "auto";
-  h1Input.style.height = h1Input.scrollHeight + "px";
-}
+async function chartIt() {
+  const data = await getData();
+  const ctx = document.getElementById("chart");
 
-setInitialh1InputHeight();
-
-function getLocation() {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: data.xs,
+      datasets: [
+        {
+          label: "# of Votes",
+          data: data.ys,
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: false,
+        },
+      },
+    },
   });
 }
 
-const currentTempOnWebpage = document.querySelector("#current-temp");
+async function getData() {
+  const response = await fetch("/data.csv");
+  const data = await response.text();
+  // console.log(data);
 
-async function getWeather() {
-  try {
-    const position = await getLocation();
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-
-    const weather = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin`
-    );
-    // console.log(weather);
-    const data = await weather.json();
-    const currentTemp = await data.current_weather.temperature;
-    currentTempOnWebpage.textContent = currentTemp;
-  } catch (error) {
-    console.log("Błąd podczas pobierania lokalizacji");
-  }
+  const table = data.split("\n").slice(1);
+  table.forEach((row) => {
+    const columns = row.split(",");
+    const year = columns[0];
+    xs.push(year);
+    const temp = columns[1];
+    ys.push(parseFloat(temp) + 14);
+    console.log(year, temp);
+  });
+  return { xs, ys };
 }
 
-getWeather();
+// getData();
+chartIt();

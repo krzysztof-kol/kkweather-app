@@ -5,12 +5,12 @@ hourlyForecastButton.addEventListener("click", toggleHourlyForecast);
 hourlyForecastButton.addEventListener("click", toggleHourlyForecast);
 hourlyForecastButton.addEventListener("click", toggleHourlyForecast);
 
-function toggleHourlyForecast() {
+export function toggleHourlyForecast() {
   hourlySection.classList.toggle("active");
   hourlyForecastButton.classList.toggle("btn-active");
   buttonHourlyIcon.classList.toggle("btn__icon-active");
 }
 
-function toggleButton() {
+export function toggleButton() {
   hourlyForecastButton.classList.toggle("active");
 }

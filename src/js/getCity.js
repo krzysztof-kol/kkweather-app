@@ -1,13 +1,13 @@
-import { getLocation } from "./getWeather.js";
+import { getCoordinates } from "./getCoords.js";
 
 let currentCity;
 
 // const cityDisplay = document.querySelector("#h1_input");
 
-async function getCityData() {
-  const currentRegion = await getLocation();
-  const currentLatitude = currentRegion.coords.latitude;
-  const currentLongitude = currentRegion.coords.longitude;
+export async function getCityData() {
+  const currentRegion = await getCoordinates();
+  const currentLatitude = currentRegion.userLatitude;
+  const currentLongitude = currentRegion.userLongitude;
 
   const regionData = await fetch(
     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude${currentLatitude}&longitude=${currentLongitude}&localityLanguage=en`

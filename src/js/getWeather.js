@@ -52,4 +52,43 @@ export async function renderCurrentData() {
   currentPrecipOnPage.textContent = currentPrecip;
 }
 
-// renderCurrentData();
+export async function getCurrentTimeData() {
+  const monthNames = [
+    "January",
+    "Febuary",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const weekNames = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const currentDate = new Date();
+  const currentDay = currentDate.getDate();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = monthNames[currentDate.getMonth()];
+  const currentWeekDay = weekNames[currentDate.getDay() - 1];
+  const currentHour = currentDate.getHours();
+  const currentMinute = currentDate.getMinutes();
+
+  const currentTime = `${currentHour}:${currentMinute}`;
+  const currentDateDisplay = `${currentWeekDay} ${currentDay} ${currentMonth} ${currentYear}`;
+
+  document.getElementById("current-time").textContent = currentTime;
+  document.getElementById("current-date").textContent = currentDateDisplay;
+}

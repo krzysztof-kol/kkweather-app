@@ -216,7 +216,7 @@ h2 {
 }
 
 .btn.active:active {
-  background-color: var(--color-background-dark);
+  background-color: var(--color-background-dark) !important;
 }
 
 /* CURRENT WEATHER */

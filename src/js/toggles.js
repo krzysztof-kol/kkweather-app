@@ -14,7 +14,9 @@ const buttonHourlyIcon = document.querySelector(".btn__icon");
 //   hourlyForecastButton.classList.toggle("active");
 // }
 
-hourlyForecastButton.addEventListener("click", function () {
+hourlyForecastButton.addEventListener("click", changeColor);
+
+export function changeColor() {
   const isActive = myButton.getAttribute("data-active") === "true";
 
   if (isActive) {
@@ -22,4 +24,4 @@ hourlyForecastButton.addEventListener("click", function () {
   } else {
     myButton.setAttribute("data-active", "true");
   }
-});
+}

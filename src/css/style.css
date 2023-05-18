@@ -215,6 +215,10 @@ h2 {
   transform: rotate(90deg);
 }
 
+.btn.active:active {
+  background-color: var(--color-background-dark);
+}
+
 /* CURRENT WEATHER */
 
 .current-weather {

@@ -206,8 +206,7 @@ h2 {
 
 .btn.btn-active,
 .btn:hover,
-.btn[data-active],
-.btn[true] {
+.btn[data-active="true"] {
   background: var(--color-highlight);
 }
 

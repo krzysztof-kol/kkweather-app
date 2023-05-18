@@ -17,11 +17,11 @@ const buttonHourlyIcon = document.querySelector(".btn__icon");
 hourlyForecastButton.addEventListener("click", changeColor);
 
 export function changeColor() {
-  const isActive = myButton.getAttribute("data-active") === "true";
+  const isActive = hourlyForecastButton.getAttribute("data-active") === "true";
 
   if (isActive) {
-    myButton.removeAttribute("data-active");
+    hourlyForecastButton.removeAttribute("data-active");
   } else {
-    myButton.setAttribute("data-active", "true");
+    hourlyForecastButton.setAttribute("data-active", "true");
   }
 }

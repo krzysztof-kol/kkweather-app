@@ -170,7 +170,7 @@ h2 {
 /* BUTTONS ------------------------------------------------------------------- */
 
 .btn,
-.btn:not(:active) {
+.btn:not(.btn.btn-active, .btn:hover, .btn-active) {
   background: var(--color-primary);
   border: none;
   color: var(--color-background-light);

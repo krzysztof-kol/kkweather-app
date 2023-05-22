@@ -9,23 +9,6 @@ const currentTempFLLowOnPage = document.getElementById("current-fl-low-temp");
 const currentWindSpeedOnPage = document.getElementById("current-windspeed");
 const currentPrecipOnPage = document.getElementById("current-precip");
 
-// const hourlySection = document.getElementsByClassName(
-//   "hourly-forecast__section"
-// );
-// const hourlyElement = document.getElementsByClassName(
-//   "hourly-forecast__element"
-// );
-// const hourlyDetail = document.getElementsByClassName("hourly-detail");
-
-// const hourlyTimeOnPage = document.getElementById("hourly-time");
-// const hourlyTempOnPage = document.getElementById("hourly-temp");
-// const hourlyPrecipProbOnPage = document.getElementById(
-//   "hourly-precip-probability"
-// );
-// const houtlyPrecipSumOnPage = document.getElementById("hourly-precip-sum");
-
-// const currentTempOnWebpage = document.querySelector("#current-temp");
-
 export async function getWeather() {
   const position = await getCoordinates();
   const latitude = position.userLatitude;
@@ -126,9 +109,9 @@ export async function renderHourlyWeatherData() {
   );
 
   let day, hour;
-  let minute = timeData.currentMinute;
+  let minute = "00";
 
-  hourlyWeather.temperature_2m.slice(0, 48).forEach((temperature, index) => {
+  hourlyWeather.temperature_2m.splice(10, 34).forEach((temperature, index) => {
     function getDayAndHour() {
       hour = (timeData.hour + 1 + index) % 24;
 
@@ -140,6 +123,7 @@ export async function renderHourlyWeatherData() {
 
     [hour, day] = getDayAndHour();
     day = day.slice(0, 3);
+    console.log(hour);
 
     const hourlyForecastElement = document.createElement("div");
     hourlyForecastElement.className = "hourly-forecast__element";
@@ -165,7 +149,7 @@ export async function renderHourlyWeatherData() {
     hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
 
     const hourlyTempIcon = document.createElement("div");
-    hourlyTempIcon.className = "hourly-icon icon__small bg-cloud_dark_01";
+    hourlyTempIcon.className = "hourly-icon icon__small temperature_dark-01";
 
     const hourlyTemp = document.createElement("div");
     hourlyTemp.className = "hourly-temp text-normal temperature__small";
@@ -175,7 +159,8 @@ export async function renderHourlyWeatherData() {
     hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
 
     const hourlyPrecipProbIcon = document.createElement("div");
-    hourlyPrecipProbIcon.className = "hourly-icon icon__small bg-cloud_dark_01";
+    hourlyPrecipProbIcon.className =
+      "hourly-icon icon__small rain-probability-dark";
 
     const hourlyPrecipProb = document.createElement("div");
     hourlyPrecipProb.className =
@@ -187,7 +172,7 @@ export async function renderHourlyWeatherData() {
     hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
 
     const hourlyPrecipSumIcon = document.createElement("div");
-    hourlyPrecipSumIcon.className = "hourly-icon icon__small bg-cloud_dark_01";
+    hourlyPrecipSumIcon.className = "hourly-icon icon__small heavy-rain-dark";
 
     const hourlyPrecipSum = document.createElement("div");
     hourlyPrecipSum.className =

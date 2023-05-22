@@ -5,10 +5,11 @@ import { renderWeatherData } from "./getWeather.js";
 import { renderHourlyWeatherData } from "./getWeather.js";
 import { getCityData } from "./getCity.js";
 import "./toggles.js";
+import { getCoordinates } from "./getCoords.js";
 
+getCoordinates();
 getTimeData();
 getWeather();
-
 renderWeatherData();
 renderHourlyWeatherData();
 getCityData();

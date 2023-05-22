@@ -121,12 +121,44 @@ h2 {
   content: "℃";
 }
 
-.hourly-precip-probability::after {
-  content: "%";
+/* SCROLLBARS-------------------------------------------------------------------------------------------- */
+
+/* Chrome */
+body::-webkit-scrollbar {
+  background-color: var(--color-background-light);
+  width: 12px;
 }
 
-.hourly-precip-sum::after {
-  content: "mm";
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-background-dark);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-highlight);
+}
+
+/* Firefox */
+body {
+  scrollbar-color: var(--color-background-dark) var(--color-background-light);
+  scrollbar-width: thin;
+}
+
+body::-moz-scrollbar-thumb {
+  background-color: var(--color-background-dark);
+}
+
+body::-moz-scrollbar-thumb:hover {
+  background-color: var(--color-highlight);
+}
+
+/* Edge (Chromium-based) */
+body {
+  scrollbar-color: var(--color-background-dark) var(--color-background-light);
+  scrollbar-width: thin;
+}
+
+body::-ms-scrollbar-thumb {
+  background-color: var(--color-background-dark);
 }
 
 /* ICONS ------------------------------------------------------------------------------------------------ */
@@ -173,6 +205,18 @@ h2 {
 
 .bg-sun_dark {
   background: url("/src/icons/svg/sun_dark.svg");
+}
+
+.rain-probability-dark {
+  background: url("/src/icons/svg/rain_probability_dark-01.svg");
+}
+
+.clock-dark {
+  background: url("/src/icons/svg/clock_dark.svg");
+}
+
+.heavy-rain-dark {
+  background: url("/src/icons/svg/heavy_rain_dark-01.svg");
 }
 
 /* BUTTONS ------------------------------------------------------------------- */
@@ -318,7 +362,7 @@ h2 {
 
 .hourly-forecast__section::-webkit-scrollbar {
   background-color: var(--color-background-light);
-  height: 2rem;
+  height: 1rem;
   transition: all 0.3s ease;
 }
 
@@ -372,6 +416,14 @@ h2 {
 .hourly-icon {
   margin-right: 1rem;
   margin-left: 0;
+}
+
+.hourly-precip-probability::after {
+  content: "%";
+}
+
+.hourly-precip-sum::after {
+  content: "mm";
 }
 
 /* DAILY FORECAST */

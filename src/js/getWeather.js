@@ -103,8 +103,6 @@ export async function getTimeData() {
   let hour = currentDate.getHours();
   let dayWeek = currentDate.getDay();
 
-  console.log(dayWeek);
-
   if (currentMinute < 10) currentMinute = "0" + currentMinute;
   if (currentHour < 10) currentHour = "0" + currentHour;
 

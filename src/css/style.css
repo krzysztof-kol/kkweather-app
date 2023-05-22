@@ -295,11 +295,23 @@ h2 {
 .hourly-forecast__section {
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 10%;
+  gap: 3rem;
+  overflow-x: scroll;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snaps-inline {
+  scroll-snap-type: inline mandatory;
+}
+
+.snaps-inline > * {
+  scroll-snap-align: start;
 }
 
 @media screen and (min-width: 600px) {
@@ -309,7 +321,7 @@ h2 {
 }
 
 .hourly-forecast__section.active {
-  max-height: 100%;
+  max-height: 200%;
   opacity: 1;
 }
 
@@ -332,6 +344,7 @@ h2 {
   width: fit-content;
   margin-top: 4rem;
   padding: 1rem;
+  /* scroll-snap-align: start; */
 }
 
 .hourly-detail {

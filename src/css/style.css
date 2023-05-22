@@ -1,4 +1,6 @@
-/* @import "/src/css/icons.css"; */
+@import "/src/css/weather-icons-wind.css";
+@import "/src/css/weather-icons-wind.min.css";
+@import "/src/css/weather-icons.min.css";
 
 :root {
   --color-background-light: rgb(255, 237, 211);
@@ -10,6 +12,21 @@
   --font-family-elegant: "DM Serif Display", "Times New Roman", Times, serif;
 
   /* -webkit-text-size-adjust: auto; */
+}
+
+@font-face {
+  font-family: "weathericons";
+  src: url("/src/fonts/weathericons-regular-webfont.eot");
+
+  src: url("../font/weathericons-regular-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/fonts/weathericons-regular-webfont.woff2") format("woff2"),
+    url("/src/fonts/weathericons-regular-webfont.woff") format("woff"),
+    url("/src/fonts/weathericons-regular-webfont.ttf") format("truetype"),
+    url("/src/fonts/weathericons-regular-webfont.svg#weather_iconsregular")
+      format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 html {
@@ -169,9 +186,15 @@ body::-ms-scrollbar-thumb {
   background-repeat: no-repeat;
 }
 
-.icon__big {
-  width: clamp(3rem, 20vw, 8rem);
-  height: clamp(3rem, 20vw, 8rem);
+.icon-big {
+  font-size: clamp(3rem, 20vw, 8rem);
+  margin-bottom: 2rem;
+}
+
+.icon-small {
+  font-size: clamp(2rem, 1.2vw, 5rem);
+  text-align: center;
+  width: clamp(2rem, 1.2vw, 5rem);
 }
 
 .icon__medium {
@@ -333,6 +356,12 @@ body::-ms-scrollbar-thumb {
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   width: 100%;
 }
+
+/* DAILY FORECAST */
+
+/* .daily-element {
+
+} */
 
 /* HOURLY FORECAST */
 

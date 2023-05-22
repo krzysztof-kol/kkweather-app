@@ -16,16 +16,19 @@ export async function getWeather() {
   const timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation_probability,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
-  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
 
   const weather = await fetch(apiUrl);
   const weatherJson = await weather.json();
-  const currentTemp = weatherJson;
+  // const currentTemp = weatherJson;
   return weatherJson;
 }
 
 export async function renderWeatherData() {
   const data = await getWeather();
+  const timeData = await getTimeData();
 
   const {
     current_weather: currentWeather,
@@ -39,7 +42,12 @@ export async function renderWeatherData() {
   const [currentLowTemp] = dailyWeather.temperature_2m_min;
   const [currentFLHighTemp] = dailyWeather.apparent_temperature_max;
   const [currentFLLowTemp] = dailyWeather.apparent_temperature_min;
-  const [currentPrecip] = hourlyWeather.precipitation;
+  const currentPrecip = hourlyWeather.precipitation[timeData.hour];
+  const currentWeatherCode = currentWeather.weathercode;
+  const currentIsDay = currentWeather.is_day;
+  const currentWeatherIcon = document.querySelector(".current-weather-icon");
+
+  setWeatherIcon(currentWeatherIcon, currentWeatherCode, currentIsDay);
 
   currentTempOnPage.textContent = currentTemp;
   currentWindSpeedOnPage.textContent = currentWindSpeed;
@@ -81,7 +89,7 @@ export async function getTimeData() {
   const currentYear = currentDate.getFullYear();
   const currentMonth = monthNames[currentDate.getMonth()];
   const currentWeekDay = weekNames[currentDate.getDay()];
-  let currentHour = currentDate.getHours();
+  const currentHour = currentDate.getHours();
   let currentMinute = currentDate.getMinutes();
   let hour = currentDate.getHours();
   let dayWeek = currentDate.getDay();
@@ -108,95 +116,179 @@ export async function renderHourlyWeatherData() {
     "hourly-forecast__section"
   );
 
+  console.log(hourlyWeather);
   let day, hour;
   let minute = "00";
+  console.log(hourlyData.hourly.is_day);
+  let isDayArray = hourlyWeather.is_day.splice(
+    timeData.hour + 1,
+    hourlyWeather.is_day.length
+  );
+  let weatherCodeArray = hourlyWeather.weathercode.splice(
+    timeData.hour + 1,
+    hourlyWeather.weathercode.length
+  );
+  console.log(weatherCodeArray);
+  // let weatherIconClass;
 
-  hourlyWeather.temperature_2m.splice(10, 34).forEach((temperature, index) => {
-    function getDayAndHour() {
-      hour = (timeData.hour + 1 + index) % 24;
+  hourlyWeather.temperature_2m
+    .splice(timeData.hour + 1, hourlyWeather.temperature_2m.length)
+    .forEach((temperature, index) => {
+      function getDayAndHour() {
+        // console.log(hourlyWeather.temperature_2m);
+        hour = (timeData.hour + 1 + index) % 24;
 
-      let actualDay =
-        (timeData.dayWeek + Math.floor((timeData.hour + index) / 24)) % 7;
-      day = timeData.weekNames[actualDay];
-      return [hour, day];
-    }
+        let actualDay =
+          (timeData.dayWeek + Math.floor((timeData.hour + index) / 24)) % 7;
+        day = timeData.weekNames[actualDay];
+        return [hour, day];
+      }
 
-    [hour, day] = getDayAndHour();
-    day = day.slice(0, 3);
-    console.log(hour);
+      [hour, day] = getDayAndHour();
+      day = day.slice(0, 3);
+      let weatherCode = weatherCodeArray[index];
+      let isDay = isDayArray[index];
+      // console.log(isDayArray);
+      // console.log(hour);
 
-    const hourlyForecastElement = document.createElement("div");
-    hourlyForecastElement.className = "hourly-forecast__element";
+      // getWeatherIcon();
 
-    const hourlyDetailDay = document.createElement("div");
-    hourlyDetailDay.className = "hourly-detail hourly-detail-day";
+      const hourlyForecastElement = document.createElement("div");
+      hourlyForecastElement.className = "hourly-forecast__element";
 
-    const hourlyDay = document.createElement("div");
-    hourlyDay.className = "hourly-day text-normal text-bold";
-    hourlyDay.textContent = day;
+      const hourlyDetailDay = document.createElement("div");
+      hourlyDetailDay.className = "hourly-detail hourly-detail-day";
 
-    const hourlyDetailTime = document.createElement("div");
-    hourlyDetailTime.className = "hourly-detail hourly-detail-time";
+      const hourlyDay = document.createElement("div");
+      hourlyDay.className = "hourly-day text-normal text-bold";
+      hourlyDay.textContent = day;
 
-    const hourlyTimeIcon = document.createElement("div");
-    hourlyTimeIcon.className = "hourly-icon icon__small bg-cloud_dark_01";
+      const hourlyDetailTime = document.createElement("div");
+      hourlyDetailTime.className = "hourly-detail hourly-detail-time";
 
-    const hourlyTime = document.createElement("div");
-    hourlyTime.className = "hourly-time text-normal";
-    hourlyTime.textContent = `${hour}:${minute}`;
+      const hourlyTimeIcon = document.createElement("div");
+      hourlyTimeIcon.className = "wi hourly-icon icon-small";
+      setWeatherIcon(hourlyTimeIcon, weatherCode, isDay);
 
-    const hourlyDetailTemp = document.createElement("div");
-    hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
+      const hourlyTime = document.createElement("div");
+      hourlyTime.className = "hourly-time text-normal";
+      hourlyTime.textContent = `${hour}:${minute}`;
 
-    const hourlyTempIcon = document.createElement("div");
-    hourlyTempIcon.className = "hourly-icon icon__small temperature_dark-01";
+      const hourlyDetailTemp = document.createElement("div");
+      hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
 
-    const hourlyTemp = document.createElement("div");
-    hourlyTemp.className = "hourly-temp text-normal temperature__small";
-    hourlyTemp.textContent = temperature;
+      const hourlyTempIcon = document.createElement("div");
+      hourlyTempIcon.className =
+        "wi hourly-icon icon-small wi-thermometer-exterior";
 
-    const hourlyDetailPrecipProb = document.createElement("div");
-    hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
+      const hourlyTemp = document.createElement("div");
+      hourlyTemp.className = "hourly-temp text-normal temperature__small";
+      hourlyTemp.textContent = temperature;
 
-    const hourlyPrecipProbIcon = document.createElement("div");
-    hourlyPrecipProbIcon.className =
-      "hourly-icon icon__small rain-probability-dark";
+      const hourlyDetailPrecipProb = document.createElement("div");
+      hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
 
-    const hourlyPrecipProb = document.createElement("div");
-    hourlyPrecipProb.className =
-      "hourly-precip-probability text-normal temperature__small";
-    hourlyPrecipProb.textContent =
-      hourlyWeather.precipitation_probability[index];
+      const hourlyPrecipProbIcon = document.createElement("div");
+      hourlyPrecipProbIcon.className = "wi hourly-icon icon-small wi-humidity";
 
-    const hourlyDetailPrecipSum = document.createElement("div");
-    hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
+      const hourlyPrecipProb = document.createElement("div");
+      hourlyPrecipProb.className =
+        "hourly-precip-probability text-normal temperature__small";
+      hourlyPrecipProb.textContent =
+        hourlyWeather.precipitation_probability[timeData.hour + 1];
 
-    const hourlyPrecipSumIcon = document.createElement("div");
-    hourlyPrecipSumIcon.className = "hourly-icon icon__small heavy-rain-dark";
+      const hourlyDetailPrecipSum = document.createElement("div");
+      hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
 
-    const hourlyPrecipSum = document.createElement("div");
-    hourlyPrecipSum.className =
-      "hourly-precip-sum text-normal temperature__small";
-    hourlyPrecipSum.textContent = hourlyWeather.precipitation[index];
+      const hourlyPrecipSumIcon = document.createElement("div");
+      hourlyPrecipSumIcon.className = "wi hourly-icon icon-small wi-rain";
 
-    hourlySection[0].appendChild(hourlyForecastElement);
-    hourlyForecastElement.appendChild(hourlyDetailDay);
-    hourlyDetailDay.appendChild(hourlyDay);
+      const hourlyPrecipSum = document.createElement("div");
+      hourlyPrecipSum.className =
+        "hourly-precip-sum text-normal temperature__small";
+      hourlyPrecipSum.textContent = hourlyWeather.precipitation[index + 9];
 
-    hourlyForecastElement.appendChild(hourlyDetailTime);
-    hourlyDetailTime.appendChild(hourlyTimeIcon);
-    hourlyDetailTime.appendChild(hourlyTime);
+      // const weatherIcon = hourlyTimeIcon;
 
-    hourlyForecastElement.appendChild(hourlyDetailTemp);
-    hourlyDetailTemp.appendChild(hourlyTempIcon);
-    hourlyDetailTemp.appendChild(hourlyTemp);
+      hourlySection[0].appendChild(hourlyForecastElement);
+      hourlyForecastElement.appendChild(hourlyDetailDay);
+      hourlyDetailDay.appendChild(hourlyDay);
 
-    hourlyForecastElement.appendChild(hourlyDetailPrecipProb);
-    hourlyDetailPrecipProb.appendChild(hourlyPrecipProbIcon);
-    hourlyDetailPrecipProb.appendChild(hourlyPrecipProb);
+      hourlyForecastElement.appendChild(hourlyDetailTime);
+      hourlyDetailTime.appendChild(hourlyTimeIcon);
+      hourlyDetailTime.appendChild(hourlyTime);
 
-    hourlyForecastElement.appendChild(hourlyDetailPrecipSum);
-    hourlyDetailPrecipSum.appendChild(hourlyPrecipSumIcon);
-    hourlyDetailPrecipSum.appendChild(hourlyPrecipSum);
-  });
+      hourlyForecastElement.appendChild(hourlyDetailTemp);
+      hourlyDetailTemp.appendChild(hourlyTempIcon);
+      hourlyDetailTemp.appendChild(hourlyTemp);
+
+      hourlyForecastElement.appendChild(hourlyDetailPrecipProb);
+      hourlyDetailPrecipProb.appendChild(hourlyPrecipProbIcon);
+      hourlyDetailPrecipProb.appendChild(hourlyPrecipProb);
+
+      hourlyForecastElement.appendChild(hourlyDetailPrecipSum);
+      hourlyDetailPrecipSum.appendChild(hourlyPrecipSumIcon);
+      hourlyDetailPrecipSum.appendChild(hourlyPrecipSum);
+    });
+}
+
+function setWeatherIcon(element, weatherCode, isDay) {
+  let weatherIconClass;
+  switch (weatherCode) {
+    case 0:
+      weatherIconClass = isDay ? "wi-day-sunny" : "wi-night-clear";
+      break;
+    case 1:
+    case 2:
+    case 3:
+      weatherIconClass = isDay ? "wi-day-cloudy" : "wi-night-alt-cloudy";
+      break;
+    case 45:
+    case 48:
+      weatherIconClass = isDay ? "wi-day-fog" : "wi-night-fog";
+      break;
+    case 51:
+    case 53:
+    case 55:
+    case 56:
+    case 57:
+      weatherIconClass = isDay ? "wi-day-sleet" : "wi-night-sleet";
+      break;
+    case 61:
+    case 63:
+    case 65:
+      weatherIconClass = isDay ? "wi-day-rain" : "wi-night-alt-rain";
+      break;
+    case 66:
+    case 67:
+      weatherIconClass = isDay ? "wi-day-sleet" : "wi-night-sleet";
+      break;
+    case 71:
+    case 73:
+    case 75:
+    case 77:
+      weatherIconClass = isDay ? "wi-day-snow" : "wi-night-alt-snow";
+      break;
+    case 80:
+    case 81:
+    case 82:
+      weatherIconClass = isDay ? "wi-day-showers" : "wi-night-alt-showers";
+      break;
+    case 85:
+    case 86:
+      weatherIconClass = isDay ? "wi-day-snow" : "wi-night-alt-snow";
+      break;
+    case 95:
+    case 96:
+    case 99:
+      weatherIconClass = isDay
+        ? "wi-day-thunderstorm"
+        : "wi-night-thunderstorm";
+      break;
+    default:
+      weatherIconClass = isDay ? "wi-day-sunny" : "wi-night-clear";
+      break;
+  }
+
+  element.classList.add(weatherIconClass);
 }

@@ -300,7 +300,7 @@ h2 {
   transition: all 0.3s ease;
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 10%;
+  grid-auto-columns: 20%;
   gap: 10rem;
   overflow-x: scroll;
   overscroll-behavior-inline: contain;
@@ -313,6 +313,21 @@ h2 {
 
 .snaps-inline > * {
   scroll-snap-align: start;
+}
+
+.hourly-forecast__section::-webkit-scrollbar {
+  background-color: var(--color-background-light);
+  height: 2rem;
+  transition: all 0.3s ease;
+}
+
+.hourly-forecast__section::-webkit-scrollbar-thumb {
+  background-color: var(--color-background-dark);
+  width: 10px;
+}
+
+.hourly-forecast__section::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-highlight);
 }
 
 /* @media screen and (min-width: 600px) {
@@ -343,10 +358,8 @@ h2 {
   align-items: right;
   justify-content: center;
   width: fit-content;
-  margin-top: 4rem;
+  margin: 4rem 2rem;
   padding: 1rem;
-  margin-right: 3rem;
-  /* scroll-snap-align: start; */
 }
 
 .hourly-detail {
@@ -355,7 +368,7 @@ h2 {
   align-items: center;
 }
 
-#hourly-icon {
+.hourly-icon {
   margin-right: 1rem;
   margin-left: 0;
 }

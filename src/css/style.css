@@ -298,10 +298,11 @@ h2 {
 
   /* overflow: hidden; */
   transition: all 0.3s ease;
-  display: grid;
+  /* display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 20%;
-  gap: 10rem;
+  grid-auto-columns: 50%;
+  gap: auto; */
+  display: flex;
   overflow-x: scroll;
   overscroll-behavior-inline: contain;
   -webkit-overflow-scrolling: touch;

@@ -139,7 +139,7 @@ export async function renderHourlyWeatherData() {
         hour = (timeData.hour + 1 + index) % 24;
 
         let actualDay =
-          (timeData.dayWeek + Math.floor((timeData.hour + index) / 24)) % 7;
+          (timeData.dayWeek + Math.floor((timeData.hour + index + 1) / 24)) % 7;
         day = timeData.weekNames[actualDay];
         return [hour, day];
       }
@@ -195,7 +195,7 @@ export async function renderHourlyWeatherData() {
       hourlyPrecipProb.className =
         "hourly-precip-probability text-normal temperature__small";
       hourlyPrecipProb.textContent =
-        hourlyWeather.precipitation_probability[timeData.hour + 1];
+        hourlyWeather.precipitation_probability[timeData.hour + 1 + index];
 
       const hourlyDetailPrecipSum = document.createElement("div");
       hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
@@ -206,7 +206,8 @@ export async function renderHourlyWeatherData() {
       const hourlyPrecipSum = document.createElement("div");
       hourlyPrecipSum.className =
         "hourly-precip-sum text-normal temperature__small";
-      hourlyPrecipSum.textContent = hourlyWeather.precipitation[index + 9];
+      hourlyPrecipSum.textContent =
+        hourlyWeather.precipitation[timeData.hour + 1 + index];
 
       // const weatherIcon = hourlyTimeIcon;
 

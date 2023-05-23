@@ -89,7 +89,7 @@ export async function getTimeData() {
   const currentYear = currentDate.getFullYear();
   const currentMonth = monthNames[currentDate.getMonth()];
   const currentWeekDay = weekNames[currentDate.getDay()];
-  const currentHour = currentDate.getHours();
+  let currentHour = currentDate.getHours();
   let currentMinute = currentDate.getMinutes();
   let hour = currentDate.getHours();
   let dayWeek = currentDate.getDay();
@@ -116,10 +116,8 @@ export async function renderHourlyWeatherData() {
     "hourly-forecast__section"
   );
 
-  console.log(hourlyWeather);
   let day, hour;
   let minute = "00";
-  console.log(hourlyData.hourly.is_day);
   let isDayArray = hourlyWeather.is_day.splice(
     timeData.hour + 1,
     hourlyWeather.is_day.length
@@ -128,16 +126,12 @@ export async function renderHourlyWeatherData() {
     timeData.hour + 1,
     hourlyWeather.weathercode.length
   );
-  console.log(weatherCodeArray);
-  // let weatherIconClass;
 
   hourlyWeather.temperature_2m
     .splice(timeData.hour + 1, hourlyWeather.temperature_2m.length)
     .forEach((temperature, index) => {
       function getDayAndHour() {
-        // console.log(hourlyWeather.temperature_2m);
         hour = (timeData.hour + 1 + index) % 24;
-
         let actualDay =
           (timeData.dayWeek + Math.floor((timeData.hour + index + 1) / 24)) % 7;
         day = timeData.weekNames[actualDay];

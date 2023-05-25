@@ -194,18 +194,13 @@ body::-ms-scrollbar-thumb {
 .icon-small {
   font-size: clamp(2rem, 12vw, 3rem);
   text-align: center;
-  text-justify: center;
-  width: clamp(2rem, 12vw, 6rem);
-}
-
-@media screen and (max-width: 768px) {
-  .icon-medium {
-    text-align: left;
-  }
+  /* text-justify: center; */
+  width: clamp(2rem, 12vw, 5rem);
 }
 
 .icon-medium {
   font-size: clamp(3rem, 15vw, 4rem);
+  height: 100%;
   /* height: 100%; */
   /* width: clamp(3rem, 15vw, 5rem); */
   /* height: clamp(3rem, 15vw, 5rem); */
@@ -347,12 +342,14 @@ body::-ms-scrollbar-thumb {
 }
 
 .df__data-container.df__data-container-main {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: start;
 }
 
 .df__data-container.df__data-container-data {
   display: flex;
+  flex-direction: row;
 }
 
 .df__data.df__data-main {
@@ -371,6 +368,7 @@ body::-ms-scrollbar-thumb {
 
 .df__icon-main {
   margin-right: 2rem;
+  text-align: center;
 }
 
 .df__icon {
@@ -396,6 +394,40 @@ body::-ms-scrollbar-thumb {
 
 .daily-precip-prob::after {
   content: "%";
+}
+
+@media screen and (max-width: 768px) {
+  .df__element {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 4rem;
+  }
+
+  .df__data-container.df__data-container-main {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .df__data-container.df__data-container-data {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .df__data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .df__data .df__icon {
+    color: var(--color-background-dark);
+    width: 3rem;
+    margin-right: 2rem;
+    text-align: center;
+  }
 }
 
 /* HOURLY FORECAST */
@@ -444,11 +476,6 @@ body::-ms-scrollbar-thumb {
   opacity: 1;
 }
 
-.dividing-line {
-  border: 1px solid var(--color-highlight);
-  margin-top: 4rem;
-}
-
 .hourly-forecast {
   display: flex;
   flex-direction: row;
@@ -469,6 +496,7 @@ body::-ms-scrollbar-thumb {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 0 0 1rem 0;
 }
 
 .hourly-icon {

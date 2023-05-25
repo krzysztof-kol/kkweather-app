@@ -17,7 +17,8 @@ export async function getWeather() {
 
   // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation_probability,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
   // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
-  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&current_weather=true&timezone=${timezone}`;
   // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
 
   const weather = await fetch(apiUrl);
@@ -286,4 +287,156 @@ function setWeatherIcon(element, weatherCode, isDay) {
   }
 
   element.classList.add(weatherIconClass);
+}
+
+export async function renderDailyWeatherData() {
+  const dailyData = await getWeather();
+  const timeData = await getTimeData();
+  const { daily: dailyWeather } = dailyData;
+
+  console.log(dailyWeather);
+
+  const dailySection = document.getElementById("daily-forecast");
+  const DFContainer = document.getElementById("DF__container");
+
+  const time = dailyWeather.time;
+  const weatherCode = dailyWeather.weathercode;
+  const tempMax = dailyWeather.temperature_2m_max;
+  const tempFLMax = dailyWeather.apparent_temperature_max;
+  const tempMin = dailyWeather.temperature_2m_min;
+  const tempFLMin = dailyWeather.apparent_temperature_min;
+  const sunrise = dailyWeather.sunrise;
+  const sunset = dailyWeather.sunset;
+  const precip = dailyWeather.precipitation_sum;
+  const precipProb = dailyWeather.precipitation_probability_max;
+
+  console.log(time);
+
+  time.forEach((dailyTime, index) => {
+    let date = `${dailyTime.slice(8, 10)}.${dailyTime.slice(
+      5,
+      7
+    )}.${dailyTime.slice(0, 4)}`;
+
+    let dailyWeatherCode = Math.round(weatherCode[index]);
+    let dailyTempMax = Math.round(tempMax[index]);
+    let dailyTempFLMax = Math.round(tempFLMax[index]);
+    let dailyTempMin = Math.round(tempMin[index]);
+    let dailyTempFLMin = Math.round(tempFLMin[index]);
+    let dailySunrise = sunrise[index].slice(11, 16);
+    let dailySunset = sunset[index].slice(11, 16);
+    let dailyPrecip = Math.round(precip[index]);
+    let dailyPrecipProb = Math.round(precipProb[index]);
+    let dailyDay = timeData.weekNames[(timeData.dayWeek + index) % 7].slice(
+      0,
+      3
+    );
+
+    const DFElement = document.createElement("div");
+    DFElement.className = "df__element";
+
+    const DFDataContainer1 = document.createElement("div");
+    DFDataContainer1.className = "df__data-container df__data-container-main";
+    const DFDataContainer2 = document.createElement("div");
+    DFDataContainer2.className = "df__data-container df__data-container-data";
+
+    const DFData1 = document.createElement("div");
+    DFData1.className = "df__data";
+    const DFData2 = document.createElement("div");
+    DFData2.className = "df__data df__data-main";
+    const DFData3 = document.createElement("div");
+    DFData3.className = "df__data";
+    const DFData4 = document.createElement("div");
+    DFData4.className = "df__data";
+    const DFData5 = document.createElement("div");
+    DFData5.className = "df__data";
+    const DFData6 = document.createElement("div");
+    DFData6.className = "df__data";
+    const DFData7 = document.createElement("div");
+    DFData7.className = "df__data";
+    const DFData8 = document.createElement("div");
+    DFData8.className = "df__data";
+
+    const DFDividingLine = document.createElement("div");
+    DFDividingLine.className = "df_line";
+
+    const DFIcon = document.createElement("div");
+    DFIcon.className = "icon-medium wi df__icon-main";
+    const DFDay = document.createElement("div");
+    DFDay.className = "text-bold df__text df__day";
+    const DFDate = document.createElement("div");
+    DFDate.className = "df__text df__date";
+
+    const DFTempMaxIcon = document.createElement("div");
+    DFTempMaxIcon.className = "df__icon icon-small wi wi-thermometer";
+    const DFTempMinIcon = document.createElement("div");
+    DFTempMinIcon.className = "df__icon icon-small wi wi-thermometer-exterior";
+    const DFPrecipIcon = document.createElement("div");
+    DFPrecipIcon.className = "df__icon icon-small wi wi-rain";
+    const DFPrecipProbIcon = document.createElement("div");
+    DFPrecipProbIcon.className = "df__icon icon-small wi wi-raindrop";
+    const DFSunriseIcon = document.createElement("div");
+    DFSunriseIcon.className = "df__icon icon-small wi wi-sunrise";
+    const DFSunsetIcon = document.createElement("div");
+    DFSunsetIcon.className = "df__icon icon-small wi wi-sunset";
+
+    const DFTempMax = document.createElement("div");
+    DFTempMax.className = "df__text daily-temp";
+    const DFTempMin = document.createElement("div");
+    DFTempMin.className = "df__text daily-temp";
+    const DFTempFLMax = document.createElement("div");
+    DFTempFLMax.className = "df__text daily-temp";
+    const DFTempFLMin = document.createElement("div");
+    DFTempFLMin.className = "df__text daily-temp";
+    const DFPrecip = document.createElement("div");
+    DFPrecip.className = "df__text daily-precip";
+    const DFPrecipProb = document.createElement("div");
+    DFPrecipProb.className = "df__text df__precip daily-precip-prob";
+    const DFSunrise = document.createElement("div");
+    DFSunrise.className = "df__text";
+    const DFSunset = document.createElement("div");
+    DFSunset.className = "df__text";
+
+    DFContainer.appendChild(DFElement);
+
+    DFElement.appendChild(DFDataContainer1);
+    DFElement.appendChild(DFDataContainer2);
+
+    DFDataContainer1.appendChild(DFData1);
+    DFDataContainer1.appendChild(DFData2);
+    DFDataContainer2.appendChild(DFData3);
+    DFDataContainer2.appendChild(DFData4);
+    DFDataContainer2.appendChild(DFData5);
+    DFDataContainer2.appendChild(DFData6);
+    DFDataContainer2.appendChild(DFData7);
+    DFDataContainer2.appendChild(DFData8);
+
+    DFData1.appendChild(DFIcon);
+    DFData2.appendChild(DFDay);
+    DFData2.appendChild(DFDate);
+    DFData3.appendChild(DFTempMaxIcon);
+    DFData3.appendChild(DFTempMax);
+    DFData4.appendChild(DFTempMinIcon);
+    DFData4.appendChild(DFTempMin);
+    DFData5.appendChild(DFPrecipIcon);
+    DFData5.appendChild(DFPrecip);
+    DFData6.appendChild(DFPrecipProbIcon);
+    DFData6.appendChild(DFPrecipProb);
+    DFData7.appendChild(DFSunriseIcon);
+    DFData7.appendChild(DFSunrise);
+    DFData8.appendChild(DFSunsetIcon);
+    DFData8.appendChild(DFSunset);
+
+    setWeatherIcon(DFIcon, dailyWeatherCode, 1);
+    DFDay.textContent = dailyDay;
+    DFDate.textContent = date;
+    DFTempMax.textContent = dailyTempMax;
+    DFTempMin.textContent = dailyTempMin;
+    DFTempFLMax.textContent = dailyTempFLMax;
+    DFTempFLMin.textContent = dailyTempFLMin;
+    DFPrecip.textContent = dailyPrecip;
+    DFPrecipProb.textContent = dailyPrecipProb;
+    DFSunrise.textContent = dailySunrise;
+    DFSunset.textContent = dailySunset;
+  });
 }

@@ -384,7 +384,7 @@ body::-ms-scrollbar-thumb {
 }
 
 .daily-temp::after {
-  content: "℃";
+  content: "°C";
   font-family: var(--font-family-normal);
 }
 
@@ -413,7 +413,9 @@ body::-ms-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 1rem;
+    row-gap: 2rem;
+    column-gap: 1rem;
+    justify-content: center;
   }
 
   .df__data {

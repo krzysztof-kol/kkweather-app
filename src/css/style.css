@@ -192,54 +192,23 @@ body::-ms-scrollbar-thumb {
 }
 
 .icon-small {
-  font-size: clamp(2rem, 1.2vw, 5rem);
+  font-size: clamp(2rem, 12vw, 3rem);
   text-align: center;
-  width: clamp(2rem, 1.2vw, 5rem);
+  text-justify: center;
+  width: clamp(2rem, 12vw, 6rem);
 }
 
-.icon__medium {
-  width: clamp(2rem, 15vw, 5rem);
-  height: clamp(2rem, 15vw, 5rem);
-  margin-right: 1rem;
+@media screen and (max-width: 768px) {
+  .icon-medium {
+    text-align: left;
+  }
 }
 
-.icon__small {
-  width: clamp(1.2rem, 10vw, 3rem);
-  height: clamp(1.2rem, 10vw, 3rem);
-}
-
-.bg-cloud_dark_01 {
-  background: url("/src/icons/svg/cloud_dark-01.svg");
-  background-position: center;
-}
-
-.temperature_dark-01 {
-  background: url("/src/icons/svg/temperature_dark-01.svg");
-}
-
-.windspeed_dark-01 {
-  background: url("/src/icons/svg/windspeed_dark-01.svg");
-  background-repeat: no-repeat;
-}
-
-.humidity_dark-01 {
-  background: url("/src/icons/svg/humidity_dark-01.svg");
-}
-
-.bg-sun_dark {
-  background: url("/src/icons/svg/sun_dark.svg");
-}
-
-.rain-probability-dark {
-  background: url("/src/icons/svg/rain_probability_dark-01.svg");
-}
-
-.clock-dark {
-  background: url("/src/icons/svg/clock_dark.svg");
-}
-
-.heavy-rain-dark {
-  background: url("/src/icons/svg/heavy_rain_dark-01.svg");
+.icon-medium {
+  font-size: clamp(3rem, 15vw, 4rem);
+  /* height: 100%; */
+  /* width: clamp(3rem, 15vw, 5rem); */
+  /* height: clamp(3rem, 15vw, 5rem); */
 }
 
 /* BUTTONS ------------------------------------------------------------------- */
@@ -359,9 +328,75 @@ body::-ms-scrollbar-thumb {
 
 /* DAILY FORECAST */
 
-/* .daily-element {
+#DF__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
 
-} */
+.df__element {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 2rem;
+}
+
+.df__data-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0 3 0 0rem;
+}
+
+.df__data-container.df__data-container-main {
+  align-items: center;
+  justify-content: start;
+}
+
+.df__data-container.df__data-container-data {
+  display: flex;
+}
+
+.df__data.df__data-main {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.df__data {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.df__icon-main {
+  margin-right: 2rem;
+}
+
+.df__icon {
+  color: var(--color-background-dark);
+  width: fit-content;
+  margin-right: 2rem;
+}
+
+.df__text {
+  font-family: var(--font-family-normal);
+  font-size: clamp(2rem, 1.2vw, 5rem);
+  margin-right: 4rem;
+}
+
+.daily-temp::after {
+  content: "℃";
+  font-family: var(--font-family-normal);
+}
+
+.daily-precip::after {
+  content: "mm";
+}
+
+.daily-precip-prob::after {
+  content: "%";
+}
 
 /* HOURLY FORECAST */
 
@@ -403,12 +438,6 @@ body::-ms-scrollbar-thumb {
 .hourly-forecast__section::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-highlight);
 }
-
-/* @media screen and (min-width: 600px) {
-  .hourly-forecast__section {
-    width: 100%;
-  }
-} */
 
 .hourly-forecast__section.active {
   max-height: 200%;
@@ -453,46 +482,4 @@ body::-ms-scrollbar-thumb {
 
 .hourly-precip-sum::after {
   content: "mm";
-}
-
-/* DAILY FORECAST */
-
-.daily-forecast__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(fit-content, 1fr));
-  width: 100%;
-}
-
-.daily-forecast__btn {
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  /* padding: 1rem; */
-  border-radius: 7px;
-}
-
-.daily-forecast__btn:first-of-type {
-  padding-left: 0;
-}
-
-.daily-forecast__btn:hover,
-.daily-forecast__btn:active,
-.daily-forecast__btn:focus {
-  transform: scale(1.05);
-}
-
-.daily-forecast__element {
-  display: flex;
-  align-items: center;
-  margin: 0 0 2rem;
-}
-
-.daily-forecast__text {
-  margin-right: 4rem;
-}
-
-.daily-forecast__temperature::after {
-  content: "°C";
 }

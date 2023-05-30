@@ -105,6 +105,7 @@ export async function renderWeatherData(weatherData, coordinates) {
   const currentWeatherCode = currentWeather.weathercode;
   const currentIsDay = currentWeather.is_day;
   const currentWeatherIcon = document.querySelector(".current-weather-icon");
+  currentWeatherIcon.innerHTML = "";
 
   setWeatherIcon(currentWeatherIcon, currentWeatherCode, currentIsDay);
 

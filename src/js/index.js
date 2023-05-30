@@ -7,15 +7,23 @@ import { renderDailyWeatherData } from "./getWeather.js";
 import { getCityData } from "./getCity.js";
 import "./toggles.js";
 import { getCoordinates } from "./getCoords.js";
+import { adjusth1InputHeight } from "./adjustHeights.js";
+// import { getSearchData } from "./suggestionList.js";
+import { passCoordinatesOnInput } from "./passCoordinatesOnInput.js";
 
-getCoordinates();
-getTimeData();
-getWeather();
-renderWeatherData();
-renderHourlyWeatherData();
-renderDailyWeatherData();
-getCityData();
+async function main() {
+  await getCoordinates();
+  await getTimeData();
+  // getWeather();
+  renderWeatherData();
+  renderHourlyWeatherData();
+  renderDailyWeatherData();
+  getCityData();
+  // getCitySuggestionList();
 
-setInterval(getTimeData, 60000);
+  setInterval(getTimeData, 60000);
 
-// getCityData();
+  // getCityData();
+}
+
+main();

@@ -1,14 +1,13 @@
-function adjusth1InputHeight() {
-  const h1Input = document.getElementById("h1__input");
+const h1Input = document.getElementById("h1__input");
+
+export function adjusth1InputHeight() {
   h1Input.style.height = "auto";
   h1Input.style.height = h1Input.scrollHeight + "px";
 }
 
-function setInitialh1InputHeight() {
-  const h1Input = document.getElementById("h1__input");
-  h1Input.style.height = "auto";
-  h1Input.style.height = h1Input.scrollHeight + "px";
-}
+// export function setInitialh1InputHeight() {
+//   h1Input.style.height = "auto";
+//   h1Input.style.height = h1Input.scrollHeight + "px";
+// }
 
-adjusth1InputHeight();
-setInitialh1InputHeight();
+h1Input.addEventListener("input", adjusth1InputHeight);

@@ -10,12 +10,12 @@ export async function getCityData() {
   const currentLongitude = currentRegion.userLongitude;
 
   const regionData = await fetch(
-    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude${currentLatitude}&longitude=${currentLongitude}&localityLanguage=en`
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude${currentLatitude}&longitude=${currentLongitude}&localityLanguage=pl`
   );
 
   const regionDataJson = await regionData.json();
   currentCity = regionDataJson.city;
-  document.querySelector("#h1__input").textContent = currentCity;
+  document.querySelector("#h1__input").value = currentCity;
 }
 
-getCityData();
+// getCityData();

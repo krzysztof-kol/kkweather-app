@@ -513,3 +513,26 @@ body::-ms-scrollbar-thumb {
 .hourly-precip-sum::after {
   content: "mm";
 }
+
+/* SUGGESTION LIST */
+
+.suggestion-list {
+  position: relative;
+  z-index: 1;
+
+  font-family: var(--font-family-normal);
+  font-size: clamp(2rem, 1.2vw, 5rem);
+  color: var(--color-primary);
+  line-height: 1.8;
+  text-decoration: none;
+  list-style: none;
+}
+
+.suggestion-element {
+  cursor: pointer;
+  transition: color 0.1s ease-in;
+}
+
+.suggestion-element:hover {
+  color: var(--color-highlight);
+}

@@ -1,5 +1,9 @@
 import "./getCoords.js";
 import { getCoordinates } from "./getCoords.js";
+import { passCoordinatesOnInput } from "./passCoordinatesOnInput.js";
+
+const input = document.getElementById("h1__input");
+// import { getSearchData } from "./suggestionList.js";
 
 const currentTempOnPage = document.getElementById("current-temp");
 const currentTempHighOnPage = document.getElementById("current-high-temp");
@@ -9,21 +13,30 @@ const currentTempFLLowOnPage = document.getElementById("current-fl-low-temp");
 const currentWindSpeedOnPage = document.getElementById("current-windspeed");
 const currentPrecipOnPage = document.getElementById("current-precip");
 
-export async function getWeather() {
-  const position = await getCoordinates();
-  const latitude = position.userLatitude;
-  const longitude = position.userLongitude;
-  const timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+export async function passCoordinates() {
+  let position;
+  let latitude;
+  let longitude;
+  let timezone;
 
-  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation_probability,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
-  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
-  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
+  position = await getCoordinates();
+  latitude = position.userLatitude;
+  longitude = position.userLongitude;
+  timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  return { latitude, longitude, timezone };
+}
+
+export async function getWeather(latitude, longitude, timezone) {
+  const positionAndTimezoneData = await passCoordinates();
+  latitude = positionAndTimezoneData.latitude;
+  longitude = positionAndTimezoneData.longitude;
+  timezone = positionAndTimezoneData.timezone;
+
   const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&current_weather=true&timezone=${timezone}`;
-  // const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum&current_weather=true&timeformat=unixtime&timezone=${timezone}`;
 
   const weather = await fetch(apiUrl);
   const weatherJson = await weather.json();
-  // const currentTemp = weatherJson;
   return weatherJson;
 }
 
@@ -60,9 +73,18 @@ export async function renderWeatherData() {
 }
 
 export async function getTimeData() {
+  const locationData = await passCoordinates();
+  const latitude = locationData.latitude;
+  const longitude = locationData.longitude;
+  const currentTimeOnLocationData = await fetch(
+    `https://api-bdc.net/data/timezone-by-location?latitude=${latitude}&longitude=${longitude}&key=bdc_50aaf13f645647f1ae8c1a4eaade70f9`
+  );
+  const currentTimeOnLocation = await currentTimeOnLocationData.json();
+  // console.log(currentTimeOnLocation);
+
   const monthNames = [
     "January",
-    "Febuary",
+    "February",
     "March",
     "April",
     "May",
@@ -85,7 +107,7 @@ export async function getTimeData() {
     "Saturday",
   ];
 
-  const currentDate = new Date();
+  const currentDate = new Date(currentTimeOnLocation.localTime);
   const currentDay = currentDate.getDate();
   const currentYear = currentDate.getFullYear();
   const currentMonth = monthNames[currentDate.getMonth()];
@@ -294,7 +316,7 @@ export async function renderDailyWeatherData() {
   const timeData = await getTimeData();
   const { daily: dailyWeather } = dailyData;
 
-  console.log(dailyWeather);
+  // console.log(dailyWeather);
 
   const dailySection = document.getElementById("daily-forecast");
   const DFContainer = document.getElementById("DF__container");
@@ -310,7 +332,7 @@ export async function renderDailyWeatherData() {
   const precip = dailyWeather.precipitation_sum;
   const precipProb = dailyWeather.precipitation_probability_max;
 
-  console.log(time);
+  // console.log(time);
 
   time.forEach((dailyTime, index) => {
     let date = `${dailyTime.slice(8, 10)}.${dailyTime.slice(

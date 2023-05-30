@@ -1,3 +1,5 @@
+// import { getSearchData } from "./suggestionList.js";
+
 let userLatitude, userLongitude;
 
 const success = (pos) => {
@@ -21,5 +23,3 @@ export async function getCoordinates() {
   userLongitude = coords.coords.longitude;
   return { userLatitude, userLongitude };
 }
-
-getCoordinates();

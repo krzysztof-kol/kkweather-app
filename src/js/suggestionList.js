@@ -1,15 +1,26 @@
+import { getCoordinates } from "./getCoords.js";
+import { getWeather } from "./getWeather.js";
+import { getTimeData } from "./getWeather.js";
+import { renderWeatherData } from "./getWeather.js";
+import { renderHourlyWeatherData } from "./getWeather.js";
+import { renderDailyWeatherData } from "./getWeather.js";
+
 const input = document.getElementById("h1__input");
+const suggestionListOnPage = document.getElementById("result");
+// input.addEventListener("input", getSearchData);
 
-let latitude, longitude, timezone;
+let searchSuggestionList = [];
+let suggestionData = {};
+let coordinates = {};
 
-async function getSearchData(val) {
-  let searchSuggestionList = [];
+export async function getSearchData(val) {
   let userInput = input.value;
   let encodedInput = encodeURIComponent(userInput);
   const data = await fetch(
     `https://geocoding-api.open-meteo.com/v1/search?name=${encodedInput}&count=3&language=en&format=json`
   );
   const dataJson = await data.json();
+  searchSuggestionList = [];
 
   const suggestionArray = dataJson.results;
   if (dataJson.results) {
@@ -22,6 +33,7 @@ async function getSearchData(val) {
         country: element.country,
         region: element.admin1,
       };
+
       searchSuggestionList.push(suggestion);
     });
   }
@@ -31,27 +43,55 @@ async function getSearchData(val) {
   addElementsToSuggestionList(searchSuggestionList);
 }
 
-function addElementsToSuggestionList(elements) {
+export function addElementsToSuggestionList(elements) {
   const suggestionList = document.createElement("ul");
   suggestionList.className = "suggestion-list";
   suggestionListOnPage.appendChild(suggestionList);
 
-  elements.forEach((element) => {
-    const suggestionElement = document.createElement("li");
-    suggestionElement.className = "suggestion-element";
-    suggestionList.appendChild(suggestionElement);
+  const clickPromise = new Promise((resolve) => {
+    elements.forEach((element) => {
+      const suggestionElement = document.createElement("li");
+      suggestionElement.className = "suggestion-element";
+      suggestionList.appendChild(suggestionElement);
 
-    suggestionElement.addEventListener("click", () => {
-      input.value = element.name;
-      suggestionListOnPage.innerHTML = "";
+      suggestionElement.addEventListener("click", async () => {
+        input.value = element.name;
+        suggestionListOnPage.innerHTML = "";
+
+        suggestionData.latitude = element.latitude;
+        suggestionData.longitude = element.longitude;
+        suggestionData.timezone = element.timezone;
+
+        coordinates = { ...suggestionData };
+
+        resolve(coordinates);
+      });
+
+      if (element.region) {
+        suggestionElement.textContent = `${element.name}, ${element.region}, ${element.country}`;
+      } else {
+        suggestionElement.textContent = `${element.name}, ${element.country}`;
+      }
     });
-
-    if (element.region) {
-      suggestionElement.textContent = `${element.name}, ${element.region}, ${element.country}`;
-    } else {
-      suggestionElement.textContent = `${element.name}, ${element.country}`;
-    }
   });
-}
 
-const suggestionListOnPage = document.getElementById("result");
+  clickPromise
+    .then((data) => {
+      coordinates = data;
+      console.log(coordinates);
+      return coordinates;
+    })
+    .then(async (coordinates) => {
+      console.log(coordinates);
+      const timeData = await getTimeData(coordinates);
+      console.log(timeData.hour + 1);
+      const weatherData = await getWeather(coordinates);
+      console.log(weatherData);
+      await renderWeatherData(weatherData, coordinates);
+
+      console.log(timeData);
+      await renderHourlyWeatherData(weatherData, timeData);
+      await renderDailyWeatherData(weatherData, coordinates);
+      setInterval(getTimeData, 60000);
+    });
+}

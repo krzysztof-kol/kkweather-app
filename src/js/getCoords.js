@@ -1,6 +1,6 @@
 // import { getSearchData } from "./suggestionList.js";
 
-let userLatitude, userLongitude;
+let latitude, longitude, timezone;
 
 const success = (pos) => {
   const coords = pos.coords;
@@ -19,7 +19,9 @@ function getLocation() {
 
 export async function getCoordinates() {
   const coords = await getLocation();
-  userLatitude = coords.coords.latitude;
-  userLongitude = coords.coords.longitude;
-  return { userLatitude, userLongitude };
+  latitude = coords.coords.latitude;
+  longitude = coords.coords.longitude;
+  timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+  let coordinates = { latitude, longitude, timezone };
+  return coordinates;
 }

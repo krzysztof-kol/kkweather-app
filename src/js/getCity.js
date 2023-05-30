@@ -5,9 +5,9 @@ let currentCity;
 // const cityDisplay = document.querySelector("#h1_input");
 
 export async function getCityData() {
-  const currentRegion = await getCoordinates();
-  const currentLatitude = currentRegion.userLatitude;
-  const currentLongitude = currentRegion.userLongitude;
+  let coordinates = await getCoordinates();
+  const currentLatitude = coordinates.latitude;
+  const currentLongitude = coordinates.longitude;
 
   const regionData = await fetch(
     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude${currentLatitude}&longitude=${currentLongitude}&localityLanguage=pl`

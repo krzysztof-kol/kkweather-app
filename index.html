@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="./src/css/style.css" />
     <title>kkweather</title>
-    <script  src = "src/js/suggestionList.js" defer></script>
+    <script type = "module"  src = "src/js/suggestionList.js" defer></script>
   </head>
   <body>
     <header class="header">
@@ -25,7 +25,7 @@
       <h1 id = "h1__container">
         <span>The weather in</span>
         <form autocomplete="off">
-          <textarea id="h1__input" autofocus rows = 1 oninput="getSearchData(this.value)" placeholder = "Your location"></textarea>
+          <textarea id="h1__input" autofocus rows = 1  placeholder = "Your location"></textarea>
         </form>
         <div id="result"></div>
         <span>is sunny</span>

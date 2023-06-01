@@ -243,12 +243,13 @@ body::-ms-scrollbar-thumb {
   transition: transform 0.3s ease;
 }
 
-.btn.btn-active {
+.btn.btn-active,
+.btn.btn-hover {
   background: var(--color-highlight);
 }
 
-.btn__icon,
-.btn__icon-active {
+.btn__icon.btn__icon-active,
+.btn__icon.btn__icon-hover {
   transform: rotate(90deg);
 }
 

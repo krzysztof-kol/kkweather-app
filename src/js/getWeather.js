@@ -1,9 +1,4 @@
-// import "./getCoords.js";
-import { getCoordinates } from "./getCoords.js";
-import { passCoordinatesOnInput } from "./passCoordinatesOnInput.js";
-
 const input = document.getElementById("h1__input");
-// import { getSearchData } from "./suggestionList.js";
 
 const currentTempOnPage = document.getElementById("current-temp");
 const currentTempHighOnPage = document.getElementById("current-high-temp");
@@ -15,7 +10,6 @@ const currentPrecipOnPage = document.getElementById("current-precip");
 
 export async function getTimeData(coordinates) {
   const locationData = coordinates;
-  // console.log(coordinates.latitude);
   const latitude = locationData.latitude;
   const longitude = locationData.longitude;
 
@@ -23,7 +17,6 @@ export async function getTimeData(coordinates) {
     `https://api-bdc.net/data/timezone-by-location?latitude=${latitude}&longitude=${longitude}&key=bdc_50aaf13f645647f1ae8c1a4eaade70f9`
   );
   const currentTimeOnLocation = await currentTimeOnLocationData.json();
-  // console.log(currentTimeOnLocation);
 
   const monthNames = [
     "January",
@@ -104,10 +97,19 @@ export async function renderWeatherData(weatherData, coordinates) {
   const currentPrecip = hourlyWeather.precipitation[timeData.hour];
   const currentWeatherCode = currentWeather.weathercode;
   const currentIsDay = currentWeather.is_day;
-  const currentWeatherIcon = document.querySelector(".current-weather-icon");
-  currentWeatherIcon.innerHTML = "";
 
+  const currentWeatherIcon = document.querySelector(".current-weather-icon");
+  currentWeatherIcon.classList = "wi icon-big current-weather-icon";
   setWeatherIcon(currentWeatherIcon, currentWeatherCode, currentIsDay);
+
+  const currentWeatherDescription = document.querySelector(
+    "#current-weather__description"
+  );
+  setWeatherDescription(
+    currentWeatherDescription,
+    currentWeatherCode,
+    currentIsDay
+  );
 
   currentTempOnPage.textContent = currentTemp;
   currentWindSpeedOnPage.textContent = currentWindSpeed;
@@ -451,4 +453,103 @@ function setWeatherIcon(element, weatherCode, isDay) {
   }
 
   element.classList.add(weatherIconClass);
+}
+
+function setWeatherDescription(element, weatherCode, isDay) {
+  let weatherDescriptionContent;
+  switch (weatherCode) {
+    case 0:
+      weatherDescriptionContent = isDay ? "is sunny" : "is clear sky night";
+      break;
+    case 1:
+      weatherDescriptionContent = isDay ? "is mostly sunny" : "is mainly clear";
+      break;
+    case 2:
+      weatherDescriptionContent = "is partly cloudy";
+      break;
+    case 3:
+      weatherDescriptionContent = "is overcast";
+      break;
+    case 45:
+      weatherDescriptionContent = "is foggy";
+      break;
+    case 48:
+      weatherDescriptionContent = "is foggy with depositing rime fog";
+      break;
+    case 51:
+      weatherDescriptionContent = "is drizzling with light intesity";
+      break;
+    case 53:
+      weatherDescriptionContent = "is drizzling with moderate intesity";
+      break;
+    case 55:
+      weatherDescriptionContent = "is drizzling with heavy intesity";
+      break;
+    case 56:
+      weatherDescriptionContent = "is freezing drizzle with light intensity";
+      break;
+    case 57:
+      weatherDescriptionContent = "is freezing drizzle with heavy intensity";
+      break;
+    case 61:
+      weatherDescriptionContent = "is raining with light intesity";
+      break;
+    case 63:
+      weatherDescriptionContent = "is raining with moderate intesity";
+      break;
+    case 65:
+      weatherDescriptionContent = "is raining with heavy intesity";
+      break;
+    case 66:
+      weatherDescriptionContent = "is freezing rain with light intensity";
+      break;
+    case 67:
+      weatherDescriptionContent = "is freezing rain with heavy intensity";
+      break;
+    case 71:
+      weatherDescriptionContent = "is snow fall with light intensity";
+      break;
+    case 73:
+      weatherDescriptionContent =
+        "is experiencing snowfall with moderate intensity";
+      break;
+    case 75:
+      weatherDescriptionContent =
+        "is experiencing snowfall with heavy intensity";
+      break;
+    case 77:
+      weatherDescriptionContent = "is snowy with snow grains";
+      break;
+    case 80:
+      weatherDescriptionContent =
+        "is experiencing rain showers with light intensity";
+      break;
+    case 81:
+      weatherDescriptionContent =
+        "is experiencing rain showers with moderate intensity";
+      break;
+    case 82:
+      weatherDescriptionContent =
+        "is experiencing rain showers with violent intensity";
+      break;
+    case 85:
+      weatherDescriptionContent =
+        "is experiencing snow showers with light intensity";
+      break;
+    case 86:
+      weatherDescriptionContent =
+        "is experiencing snow showers with heavy intensity";
+      break;
+    case 95:
+      weatherDescriptionContent = "is thunderstorm";
+      break;
+    case 96:
+      weatherDescriptionContent = "is thunderstorm with light hail";
+      break;
+    case 99:
+      weatherDescriptionContent = "is thunderstorm with heavy hail";
+      break;
+  }
+
+  element.textContent = weatherDescriptionContent;
 }

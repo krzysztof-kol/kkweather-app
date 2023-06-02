@@ -1,13 +1,16 @@
-const h1Input = document.getElementById("h1__input");
+var paragraph = document.getElementById("h1__input");
+var placeholderText = "Your location";
 
-export function adjusth1InputHeight() {
-  h1Input.style.height = "auto";
-  h1Input.style.height = h1Input.scrollHeight + "px";
+export function handleInput() {
+  if (paragraph.textContent === "") {
+    paragraph.textContent = placeholderText;
+  } else if (paragraph.textContent === placeholderText) {
+    paragraph.textContent = "";
+  }
 }
 
-// export function setInitialh1InputHeight() {
-//   h1Input.style.height = "auto";
-//   h1Input.style.height = h1Input.scrollHeight + "px";
-// }
-
-h1Input.addEventListener("input", adjusth1InputHeight);
+export function handleFocus() {
+  if (paragraph.textContent === placeholderText) {
+    paragraph.textContent = "";
+  }
+}

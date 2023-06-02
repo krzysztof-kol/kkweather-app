@@ -112,10 +112,10 @@ let suggestionData = {};
 let coordinates = {};
 
 export async function getSearchData(val) {
-  let userInput = input.value;
-  let encodedInput = encodeURIComponent(userInput);
+  let userInput = encodeURIComponent(input.textContent);
+
   const data = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/search?name=${encodedInput}&count=3&language=en&format=json`
+    `https://geocoding-api.open-meteo.com/v1/search?name=${userInput}&count=3&language=en&format=json`
   );
   const dataJson = await data.json();
   searchSuggestionList = [];
@@ -152,7 +152,7 @@ export function addElementsToSuggestionList(elements) {
     suggestionList.appendChild(suggestionElement);
 
     suggestionElement.addEventListener("click", async () => {
-      input.value = element.name;
+      input.textContent = element.name;
       suggestionListOnPage.innerHTML = "";
 
       suggestionData.latitude = element.latitude;

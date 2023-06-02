@@ -9,11 +9,9 @@ hourlyForecastButton.addEventListener("click", () => {
   isClicked++;
 
   if (isClicked % 2 === 0) {
-    // Drugie kliknięcie - przywróć pierwotny stan
     buttonHourlyIcon.classList = "btn__icon";
     hourlyForecastButton.classList = "btn";
   } else {
-    // Pierwsze kliknięcie - zmień klasy na aktywne
     buttonHourlyIcon.classList = "btn__icon btn__icon-active";
     hourlyForecastButton.classList = "btn btn-active";
   }
@@ -28,13 +26,6 @@ hourlyForecastButton.addEventListener("mouseout", () => {
   buttonHourlyIcon.classList.remove("btn__icon-hover");
   hourlyForecastButton.classList.remove("btn-hover");
 });
-
-// hourlyForecastButton.addEventListener("touchstart",
-// });
-
-// export function toggleButton () {
-//   if(hourlyForecastButton.classList === "")
-// }
 
 export function toggleHourlyForecast() {
   hourlySection.classList.toggle("active");

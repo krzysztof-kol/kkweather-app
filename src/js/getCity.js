@@ -15,7 +15,7 @@ export async function getCityData() {
 
   const regionDataJson = await regionData.json();
   currentCity = regionDataJson.city;
-  document.querySelector("#h1__input").value = currentCity;
+  document.querySelector("#h1__input").textContent = currentCity;
 }
 
 // getCityData();

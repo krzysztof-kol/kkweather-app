@@ -82,17 +82,15 @@ h1 {
   border: none;
   resize: none;
   overflow: hidden;
-  font-family: inherit;
-  font-size: inherit;
   width: 100%;
-  height: auto;
-  min-height: 1em; /* Dodaj tę linię */
+  min-height: 1rem;
   color: var(--color-highlight);
   background: none;
   outline: none;
   line-height: 1.2;
   align-content: center;
-  display: inline;
+  box-sizing: border-box;
+  height: auto;
 }
 
 #h1__container {

@@ -7,6 +7,8 @@ import { renderDailyWeatherData } from "./getWeather.js";
 import { getCityData } from "./getCity.js";
 import "./toggles.js";
 import { getSearchData } from "./suggestionList.js";
+import { handleInput } from "./adjustHeights.js";
+import { handleFocus } from "./adjustHeights.js";
 
 const input = document.getElementById("h1__input");
 input.addEventListener("input", getSearchData);

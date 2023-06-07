@@ -1,555 +1,554 @@
-const input = document.getElementById("h1__input");
+import { getCoordinates } from "./getCoords.js";
+import { getTimeData } from "./getTimeData.js";
+import { setWeatherIcon } from "./getWeatherIconAndDescription.js";
+import { setWeatherDescription } from "./getWeatherIconAndDescription.js";
+import { getCityData } from "./getCity.js";
+import "./toggles.js";
 
-const currentTempOnPage = document.getElementById("current-temp");
-const currentTempHighOnPage = document.getElementById("current-high-temp");
-const currentTempLowOnPage = document.getElementById("current-low-temp");
-const currentTempFLHighOnPage = document.getElementById("current-fl-high-temp");
-const currentTempFLLowOnPage = document.getElementById("current-fl-low-temp");
-const currentWindSpeedOnPage = document.getElementById("current-windspeed");
-const currentPrecipOnPage = document.getElementById("current-precip");
+// łączenie się z API
 
-export async function getTimeData(coordinates) {
-  const locationData = coordinates;
-  const latitude = locationData.latitude;
-  const longitude = locationData.longitude;
-
-  const currentTimeOnLocationData = await fetch(
-    `https://api-bdc.net/data/timezone-by-location?latitude=${latitude}&longitude=${longitude}&key=bdc_50aaf13f645647f1ae8c1a4eaade70f9`
-  );
-  const currentTimeOnLocation = await currentTimeOnLocationData.json();
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const weekNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  const currentDate = new Date(currentTimeOnLocation.localTime);
-  const currentDay = currentDate.getDate();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = monthNames[currentDate.getMonth()];
-  const currentWeekDay = weekNames[currentDate.getDay()];
-  let currentHour = currentDate.getHours();
-  let currentMinute = currentDate.getMinutes();
-  let hour = currentDate.getHours();
-  let dayWeek = currentDate.getDay();
-
-  if (currentMinute < 10) currentMinute = "0" + currentMinute;
-  if (currentHour < 10) currentHour = "0" + currentHour;
-
-  const currentTime = `${currentHour}:${currentMinute}`;
-  const currentDateDisplay = `${currentWeekDay} ${currentDay} ${currentMonth} ${currentYear}`;
-
-  document.getElementById("current-time").textContent = currentTime;
-  document.getElementById("current-date").textContent = currentDateDisplay;
-
-  return { weekNames, currentWeekDay, dayWeek, hour, currentMinute };
-}
-
-export async function getWeather(coordinates) {
+export const weatherData = async (coordinates) => {
   let latitude = coordinates.latitude;
   let longitude = coordinates.longitude;
   let timezone = coordinates.timezone;
-  console.log(timezone);
 
-  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&current_weather=true&timezone=${timezone}`;
+  const weatherDataRaw = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&current_weather=true&timezone=${timezone}`
+  );
+  const weatherData = await weatherDataRaw.json();
 
-  const weather = await fetch(apiUrl);
-  const weatherJson = await weather.json();
-  // console.log(weatherJson);
-  return weatherJson;
-}
+  //destrukturyzacja
+  const { current_weather: currentWeatherData, hourly: hourlyWeatherData, daily: dailyWeatherData } = weatherData;
 
-export async function renderWeatherData(weatherData, coordinates) {
-  const timeData = await getTimeData(coordinates);
+  return { currentWeatherData, hourlyWeatherData, dailyWeatherData };
+};
+
+//CURRENT SECTION---------------------------------------------------------------------------------------------------
+//stworzenie obiektu, zawierającego wszystkie dane currentWeather
+
+export const currentWeatherParameters = (weatherData, timeData) => {
+  const currentWeatherData = weatherData.currentWeatherData;
+  const dailyWeatherData = weatherData.dailyWeatherData;
+  const hourlyWeatherData = weatherData.hourlyWeatherData;
+
+  //dane z current_weather
 
   const {
-    current_weather: currentWeather,
-    daily: dailyWeather,
-    hourly: hourlyWeather,
-  } = weatherData;
-  const { temperature: currentTemp, windspeed: currentWindSpeed } =
-    currentWeather;
+    temperature: currentTemperature,
+    windspeed: currentWindSpeed,
+    weathercode: currentWeatherCode,
+    is_day: currentIsDay,
+  } = currentWeatherData;
 
-  const [currentHighTemp] = dailyWeather.temperature_2m_max;
-  const [currentLowTemp] = dailyWeather.temperature_2m_min;
-  const [currentFLHighTemp] = dailyWeather.apparent_temperature_max;
-  const [currentFLLowTemp] = dailyWeather.apparent_temperature_min;
-  const currentPrecip = hourlyWeather.precipitation[timeData.hour];
-  const currentWeatherCode = currentWeather.weathercode;
-  const currentIsDay = currentWeather.is_day;
+  //dane z dailyWeather
+
+  const {
+    temperature_2m_max: currentHighTempArray,
+    temperature_2m_min: currentLowTempArray,
+    apparent_temperature_max: currentFLHighTempArray,
+    apparent_temperature_min: currentFLLowTempArray,
+  } = dailyWeatherData;
+
+  const currentHighTemp = currentHighTempArray[0];
+  const currentLowTemp = currentLowTempArray[0];
+  const currentFLHighTemp = currentFLHighTempArray[0];
+  const currentFLLowTemp = currentFLLowTempArray[0];
+
+  //dane z hourlyWeather
+
+  const { precipitation: currentPrecipArray } = hourlyWeatherData;
+  const currentPrecip = currentPrecipArray[timeData.hour];
+
+  //aktualna pogoda
+
+  const parameters = {
+    currentTemperature,
+    currentWindSpeed,
+    currentWeatherCode,
+    currentIsDay,
+    currentHighTemp,
+    currentLowTemp,
+    currentFLHighTemp,
+    currentFLLowTemp,
+    currentPrecip,
+  };
+  return parameters;
+};
+
+//wyświetlenie danych dotyczących current weather
+
+export function renderCurrentWeatherData(weatherData) {
+  const currentTempOnPage = document.getElementById("current-temp");
+  const currentTempHighOnPage = document.getElementById("current-high-temp");
+  const currentTempLowOnPage = document.getElementById("current-low-temp");
+  const currentTempFLHighOnPage = document.getElementById("current-fl-high-temp");
+  const currentTempFLLowOnPage = document.getElementById("current-fl-low-temp");
+  const currentWindSpeedOnPage = document.getElementById("current-windspeed");
+  const currentPrecipOnPage = document.getElementById("current-precip");
 
   const currentWeatherIcon = document.querySelector(".current-weather-icon");
   currentWeatherIcon.classList = "wi icon-big current-weather-icon";
-  setWeatherIcon(currentWeatherIcon, currentWeatherCode, currentIsDay);
 
-  const currentWeatherDescription = document.querySelector(
-    "#current-weather__description"
-  );
-  setWeatherDescription(
-    currentWeatherDescription,
-    currentWeatherCode,
-    currentIsDay
-  );
+  const currentWeatherDescription = document.querySelector("#current-weather__description");
 
-  currentTempOnPage.textContent = currentTemp;
-  currentWindSpeedOnPage.textContent = currentWindSpeed;
-  currentTempHighOnPage.textContent = currentHighTemp;
-  currentTempLowOnPage.textContent = currentLowTemp;
-  currentTempFLHighOnPage.textContent = currentFLHighTemp;
-  currentTempFLLowOnPage.textContent = currentFLLowTemp;
-  currentPrecipOnPage.textContent = currentPrecip;
+  currentTempOnPage.textContent = weatherData.currentTemperature;
+  currentWindSpeedOnPage.textContent = weatherData.currentWindSpeed;
+  currentTempHighOnPage.textContent = weatherData.currentHighTemp;
+  currentTempLowOnPage.textContent = weatherData.currentLowTemp;
+  currentTempFLHighOnPage.textContent = weatherData.currentFLHighTemp;
+  currentTempFLLowOnPage.textContent = weatherData.currentFLLowTemp;
+  currentPrecipOnPage.textContent = weatherData.currentPrecip;
+
+  setWeatherIcon(currentWeatherIcon, weatherData.currentWeatherCode, weatherData.currentIsDay);
+
+  setWeatherDescription(currentWeatherDescription, weatherData.currentWeatherCode, weatherData.currentIsDay);
 }
 
-export async function renderHourlyWeatherData(weatherData, timeData) {
-  console.log(timeData);
-  console.log(weatherData);
-  const { hourly: hourlyWeather } = weatherData;
+//HOURLY SECTION---------------------------------------------------------------------------------------------------
 
-  const hourlySection = document.getElementsByClassName(
-    "hourly-forecast__section"
-  );
+//stworzenie obiektu, który będzie zawierał wszystkie dane z hourly weather
 
-  let day, hour;
-  let minute = "00";
-  let isDayArray = hourlyWeather.is_day.splice(
-    timeData.hour + 1,
-    hourlyWeather.is_day.length
-  );
-  let weatherCodeArray = hourlyWeather.weathercode.splice(
-    timeData.hour + 1,
-    hourlyWeather.weathercode.length
-  );
+export const hourlyWeatherParameters = (weatherData) => {
+  const hourlyWeatherData = weatherData.hourlyWeatherData;
 
-  hourlySection[0].innerHTML = "";
+  const {
+    time: hourlyTimeArray,
+    temperature_2m: hourlyTemperatureArray,
+    precipitation_probability: hourlyPrecipitationProbabilityArray,
+    precipitation: hourlyPrecipitationSumArray,
+    weathercode: weatherCodeArray,
+    is_day: isDayArray,
+  } = hourlyWeatherData;
 
-  hourlyWeather.temperature_2m
-    .splice(timeData.hour + 1, hourlyWeather.temperature_2m.length)
-    .forEach((temperature, index) => {
-      function getDayAndHour() {
-        hour = (timeData.hour + 1 + index) % 24;
-        let actualDay =
-          (timeData.dayWeek + Math.floor((timeData.hour + index + 1) / 24)) % 7;
-        day = timeData.weekNames[actualDay];
-        return [hour, day];
-      }
+  return {
+    hourlyTimeArray,
+    hourlyTemperatureArray,
+    hourlyPrecipitationProbabilityArray,
+    hourlyPrecipitationSumArray,
+    weatherCodeArray,
+    isDayArray,
+  };
+};
 
-      [hour, day] = getDayAndHour();
-      day = day.slice(0, 3);
-      let weatherCode = weatherCodeArray[index];
-      let isDay = isDayArray[index];
-      // console.log(isDayArray);
-      // console.log(hour);
+// stworzenie tablic z parametrami czasowymi dla sekcji hourly
 
-      // getWeatherIcon();
+export const hourlyTimeParametersArrays = (hourlyWeatherParameters) => {
+  const hourlyTime = hourlyWeatherParameters.hourlyTimeArray;
+  let hourlyYearArray = [],
+    hourlyMonthArray = [],
+    hourlyDayArray = [],
+    hourlyHourArray = [],
+    hourlyMinuteArray = [];
 
-      const hourlyForecastElement = document.createElement("div");
-      hourlyForecastElement.className = "hourly-forecast__element";
+  //pętla dla każdego z elementów tablicy time
+  //2023-06-05T01:00
 
-      const hourlyDetailDay = document.createElement("div");
-      hourlyDetailDay.className = "hourly-detail hourly-detail-day";
+  hourlyTime.forEach((element) => {
+    hourlyYearArray.push(Number(element.slice(0, 4)));
+    hourlyMonthArray.push(Number(element.slice(5, 7)));
+    hourlyDayArray.push(Number(element.slice(8, 10)));
+    hourlyHourArray.push(Number(element.slice(11, 13)));
+    hourlyMinuteArray.push(Number(element.slice(14, 16)));
+  });
 
-      const hourlyDay = document.createElement("div");
-      hourlyDay.className = "hourly-day text-normal text-bold";
-      hourlyDay.textContent = day;
+  return {
+    hourlyYearArray,
+    hourlyMonthArray,
+    hourlyDayArray,
+    hourlyHourArray,
+    hourlyMinuteArray,
+  };
+};
 
-      const hourlyDetailTime = document.createElement("div");
-      hourlyDetailTime.className = "hourly-detail hourly-detail-time";
+//przetworzenie danych czasowych z tablicy na odpowiednie dane (nazwa dnia itp)
 
-      const hourlyTimeIcon = document.createElement("div");
-      hourlyTimeIcon.className = "wi hourly-icon icon-small";
-      setWeatherIcon(hourlyTimeIcon, weatherCode, isDay);
+export const hourlyTimeParametersDisplay = (hourlyTimeParametersArrays, timeData) => {
+  let {
+    hourlyYearArray: hourlyYearDisplay,
+    hourlyMonthArray: hourlyMonthDisplay,
+    hourlyDayArray: hourlyDayDisplay,
+    hourlyHourArray: hourlyHourDisplay,
+    hourlyMinuteArray: hourlyMinuteDisplay,
+  } = hourlyTimeParametersArrays;
 
-      const hourlyTime = document.createElement("div");
-      hourlyTime.className = "hourly-time text-normal";
-      hourlyTime.textContent = `${hour}:${minute}`;
+  for (let i = timeData.hour; i < hourlyYearDisplay.length; i++) {
+    if (hourlyMonthDisplay[i] < 10) hourlyMonthDisplay[i] = "0" + hourlyMonthDisplay[i];
+    if (hourlyHourDisplay[i] < 10) hourlyHourDisplay[i] = "0" + hourlyHourDisplay[i];
+    if (hourlyMinuteDisplay[i] < 10) hourlyMinuteDisplay[i] = "0" + hourlyMinuteDisplay[i];
 
-      const hourlyDetailTemp = document.createElement("div");
-      hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
+    let actualDay = (timeData.dayWeek + Math.floor(i / 24)) % 7;
+    hourlyDayDisplay[i] = timeData.weekNames[actualDay];
+  }
 
-      const hourlyTempIcon = document.createElement("div");
-      hourlyTempIcon.className =
-        "wi hourly-icon icon-small wi-thermometer-exterior";
+  return {
+    hourlyYearDisplay,
+    hourlyMonthDisplay,
+    hourlyDayDisplay,
+    hourlyHourDisplay,
+    hourlyMinuteDisplay,
+  };
+};
 
-      const hourlyTemp = document.createElement("div");
-      hourlyTemp.className = "hourly-temp text-normal temperature__small";
-      hourlyTemp.textContent = temperature;
+//tworze obiekty, zawierające wszystkie dane pogodowe dla hourlySection
 
-      const hourlyDetailPrecipProb = document.createElement("div");
-      hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
+export const createHourlyObject = (hourlyWeatherParameters, hourlyTimeParametersDisplay, timeData) => {
+  const {
+    hourlyTimeArray,
+    hourlyTemperatureArray,
+    hourlyPrecipitationProbabilityArray,
+    hourlyPrecipitationSumArray,
+    weatherCodeArray,
+    isDayArray,
+  } = hourlyWeatherParameters;
 
-      const hourlyPrecipProbIcon = document.createElement("div");
-      hourlyPrecipProbIcon.className = "wi hourly-icon icon-small wi-humidity";
+  const { hourlyYearDisplay, hourlyMonthDisplay, hourlyDayDisplay, hourlyHourDisplay, hourlyMinuteDisplay } = hourlyTimeParametersDisplay;
 
-      const hourlyPrecipProb = document.createElement("div");
-      hourlyPrecipProb.className =
-        "hourly-precip-probability text-normal temperature__small";
-      hourlyPrecipProb.textContent =
-        hourlyWeather.precipitation_probability[timeData.hour + 1 + index];
+  let hourlyWeatherData = [];
 
-      const hourlyDetailPrecipSum = document.createElement("div");
-      hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
+  for (let i = timeData.hour; i < hourlyTimeArray.length; i++) {
+    let data = {
+      day: hourlyDayDisplay[i],
+      hour: `${hourlyHourDisplay[i]}:${hourlyMinuteDisplay[i]}`,
+      temperature: hourlyTemperatureArray[i] + "°C",
+      precipProb: hourlyPrecipitationProbabilityArray[i] + "%",
+      precip: hourlyPrecipitationSumArray[i] + "mm",
+      weathercode: weatherCodeArray[i],
+      isDay: isDayArray[i],
+    };
 
-      const hourlyPrecipSumIcon = document.createElement("div");
-      hourlyPrecipSumIcon.className = "wi hourly-icon icon-small wi-rain";
+    hourlyWeatherData.push(data);
+  }
+  return hourlyWeatherData;
+};
 
-      const hourlyPrecipSum = document.createElement("div");
-      hourlyPrecipSum.className =
-        "hourly-precip-sum text-normal temperature__small";
-      hourlyPrecipSum.textContent =
-        hourlyWeather.precipitation[timeData.hour + 1 + index];
+//stworzenie obiektów zawierających dane o klasie elementów itp
 
-      // const weatherIcon = hourlyTimeIcon;
+export const createElementParameters = () => {
+  const elementParameters = [
+    {
+      class: "hourly-detail hourly-detail-day",
+      elements: [{ class: "hourly-day text-normal text-bold", property: "day" }],
+    },
+    {
+      class: "hourly-detail hourly-detail-time",
+      elements: [
+        { class: "wi hourly-icon icon-small", property: "weatherCode" },
+        { class: "hourly-time text-normal", property: "time" },
+      ],
+    },
+    {
+      class: "hourly-detail hourly-detail-temp",
+      elements: [
+        { class: "wi hourly-icon icon-small wi-thermometer" },
+        {
+          class: "hourly-temp text-normal temperature__small",
+          property: "temperature",
+        },
+      ],
+    },
+    {
+      class: "hourly-detail hourly-detail-prob",
+      elements: [
+        { class: "wi hourly-icon icon-small wi-humidity" },
+        {
+          class: "hourly-precip-probability text-normal temperature__small",
+          property: "precipProb",
+        },
+      ],
+    },
+    {
+      class: "hourly-detail hourly-detail-sum",
+      elements: [
+        { class: "wi hourly-icon icon-small wi-rain" },
+        {
+          class: "hourly-precip-sum text-normal temperature__small",
+          property: "precipSum",
+        },
+      ],
+    },
+  ];
 
-      hourlySection[0].appendChild(hourlyForecastElement);
-      hourlyForecastElement.appendChild(hourlyDetailDay);
-      hourlyDetailDay.appendChild(hourlyDay);
+  return elementParameters;
+};
 
-      hourlyForecastElement.appendChild(hourlyDetailTime);
-      hourlyDetailTime.appendChild(hourlyTimeIcon);
-      hourlyDetailTime.appendChild(hourlyTime);
+//appendowanie elementów do sekcji hourly
 
-      hourlyForecastElement.appendChild(hourlyDetailTemp);
-      hourlyDetailTemp.appendChild(hourlyTempIcon);
-      hourlyDetailTemp.appendChild(hourlyTemp);
+export const createHourlySection = (createHourlyObject, createElementParameters) => {
+  const hourlyWeatherData = createHourlyObject;
+  const elementParameters = createElementParameters;
+  const hourlySection = document.querySelector(".hourly-forecast__section");
+  hourlySection.innerHTML = "";
 
-      hourlyForecastElement.appendChild(hourlyDetailPrecipProb);
-      hourlyDetailPrecipProb.appendChild(hourlyPrecipProbIcon);
-      hourlyDetailPrecipProb.appendChild(hourlyPrecipProb);
+  hourlyWeatherData.forEach((data) => {
+    const hourlyForecastElement = document.createElement("div");
+    hourlyForecastElement.classList = "hourly-forecast__element";
 
-      hourlyForecastElement.appendChild(hourlyDetailPrecipSum);
-      hourlyDetailPrecipSum.appendChild(hourlyPrecipSumIcon);
-      hourlyDetailPrecipSum.appendChild(hourlyPrecipSum);
+    elementParameters.forEach((param) => {
+      const detailElement = document.createElement("div");
+      detailElement.classList = param.class;
+
+      param.elements.forEach((element) => {
+        const par = document.createElement("div");
+        par.className = element.class;
+
+        if (element.property === "day") par.textContent = data.day.slice(0, 3);
+        else if (element.property === "time") par.textContent = data.hour;
+        else if (element.property === "weatherCode") setWeatherIcon(par, data.weathercode, data.isDay);
+        else if (element.property === "temperature") par.textContent = data.temperature;
+        else if (element.property === "precipProb") par.textContent = data.precipProb;
+        else if (element.property === "precipSum") par.textContent = data.precip;
+
+        detailElement.appendChild(par);
+      });
+      hourlyForecastElement.appendChild(detailElement);
     });
-}
+    hourlySection.appendChild(hourlyForecastElement);
+  });
+};
 
-export async function renderDailyWeatherData(weatherData, coordinates) {
-  const timeData = await getTimeData(coordinates);
-  const { daily: dailyWeather } = weatherData;
+//DAILY SECTION---------------------------------------------------------------------------------------------------
 
-  console.log(dailyWeather);
+//stworzenie obiektu zawierającego wszystkie dane daily
 
-  const dailySection = document.getElementById("daily-forecast");
-  const DFContainer = document.getElementById("DF__container");
+export const dailyWeatherData = (weatherData) => {
+  const dailyWeatherData = weatherData.dailyWeatherData;
+
+  const {
+    time: dailyTimeArray,
+    weathercode: dailyWeathercodeArray,
+    temperature_2m_max: dailyTemperatureMaxArray,
+    temperature_2m_min: dailyTemperatureMinArray,
+    apparent_temperature_max: dailyTemperatureFLMaxArray,
+    apparent_temperature_min: dailyTemperatureFLMinArray,
+    sunrise: dailySunriseArray,
+    sunset: dailySunsetArray,
+    precipitation_sum: dailyPrecipSumArray,
+    precipitation_probability_max: dailyPrecipProb,
+  } = dailyWeatherData;
+
+  const dailyWeatherDataArrays = {
+    dailyTimeArray,
+    dailyWeathercodeArray,
+    dailyTemperatureMaxArray,
+    dailyTemperatureMinArray,
+    dailyTemperatureFLMaxArray,
+    dailyTemperatureFLMinArray,
+    dailySunriseArray,
+    dailySunsetArray,
+    dailyPrecipSumArray,
+    dailyPrecipProb,
+  };
+
+  return dailyWeatherDataArrays;
+};
+
+//przerobienie danych do wyświetlania na stronie
+
+export const dailyWeatherDisplay = (dailyWeatherData, timeData) => {
+  const {
+    dailyTimeArray: dailyTimeArray,
+    dailyWeathercodeArray: dailyWeathercodeArray,
+    dailyTemperatureMaxArray: dailyTemperatureMaxArray,
+    dailyTemperatureMinArray: dailyTemperatureMinArray,
+    dailyTemperatureFLMaxArray: dailyTemperatureFLMaxArray,
+    dailyTemperatureFLMinArray: dailyTemperatureFLMinArray,
+    dailySunriseArray: dailySunriseArray,
+    dailySunsetArray: dailySunsetArray,
+    dailyPrecipSumArray: dailyPrecipSumArray,
+    dailyPrecipProb: dailyPrecipProb,
+  } = dailyWeatherData;
+
+  //stworzenie tablicy nazw dni
+
+  const dailyNamesArray = [];
+  const dailyDatesArray = [];
+  const dailySunriseHourArray = [];
+  const dailySunsetHourArray = [];
+
+  dailyTimeArray.forEach((element, index) => {
+    element = timeData.weekNames[(timeData.dayWeek + index) % 7].slice(0, 3);
+    dailyNamesArray.push(element);
+  });
+
+  //przerobienie daty
+
+  dailyTimeArray.forEach((element) => {
+    element = `${element.slice(8, 10)}.${element.slice(5, 7)}.${element.slice(0, 4)}`;
+    dailyDatesArray.push(element);
+  });
+
+  //przerobienie wschodu i zachodu słońca
+
+  dailySunriseArray.forEach((element) => {
+    element = `${element.slice(11, element.length)}`;
+    dailySunriseHourArray.push(element);
+  });
+
+  dailySunsetArray.forEach((element) => {
+    element = element.slice(11, element.length);
+    dailySunsetHourArray.push(element);
+  });
+
+  const dailyDataDisplay = {
+    dailyWeathercodeArray,
+    dailyTemperatureMaxArray,
+    dailyTemperatureMinArray,
+    dailyTemperatureFLMaxArray,
+    dailyTemperatureFLMinArray,
+    dailyPrecipSumArray,
+    dailyPrecipProb,
+    dailyNamesArray,
+    dailyDatesArray,
+    dailySunriseHourArray,
+    dailySunsetHourArray,
+  };
+
+  return dailyDataDisplay;
+};
+
+//stworzenie obiektu, zawierającego całe info dailyData
+
+export const createDailyObject = (dailyDataDisplay) => {
+  const {
+    dailyWeathercodeArray,
+    dailyTemperatureMaxArray,
+    dailyTemperatureMinArray,
+    dailyTemperatureFLMaxArray,
+    dailyTemperatureFLMinArray,
+    dailyPrecipSumArray,
+    dailyPrecipProb,
+    dailyNamesArray,
+    dailyDatesArray,
+    dailySunriseHourArray,
+    dailySunsetHourArray,
+  } = dailyDataDisplay;
+
+  let dailyWeatherData = [];
+
+  for (let i = 0; i < dailyWeathercodeArray.length; i++) {
+    let data = {
+      day: dailyNamesArray[i],
+      date: dailyDatesArray[i],
+      tempMax: dailyTemperatureMaxArray[i],
+      tempMin: dailyTemperatureMinArray[i],
+      tempFLMax: dailyTemperatureFLMaxArray[i],
+      tempFLMin: dailyTemperatureFLMinArray[i],
+      precipProb: dailyPrecipProb[i],
+      precipSum: dailyPrecipSumArray[i],
+      sunrise: dailySunriseHourArray[i],
+      sunset: dailySunsetHourArray[i],
+      weathercode: dailyWeathercodeArray[i],
+    };
+
+    dailyWeatherData.push(data);
+  }
+
+  return dailyWeatherData;
+};
+
+//stworzenie obiektu z z klasami i właściwościami, należącymi do jednego elementu DF Element
+
+export const createDailyWeatherParams = () => {
+  const dailyWeatherElementParams = [
+    {
+      class: "df__data-container df__data-container-main",
+      elements: [
+        {
+          class: "df__data",
+          elements: [
+            {
+              class: "icon-medium wi df__icon-main",
+              property: "weathercode",
+            },
+          ],
+        },
+        {
+          class: "df__data df__data-main",
+          elements: [
+            { class: "text-bold df__text df__day", property: "day" },
+            { class: "df__text df__date", property: "date" },
+          ],
+        },
+      ],
+    },
+    {
+      class: "df__data-container df__data-container-data",
+      elements: [
+        {
+          class: "df__data",
+          elements: [{ class: "df__icon icon-small wi wi-thermometer" }, { class: "df__text daily-temp", property: "tempMax" }],
+        },
+        {
+          class: "df__data",
+          elements: [{ class: "df__icon icon-small wi wi-thermometer-exterior" }, { class: "df__text daily-temp", property: "tempMin" }],
+        },
+        {
+          class: "df__data",
+          elements: [{ class: "df__icon icon-small wi wi-rain" }, { class: "df__text daily-precip", property: "precipSum" }],
+        },
+        {
+          class: "df__data",
+          elements: [
+            { class: "df__icon icon-small wi wi-raindrop" },
+            { class: "df__text df__precip daily-precip-prob", property: "precipProb" },
+          ],
+        },
+        {
+          class: "df__data",
+          elements: [{ class: "df__icon icon-small wi wi-sunrise" }, { class: "df__text", property: "sunrise" }],
+        },
+        {
+          class: "df__data",
+          elements: [{ class: "df__icon icon-small wi wi-sunset" }, { class: "df__text", property: "sunset" }],
+        },
+      ],
+    },
+  ];
+
+  return dailyWeatherElementParams;
+};
+
+//stworzenie elementów daily weather section
+
+export const createDailyWeatherSection = (createDailyObject, createDailyWeatherParams) => {
+  const dailyWeatherData = createDailyObject;
+  const elementParameters = createDailyWeatherParams;
+
+  const DFContainer = document.querySelector("#DF__container");
   DFContainer.innerHTML = "";
 
-  const time = dailyWeather.time;
-  const weatherCode = dailyWeather.weathercode;
-  const tempMax = dailyWeather.temperature_2m_max;
-  const tempFLMax = dailyWeather.apparent_temperature_max;
-  const tempMin = dailyWeather.temperature_2m_min;
-  const tempFLMin = dailyWeather.apparent_temperature_min;
-  const sunrise = dailyWeather.sunrise;
-  const sunset = dailyWeather.sunset;
-  const precip = dailyWeather.precipitation_sum;
-  const precipProb = dailyWeather.precipitation_probability_max;
-
-  console.log(time);
-
-  time.forEach((dailyTime, index) => {
-    let date = `${dailyTime.slice(8, 10)}.${dailyTime.slice(
-      5,
-      7
-    )}.${dailyTime.slice(0, 4)}`;
-
-    let dailyWeatherCode = Math.round(weatherCode[index]);
-    let dailyTempMax = Math.round(tempMax[index]);
-    let dailyTempFLMax = Math.round(tempFLMax[index]);
-    let dailyTempMin = Math.round(tempMin[index]);
-    let dailyTempFLMin = Math.round(tempFLMin[index]);
-    let dailySunrise = sunrise[index].slice(11, 16);
-    let dailySunset = sunset[index].slice(11, 16);
-    let dailyPrecip = Math.round(precip[index]);
-    let dailyPrecipProb = Math.round(precipProb[index]);
-    let dailyDay = timeData.weekNames[(timeData.dayWeek + index) % 7].slice(
-      0,
-      3
-    );
-
+  dailyWeatherData.forEach((data) => {
     const DFElement = document.createElement("div");
-    DFElement.className = "df__element";
+    DFElement.classList = "df__element";
 
-    const DFDataContainer1 = document.createElement("div");
-    DFDataContainer1.className = "df__data-container df__data-container-main";
-    const DFDataContainer2 = document.createElement("div");
-    DFDataContainer2.className = "df__data-container df__data-container-data";
+    elementParameters.forEach((container) => {
+      const DFDataContainer = document.createElement("div");
+      DFDataContainer.classList = container.class;
 
-    const DFData1 = document.createElement("div");
-    DFData1.className = "df__data";
-    const DFData2 = document.createElement("div");
-    DFData2.className = "df__data df__data-main";
-    const DFData3 = document.createElement("div");
-    DFData3.className = "df__data";
-    const DFData4 = document.createElement("div");
-    DFData4.className = "df__data";
-    const DFData5 = document.createElement("div");
-    DFData5.className = "df__data";
-    const DFData6 = document.createElement("div");
-    DFData6.className = "df__data";
-    const DFData7 = document.createElement("div");
-    DFData7.className = "df__data";
-    const DFData8 = document.createElement("div");
-    DFData8.className = "df__data";
+      container.elements.forEach((paramElement) => {
+        const DFData = document.createElement("div");
+        DFData.classList = paramElement.class;
 
-    const DFDividingLine = document.createElement("div");
-    DFDividingLine.className = "df_line";
+        paramElement.elements.forEach((element) => {
+          const DFDataElement = document.createElement("div");
+          DFDataElement.classList = element.class;
 
-    const DFIcon = document.createElement("div");
-    DFIcon.className = "icon-medium wi df__icon-main";
-    const DFDay = document.createElement("div");
-    DFDay.className = "text-bold df__text df__day";
-    const DFDate = document.createElement("div");
-    DFDate.className = "df__text df__date";
+          if (element.property === "day") DFDataElement.textContent = data.day;
+          else if (element.property === "weathercode") setWeatherIcon(DFDataElement, data.weathercode, 1);
+          else if (element.property === "date") DFDataElement.textContent = data.date;
+          else if (element.property === "tempMax") DFDataElement.textContent = data.tempMax;
+          else if (element.property === "tempMin") DFDataElement.textContent = data.tempMin;
+          else if (element.property === "precipProb") DFDataElement.textContent = data.precipProb;
+          else if (element.property === "precipSum") DFDataElement.textContent = data.precipSum;
+          else if (element.property === "sunrise") DFDataElement.textContent = data.sunrise;
+          else if (element.property === "sunset") DFDataElement.textContent = data.sunset;
 
-    const DFTempMaxIcon = document.createElement("div");
-    DFTempMaxIcon.className = "df__icon icon-small wi wi-thermometer";
-    const DFTempMinIcon = document.createElement("div");
-    DFTempMinIcon.className = "df__icon icon-small wi wi-thermometer-exterior";
-    const DFPrecipIcon = document.createElement("div");
-    DFPrecipIcon.className = "df__icon icon-small wi wi-rain";
-    const DFPrecipProbIcon = document.createElement("div");
-    DFPrecipProbIcon.className = "df__icon icon-small wi wi-raindrop";
-    const DFSunriseIcon = document.createElement("div");
-    DFSunriseIcon.className = "df__icon icon-small wi wi-sunrise";
-    const DFSunsetIcon = document.createElement("div");
-    DFSunsetIcon.className = "df__icon icon-small wi wi-sunset";
-
-    const DFTempMax = document.createElement("div");
-    DFTempMax.className = "df__text daily-temp";
-    const DFTempMin = document.createElement("div");
-    DFTempMin.className = "df__text daily-temp";
-    const DFTempFLMax = document.createElement("div");
-    DFTempFLMax.className = "df__text daily-temp";
-    const DFTempFLMin = document.createElement("div");
-    DFTempFLMin.className = "df__text daily-temp";
-    const DFPrecip = document.createElement("div");
-    DFPrecip.className = "df__text daily-precip";
-    const DFPrecipProb = document.createElement("div");
-    DFPrecipProb.className = "df__text df__precip daily-precip-prob";
-    const DFSunrise = document.createElement("div");
-    DFSunrise.className = "df__text";
-    const DFSunset = document.createElement("div");
-    DFSunset.className = "df__text";
-
+          DFData.appendChild(DFDataElement);
+        });
+        DFDataContainer.appendChild(DFData);
+      });
+      DFElement.appendChild(DFDataContainer);
+    });
     DFContainer.appendChild(DFElement);
-
-    DFElement.appendChild(DFDataContainer1);
-    DFElement.appendChild(DFDataContainer2);
-
-    DFDataContainer1.appendChild(DFData1);
-    DFDataContainer1.appendChild(DFData2);
-    DFDataContainer2.appendChild(DFData3);
-    DFDataContainer2.appendChild(DFData4);
-    DFDataContainer2.appendChild(DFData5);
-    DFDataContainer2.appendChild(DFData6);
-    DFDataContainer2.appendChild(DFData7);
-    DFDataContainer2.appendChild(DFData8);
-
-    DFData1.appendChild(DFIcon);
-    DFData2.appendChild(DFDay);
-    DFData2.appendChild(DFDate);
-    DFData3.appendChild(DFTempMaxIcon);
-    DFData3.appendChild(DFTempMax);
-    DFData4.appendChild(DFTempMinIcon);
-    DFData4.appendChild(DFTempMin);
-    DFData5.appendChild(DFPrecipIcon);
-    DFData5.appendChild(DFPrecip);
-    DFData6.appendChild(DFPrecipProbIcon);
-    DFData6.appendChild(DFPrecipProb);
-    DFData7.appendChild(DFSunriseIcon);
-    DFData7.appendChild(DFSunrise);
-    DFData8.appendChild(DFSunsetIcon);
-    DFData8.appendChild(DFSunset);
-
-    setWeatherIcon(DFIcon, dailyWeatherCode, 1);
-    DFDay.textContent = dailyDay;
-    DFDate.textContent = date;
-    DFTempMax.textContent = dailyTempMax;
-    DFTempMin.textContent = dailyTempMin;
-    DFTempFLMax.textContent = dailyTempFLMax;
-    DFTempFLMin.textContent = dailyTempFLMin;
-    DFPrecip.textContent = dailyPrecip;
-    DFPrecipProb.textContent = dailyPrecipProb;
-    DFSunrise.textContent = dailySunrise;
-    DFSunset.textContent = dailySunset;
   });
-}
-
-function setWeatherIcon(element, weatherCode, isDay) {
-  let weatherIconClass;
-  switch (weatherCode) {
-    case 0:
-      weatherIconClass = isDay ? "wi-day-sunny" : "wi-night-clear";
-      break;
-    case 1:
-    case 2:
-    case 3:
-      weatherIconClass = isDay ? "wi-day-cloudy" : "wi-night-alt-cloudy";
-      break;
-    case 45:
-    case 48:
-      weatherIconClass = isDay ? "wi-day-fog" : "wi-night-fog";
-      break;
-    case 51:
-    case 53:
-    case 55:
-    case 56:
-    case 57:
-      weatherIconClass = isDay ? "wi-day-sleet" : "wi-night-sleet";
-      break;
-    case 61:
-    case 63:
-    case 65:
-      weatherIconClass = isDay ? "wi-day-rain" : "wi-night-alt-rain";
-      break;
-    case 66:
-    case 67:
-      weatherIconClass = isDay ? "wi-day-sleet" : "wi-night-sleet";
-      break;
-    case 71:
-    case 73:
-    case 75:
-    case 77:
-      weatherIconClass = isDay ? "wi-day-snow" : "wi-night-alt-snow";
-      break;
-    case 80:
-    case 81:
-    case 82:
-      weatherIconClass = isDay ? "wi-day-showers" : "wi-night-alt-showers";
-      break;
-    case 85:
-    case 86:
-      weatherIconClass = isDay ? "wi-day-snow" : "wi-night-alt-snow";
-      break;
-    case 95:
-    case 96:
-    case 99:
-      weatherIconClass = isDay
-        ? "wi-day-thunderstorm"
-        : "wi-night-thunderstorm";
-      break;
-    default:
-      weatherIconClass = isDay ? "wi-day-sunny" : "wi-night-clear";
-      break;
-  }
-
-  element.classList.add(weatherIconClass);
-}
-
-function setWeatherDescription(element, weatherCode, isDay) {
-  let weatherDescriptionContent;
-  switch (weatherCode) {
-    case 0:
-      weatherDescriptionContent = isDay ? "is sunny" : "is clear sky night";
-      break;
-    case 1:
-      weatherDescriptionContent = isDay ? "is mostly sunny" : "is mainly clear";
-      break;
-    case 2:
-      weatherDescriptionContent = "is partly cloudy";
-      break;
-    case 3:
-      weatherDescriptionContent = "is overcast";
-      break;
-    case 45:
-      weatherDescriptionContent = "is foggy";
-      break;
-    case 48:
-      weatherDescriptionContent = "is foggy with depositing rime fog";
-      break;
-    case 51:
-      weatherDescriptionContent = "is drizzling with light intesity";
-      break;
-    case 53:
-      weatherDescriptionContent = "is drizzling with moderate intesity";
-      break;
-    case 55:
-      weatherDescriptionContent = "is drizzling with heavy intesity";
-      break;
-    case 56:
-      weatherDescriptionContent = "is freezing drizzle with light intensity";
-      break;
-    case 57:
-      weatherDescriptionContent = "is freezing drizzle with heavy intensity";
-      break;
-    case 61:
-      weatherDescriptionContent = "is raining with light intesity";
-      break;
-    case 63:
-      weatherDescriptionContent = "is raining with moderate intesity";
-      break;
-    case 65:
-      weatherDescriptionContent = "is raining with heavy intesity";
-      break;
-    case 66:
-      weatherDescriptionContent = "is freezing rain with light intensity";
-      break;
-    case 67:
-      weatherDescriptionContent = "is freezing rain with heavy intensity";
-      break;
-    case 71:
-      weatherDescriptionContent = "is snow fall with light intensity";
-      break;
-    case 73:
-      weatherDescriptionContent =
-        "is experiencing snowfall with moderate intensity";
-      break;
-    case 75:
-      weatherDescriptionContent =
-        "is experiencing snowfall with heavy intensity";
-      break;
-    case 77:
-      weatherDescriptionContent = "is snowy with snow grains";
-      break;
-    case 80:
-      weatherDescriptionContent =
-        "is experiencing rain showers with light intensity";
-      break;
-    case 81:
-      weatherDescriptionContent =
-        "is experiencing rain showers with moderate intensity";
-      break;
-    case 82:
-      weatherDescriptionContent =
-        "is experiencing rain showers with violent intensity";
-      break;
-    case 85:
-      weatherDescriptionContent =
-        "is experiencing snow showers with light intensity";
-      break;
-    case 86:
-      weatherDescriptionContent =
-        "is experiencing snow showers with heavy intensity";
-      break;
-    case 95:
-      weatherDescriptionContent = "is thunderstorm";
-      break;
-    case 96:
-      weatherDescriptionContent = "is thunderstorm with light hail";
-      break;
-    case 99:
-      weatherDescriptionContent = "is thunderstorm with heavy hail";
-      break;
-  }
-
-  element.textContent = weatherDescriptionContent;
-}
+};

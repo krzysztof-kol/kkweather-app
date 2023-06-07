@@ -1,11 +1,8 @@
-import { getCoordinates } from "./getCoords.js";
-
 let currentCity;
 
 // const cityDisplay = document.querySelector("#h1_input");
 
-export async function getCityData() {
-  let coordinates = await getCoordinates();
+export async function getCityData(coordinates) {
   const currentLatitude = coordinates.latitude;
   const currentLongitude = coordinates.longitude;
 

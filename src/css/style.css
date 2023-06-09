@@ -93,17 +93,14 @@ h1 {
 #h1__container {
   display: flex;
   flex-direction: column;
+  font-size: clamp(2.8rem, 10vw, 6rem);
+  font-family: var(--font-family-elegant);
+  margin-block: clamp(2.8rem, 5vw, 6rem);
 }
 
 h1,
 #h1__input {
   font-size: clamp(2.8rem, 10vw, 6rem);
-}
-
-#h1__container {
-  font-size: clamp(2.8rem, 10vw, 6rem);
-  font-family: var(--font-family-elegant);
-  margin-bottom: 6rem;
 }
 
 ::placeholder {

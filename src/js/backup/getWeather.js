@@ -473,13 +473,8 @@ export async function getWeather(coordinates) {
 export async function renderWeatherData(data) {
   const timeData = await getTimeData();
 
-  const {
-    current_weather: currentWeather,
-    daily: dailyWeather,
-    hourly: hourlyWeather,
-  } = data;
-  const { temperature: currentTemp, windspeed: currentWindSpeed } =
-    currentWeather;
+  const { current_weather: currentWeather, daily: dailyWeather, hourly: hourlyWeather } = data;
+  const { temperature: currentTemp, windspeed: currentWindSpeed } = currentWeather;
 
   const [currentHighTemp] = dailyWeather.temperature_2m_max;
   const [currentLowTemp] = dailyWeather.temperature_2m_min;
@@ -527,15 +522,7 @@ export async function getTimeData() {
     "December",
   ];
 
-  const weekNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   const currentDate = new Date(currentTimeOnLocation.localTime);
   const currentDay = currentDate.getDate();
@@ -564,119 +551,103 @@ export async function renderHourlyWeatherData(hourlyData) {
 
   const { hourly: hourlyWeather } = hourlyData;
 
-  const hourlySection = document.getElementsByClassName(
-    "hourly-forecast__section"
-  );
+  const hourlySection = document.getElementsByClassName("hourly-forecast__section");
 
   let day, hour;
   let minute = "00";
-  let isDayArray = hourlyWeather.is_day.splice(
-    timeData.hour + 1,
-    hourlyWeather.is_day.length
-  );
-  let weatherCodeArray = hourlyWeather.weathercode.splice(
-    timeData.hour + 1,
-    hourlyWeather.weathercode.length
-  );
+  let isDayArray = hourlyWeather.is_day.splice(timeData.hour + 1, hourlyWeather.is_day.length);
+  let weatherCodeArray = hourlyWeather.weathercode.splice(timeData.hour + 1, hourlyWeather.weathercode.length);
 
-  hourlyWeather.temperature_2m
-    .splice(timeData.hour + 1, hourlyWeather.temperature_2m.length)
-    .forEach((temperature, index) => {
-      function getDayAndHour() {
-        hour = (timeData.hour + 1 + index) % 24;
-        let actualDay =
-          (timeData.dayWeek + Math.floor((timeData.hour + index + 1) / 24)) % 7;
-        day = timeData.weekNames[actualDay];
-        return [hour, day];
-      }
+  hourlyWeather.temperature_2m.splice(timeData.hour + 1, hourlyWeather.temperature_2m.length).forEach((temperature, index) => {
+    function getDayAndHour() {
+      hour = (timeData.hour + 1 + index) % 24;
+      let actualDay = (timeData.dayWeek + Math.floor((timeData.hour + index + 1) / 24)) % 7;
+      day = timeData.weekNames[actualDay];
+      return [hour, day];
+    }
 
-      [hour, day] = getDayAndHour();
-      day = day.slice(0, 3);
-      let weatherCode = weatherCodeArray[index];
-      let isDay = isDayArray[index];
-      // console.log(isDayArray);
-      // console.log(hour);
+    [hour, day] = getDayAndHour();
+    day = day.slice(0, 3);
+    let weatherCode = weatherCodeArray[index];
+    let isDay = isDayArray[index];
+    // console.log(isDayArray);
+    // console.log(hour);
 
-      // getWeatherIcon();
+    // getWeatherIcon();
 
-      const hourlyForecastElement = document.createElement("div");
-      hourlyForecastElement.className = "hourly-forecast__element";
+    const hourlyForecastElement = document.createElement("div");
+    hourlyForecastElement.className = "hourly-forecast__element";
 
-      const hourlyDetailDay = document.createElement("div");
-      hourlyDetailDay.className = "hourly-detail hourly-detail-day";
+    const hourlyDetailDay = document.createElement("div");
+    hourlyDetailDay.className = "hourly-detail hourly-detail-day";
 
-      const hourlyDay = document.createElement("div");
-      hourlyDay.className = "hourly-day text-normal text-bold";
-      hourlyDay.textContent = day;
+    const hourlyDay = document.createElement("div");
+    hourlyDay.className = "hourly-day text-normal text-bold";
+    hourlyDay.textContent = day;
 
-      const hourlyDetailTime = document.createElement("div");
-      hourlyDetailTime.className = "hourly-detail hourly-detail-time";
+    const hourlyDetailTime = document.createElement("div");
+    hourlyDetailTime.className = "hourly-detail hourly-detail-time";
 
-      const hourlyTimeIcon = document.createElement("div");
-      hourlyTimeIcon.className = "wi hourly-icon icon-small";
-      setWeatherIcon(hourlyTimeIcon, weatherCode, isDay);
+    const hourlyTimeIcon = document.createElement("div");
+    hourlyTimeIcon.className = "wi hourly-icon icon-small";
+    setWeatherIcon(hourlyTimeIcon, weatherCode, isDay);
 
-      const hourlyTime = document.createElement("div");
-      hourlyTime.className = "hourly-time text-normal";
-      hourlyTime.textContent = `${hour}:${minute}`;
+    const hourlyTime = document.createElement("div");
+    hourlyTime.className = "hourly-time text-normal";
+    hourlyTime.textContent = `${hour}:${minute}`;
 
-      const hourlyDetailTemp = document.createElement("div");
-      hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
+    const hourlyDetailTemp = document.createElement("div");
+    hourlyDetailTemp.className = "hourly-detail hourly-detail-temp";
 
-      const hourlyTempIcon = document.createElement("div");
-      hourlyTempIcon.className =
-        "wi hourly-icon icon-small wi-thermometer-exterior";
+    const hourlyTempIcon = document.createElement("div");
+    hourlyTempIcon.className = "wi hourly-icon icon-small wi-thermometer-exterior";
 
-      const hourlyTemp = document.createElement("div");
-      hourlyTemp.className = "hourly-temp text-normal temperature__small";
-      hourlyTemp.textContent = temperature;
+    const hourlyTemp = document.createElement("div");
+    hourlyTemp.className = "hourly-temp text-normal temperature__small";
+    hourlyTemp.textContent = temperature;
 
-      const hourlyDetailPrecipProb = document.createElement("div");
-      hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
+    const hourlyDetailPrecipProb = document.createElement("div");
+    hourlyDetailPrecipProb.className = "hourly-detail hourly-detail-prob";
 
-      const hourlyPrecipProbIcon = document.createElement("div");
-      hourlyPrecipProbIcon.className = "wi hourly-icon icon-small wi-humidity";
+    const hourlyPrecipProbIcon = document.createElement("div");
+    hourlyPrecipProbIcon.className = "wi hourly-icon icon-small wi-humidity";
 
-      const hourlyPrecipProb = document.createElement("div");
-      hourlyPrecipProb.className =
-        "hourly-precip-probability text-normal temperature__small";
-      hourlyPrecipProb.textContent =
-        hourlyWeather.precipitation_probability[timeData.hour + 1 + index];
+    const hourlyPrecipProb = document.createElement("div");
+    hourlyPrecipProb.className = "hourly-precip-probability text-normal temperature__small";
+    hourlyPrecipProb.textContent = hourlyWeather.precipitation_probability[timeData.hour + 1 + index];
 
-      const hourlyDetailPrecipSum = document.createElement("div");
-      hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
+    const hourlyDetailPrecipSum = document.createElement("div");
+    hourlyDetailPrecipSum.className = "hourly-detail hourly-detail-sum";
 
-      const hourlyPrecipSumIcon = document.createElement("div");
-      hourlyPrecipSumIcon.className = "wi hourly-icon icon-small wi-rain";
+    const hourlyPrecipSumIcon = document.createElement("div");
+    hourlyPrecipSumIcon.className = "wi hourly-icon icon-small wi-rain";
 
-      const hourlyPrecipSum = document.createElement("div");
-      hourlyPrecipSum.className =
-        "hourly-precip-sum text-normal temperature__small";
-      hourlyPrecipSum.textContent =
-        hourlyWeather.precipitation[timeData.hour + 1 + index];
+    const hourlyPrecipSum = document.createElement("div");
+    hourlyPrecipSum.className = "hourly-precip-sum text-normal temperature__small";
+    hourlyPrecipSum.textContent = hourlyWeather.precipitation[timeData.hour + 1 + index];
 
-      // const weatherIcon = hourlyTimeIcon;
+    // const weatherIcon = hourlyTimeIcon;
 
-      hourlySection[0].appendChild(hourlyForecastElement);
-      hourlyForecastElement.appendChild(hourlyDetailDay);
-      hourlyDetailDay.appendChild(hourlyDay);
+    hourlySection[0].appendChild(hourlyForecastElement);
+    hourlyForecastElement.appendChild(hourlyDetailDay);
+    hourlyDetailDay.appendChild(hourlyDay);
 
-      hourlyForecastElement.appendChild(hourlyDetailTime);
-      hourlyDetailTime.appendChild(hourlyTimeIcon);
-      hourlyDetailTime.appendChild(hourlyTime);
+    hourlyForecastElement.appendChild(hourlyDetailTime);
+    hourlyDetailTime.appendChild(hourlyTimeIcon);
+    hourlyDetailTime.appendChild(hourlyTime);
 
-      hourlyForecastElement.appendChild(hourlyDetailTemp);
-      hourlyDetailTemp.appendChild(hourlyTempIcon);
-      hourlyDetailTemp.appendChild(hourlyTemp);
+    hourlyForecastElement.appendChild(hourlyDetailTemp);
+    hourlyDetailTemp.appendChild(hourlyTempIcon);
+    hourlyDetailTemp.appendChild(hourlyTemp);
 
-      hourlyForecastElement.appendChild(hourlyDetailPrecipProb);
-      hourlyDetailPrecipProb.appendChild(hourlyPrecipProbIcon);
-      hourlyDetailPrecipProb.appendChild(hourlyPrecipProb);
+    hourlyForecastElement.appendChild(hourlyDetailPrecipProb);
+    hourlyDetailPrecipProb.appendChild(hourlyPrecipProbIcon);
+    hourlyDetailPrecipProb.appendChild(hourlyPrecipProb);
 
-      hourlyForecastElement.appendChild(hourlyDetailPrecipSum);
-      hourlyDetailPrecipSum.appendChild(hourlyPrecipSumIcon);
-      hourlyDetailPrecipSum.appendChild(hourlyPrecipSum);
-    });
+    hourlyForecastElement.appendChild(hourlyDetailPrecipSum);
+    hourlyDetailPrecipSum.appendChild(hourlyPrecipSumIcon);
+    hourlyDetailPrecipSum.appendChild(hourlyPrecipSum);
+  });
 }
 
 function setWeatherIcon(element, weatherCode, isDay) {
@@ -728,9 +699,7 @@ function setWeatherIcon(element, weatherCode, isDay) {
     case 95:
     case 96:
     case 99:
-      weatherIconClass = isDay
-        ? "wi-day-thunderstorm"
-        : "wi-night-thunderstorm";
+      weatherIconClass = isDay ? "wi-day-thunderstorm" : "wi-night-thunderstorm";
       break;
     default:
       weatherIconClass = isDay ? "wi-day-sunny" : "wi-night-clear";
@@ -763,10 +732,7 @@ export async function renderDailyWeatherData(dailyData) {
   console.log(time);
 
   time.forEach((dailyTime, index) => {
-    let date = `${dailyTime.slice(8, 10)}.${dailyTime.slice(
-      5,
-      7
-    )}.${dailyTime.slice(0, 4)}`;
+    let date = `${dailyTime.slice(8, 10)}.${dailyTime.slice(5, 7)}.${dailyTime.slice(0, 4)}`;
 
     let dailyWeatherCode = Math.round(weatherCode[index]);
     let dailyTempMax = Math.round(tempMax[index]);
@@ -777,10 +743,7 @@ export async function renderDailyWeatherData(dailyData) {
     let dailySunset = sunset[index].slice(11, 16);
     let dailyPrecip = Math.round(precip[index]);
     let dailyPrecipProb = Math.round(precipProb[index]);
-    let dailyDay = timeData.weekNames[(timeData.dayWeek + index) % 7].slice(
-      0,
-      3
-    );
+    let dailyDay = timeData.weekNames[(timeData.dayWeek + index) % 7].slice(0, 3);
 
     const DFElement = document.createElement("div");
     DFElement.className = "df__element";

@@ -18,13 +18,10 @@
   font-family: "weathericons";
   src: url("/src/fonts/weathericons-regular-webfont.eot");
 
-  src: url("../font/weathericons-regular-webfont.eot?#iefix")
-      format("embedded-opentype"),
-    url("/src/fonts/weathericons-regular-webfont.woff2") format("woff2"),
-    url("/src/fonts/weathericons-regular-webfont.woff") format("woff"),
+  src: url("../font/weathericons-regular-webfont.eot?#iefix") format("embedded-opentype"),
+    url("/src/fonts/weathericons-regular-webfont.woff2") format("woff2"), url("/src/fonts/weathericons-regular-webfont.woff") format("woff"),
     url("/src/fonts/weathericons-regular-webfont.ttf") format("truetype"),
-    url("/src/fonts/weathericons-regular-webfont.svg#weather_iconsregular")
-      format("svg");
+    url("/src/fonts/weathericons-regular-webfont.svg#weather_iconsregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -82,22 +79,23 @@ h1 {
   border: none;
   resize: none;
   overflow: hidden;
-  font-family: inherit;
-  font-size: inherit;
   width: 100%;
-  height: auto;
-  min-height: 1em; /* Dodaj tę linię */
+  min-height: 1rem;
   color: var(--color-highlight);
   background: none;
   outline: none;
   line-height: 1.2;
   align-content: center;
-  display: inline;
+  box-sizing: border-box;
+  height: auto;
 }
 
 #h1__container {
   display: flex;
   flex-direction: column;
+  font-size: clamp(2.8rem, 10vw, 6rem);
+  font-family: var(--font-family-elegant);
+  margin-block: clamp(2.8rem, 5vw, 6rem);
 }
 
 h1,
@@ -131,7 +129,6 @@ h2 {
   margin: 1rem 0;
 }
 
-.temperature__small::after,
 .temperature__big::after {
   font-size: inherit;
   font-family: inherit;
@@ -504,13 +501,13 @@ body::-ms-scrollbar-thumb {
   margin-left: 0;
 }
 
-.hourly-precip-probability::after {
+/* .hourly-precip-probability::after {
   content: "%";
 }
 
 .hourly-precip-sum::after {
   content: "mm";
-}
+} */
 
 /* SUGGESTION LIST */
 

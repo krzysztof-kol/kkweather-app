@@ -22,68 +22,70 @@
     </header>
     <main>
 
-      <h1 id = "h1__container">
-        <span>The weather in</span>
-        <form autocomplete="off">
-          <textarea id="h1__input" autofocus rows = 1  placeholder = "Your location"></textarea>
-        </form>
-        <div id="result"></div>
-        <span id = "current-weather__description">is sunny</span>
-      </h1>
+      <div id = "h1__container">
+        <span class = "skeleton skeleton-text-h1">The weather in</span>
+          <span class = "skeleton skeleton-text-h1" contenteditable="true" id="h1__input">Blabla</span>
+          <div  id="result"></div>
+        
+        <span class = "skeleton skeleton-text-h1" id = "current-weather__description">is sunny</span>
+        <!-- <span class="skeleton skeleton-text-h1"></span>
+        <span class="skeleton skeleton-text-h1"></span>
+        <span class="skeleton skeleton-text-h1"></span> -->
+      </div>
       <section>
         <div class="current-weather">
-          <div class = "main-info">
-              <div class="wi icon-big current-weather-icon"></div>
+          <div class = "current-weather main-info">
+              <div class=" big-icon__container"><i class=" skeleton skeleton-icon wi icon-big current-weather-icon"></i></div>
               <div class="main-info__data">
                 <div class="number-big">
-                  <div id="current-temp" class="number-big_text"></div>
+                  <div  id="current-temp" class="skeleton number-big_text"></div>
                   <div class="date">
-                    <div id = 'current-time' class="text-normal">May 6, 2023</div>
-                    <div id = 'current-date' class="text-normal">Saturday 9:37PM</div>
+                    <div id = 'current-time' class="skeleton text-normal">May 6, 2023</div>
+                    <div id = 'current-date' class="skeleton text-normal">Saturday 9:37PM</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="details">
               <div class="details__grid">
-                <div class="details__element text-normal">
-                  <div class="details__label">High</div>
-                  <div class = "text-bold">
-                    <span id ="current-high-temp" class="details__data">30</span>
+                <div class=" details__element text-normal">
+                  <div class="skeleton details__label">High</div>
+                  <div class = "skeleton text-bold">
+                    <span id ="current-high-temp" class=" details__data">30</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div  class="details__label">FL High</div>
-                  <div class = "text-bold">
+                  <div  class="skeleton details__label">FL High</div>
+                  <div class = "skeleton text-bold">
                     <span id = "current-fl-high-temp" class="details__data">27</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div class="details__label">Wind</div>
-                  <div class = "text-bold">
+                  <div class="skeleton details__label">Wind</div>
+                  <div class = "skeleton text-bold">
                     <span id = "current-windspeed" class="details__data">13</span>
                     <span class="details__unit">km/h</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div class="details__label">Low</div>
-                  <div class = "text-bold">
+                  <div class="skeleton details__label">Low</div>
+                  <div class = "skeleton text-bold">
                     <span id = "current-low-temp" class="details__data">21</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div class="details__label">FL Low</div>
-                  <div class = "text-bold">
+                  <div class="skeleton details__label">FL Low</div>
+                  <div class = "skeleton text-bold">
                     <span id = "current-fl-low-temp" class="details__data">21</span>
                     <span class="details__unit">°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal">
-                  <div class="details__label">Precip</div>
-                  <div class = "text-bold">
+                  <div class="skeleton details__label">Precip</div>
+                  <div class = "skeleton text-bold">
                     <span id = "current-precip" class="details__data">0.1</span>
                     <span class="details__unit">cm/m<sup>2</sup></span>
                   </div>
@@ -92,25 +94,24 @@
             </div>
           </div>
         </div>
-        <button class="btn">
-          <div class="btn__body">
+        <button class="btn skeleton">
+          <div class="btn__body skeleton skeleton-button-text ">
             <span class="btn__icon"></span>
-            <span class="text-normal text-bold btn__text">Hourly forecast</span>
+            <span class=" text-normal text-bold btn__text ">Hourly forecast</span>
           </div>
         </button>
       </section>
       <section class = "hourly-forecast__section snaps-inline"></section>
       <section id="daily-forecast">
-        <h2>7-days forecast</h2>
-        <div id="DF__container">
-          
-        </div>
+        <h2 class = "skeleton" >7-days forecast</h2>
+        <div id="DF__container"></div>
       </section>
     </div>
     </main>
     <!-- <script type="module" src="/src/js/index.js"></script> -->
     <!-- <script type = "module"  src="src/js/suggestionList.js"></script> -->
     <script type="module" src="src/js/index.js"></script>
+    <!-- <script type = "module" src = "src/js/index.js"></script> -->
     <!-- <script type = "module" src="/src/js/weather.js"></script> -->
     <!-- <script src="/src/js/brudnopis.js"></script> -->
   </body>

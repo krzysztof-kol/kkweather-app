@@ -131,16 +131,14 @@ h2 {
   font-weight: 600;
 }
 
+.text-medium {
+  font-size: clamp(2.4rem, 1.6vw, 5rem);
+}
+
 .temperature__big {
   font-family: var(--font-family-elegant);
   font-size: clamp(4.8rem, 8vw, 14rem);
   margin: 1rem 0;
-}
-
-.temperature__big::after {
-  font-size: inherit;
-  font-family: inherit;
-  content: "℃";
 }
 
 /* SCROLLBARS-------------------------------------------------------------------------------------------- */
@@ -293,13 +291,13 @@ body::-ms-scrollbar-thumb {
 
 .current-weather {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-  width: clamp(50%, 100%, 100%);
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10rem;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (max-width: 1080spx) {
   .current-weather {
-    width: 60%;
+    width: 30%;
   }
 }
 
@@ -340,23 +338,47 @@ body::-ms-scrollbar-thumb {
   margin: 0;
 }
 
-.number-big_text::after {
-  content: "°C";
-}
-
 /* DETAILS */
-
-@media screen and (max-width: 1110px) {
-  .details,
-  .btn {
-    margin-top: 4rem;
-  }
-}
 
 .details__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  width: 100%;
+  grid-template-columns: repeat(2, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+@media screen and (max-width: 1160px) {
+  .details__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(8rem, 1fr));
+    grid-template-rows: 3;
+    margin-block: 4rem;
+  }
+}
+@media screen and (max-width: 1160px) {
+  .current-weather {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .details__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(8rem, 1fr));
+    grid-template-rows: 2;
+    margin-block: 4rem;
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .details__grid {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .details__grid {
+    grid-template-columns: repeat(2, minmax(8rem, 1fr));
+    grid-template-rows: 3;
+  }
 }
 
 /* DAILY FORECAST */
@@ -430,20 +452,7 @@ body::-ms-scrollbar-thumb {
   margin-right: clamp(2rem, 1.2vw, 5rem);
 }
 
-.daily-temp::after {
-  content: "°C";
-  font-family: var(--font-family-normal);
-}
-
-.daily-precip::after {
-  content: "mm";
-}
-
-.daily-precip-prob::after {
-  content: "%";
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 940px) {
   .df__element {
     display: flex;
     flex-direction: column;
@@ -463,6 +472,7 @@ body::-ms-scrollbar-thumb {
     row-gap: 2rem;
     column-gap: 1rem;
     justify-content: center;
+    width: 50%;
   }
 
   .df__data {
@@ -479,7 +489,19 @@ body::-ms-scrollbar-thumb {
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 800px) {
+  .df__data-container.df__data-container-data {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 2rem;
+    column-gap: 1rem;
+    justify-content: center;
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 500px) {
   .df__data-container.df__data-container-data {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -490,14 +512,14 @@ body::-ms-scrollbar-thumb {
   }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 360px) {
   .df__data-container.df__data-container-data {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     row-gap: 2rem;
     column-gap: 1rem;
     justify-content: center;
+    width: 100%;
   }
 }
 

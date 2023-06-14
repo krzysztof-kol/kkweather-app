@@ -91,13 +91,13 @@ export function renderCurrentWeatherData(weatherData) {
 
   const currentWeatherDescription = document.querySelector("#current-weather__description");
 
-  currentTempOnPage.textContent = weatherData.currentTemperature;
-  currentWindSpeedOnPage.textContent = weatherData.currentWindSpeed;
-  currentTempHighOnPage.textContent = weatherData.currentHighTemp;
-  currentTempLowOnPage.textContent = weatherData.currentLowTemp;
-  currentTempFLHighOnPage.textContent = weatherData.currentFLHighTemp;
-  currentTempFLLowOnPage.textContent = weatherData.currentFLLowTemp;
-  currentPrecipOnPage.textContent = weatherData.currentPrecip;
+  currentTempOnPage.textContent = Math.floor(weatherData.currentTemperature) + "°C";
+  currentWindSpeedOnPage.textContent = Math.floor(weatherData.currentWindSpeed) + "km/h";
+  currentTempHighOnPage.textContent = Math.floor(weatherData.currentHighTemp) + "°C";
+  currentTempLowOnPage.textContent = Math.floor(weatherData.currentLowTemp) + "°C";
+  currentTempFLHighOnPage.textContent = Math.floor(weatherData.currentFLHighTemp) + "°C";
+  currentTempFLLowOnPage.textContent = Math.floor(weatherData.currentFLLowTemp) + "°C";
+  currentPrecipOnPage.textContent = Math.floor(weatherData.currentPrecip) + "mm";
 
   setWeatherIcon(currentWeatherIcon, weatherData.currentWeatherCode, weatherData.currentIsDay);
 
@@ -536,10 +536,10 @@ export const createDailyWeatherSection = (createDailyObject, createDailyWeatherP
           if (element.property === "day") DFDataElement.textContent = data.day;
           else if (element.property === "weathercode") setWeatherIcon(DFDataElement, data.weathercode, 1);
           else if (element.property === "date") DFDataElement.textContent = data.date;
-          else if (element.property === "tempMax") DFDataElement.textContent = Math.floor(data.tempMax);
-          else if (element.property === "tempMin") DFDataElement.textContent = Math.floor(data.tempMin);
-          else if (element.property === "precipProb") DFDataElement.textContent = Math.floor(data.precipProb);
-          else if (element.property === "precipSum") DFDataElement.textContent = Math.floor(data.precipSum);
+          else if (element.property === "tempMax") DFDataElement.textContent = Math.floor(data.tempMax) + "°C";
+          else if (element.property === "tempMin") DFDataElement.textContent = Math.floor(data.tempMin) + "°C";
+          else if (element.property === "precipProb") DFDataElement.textContent = Math.floor(data.precipProb) + "%";
+          else if (element.property === "precipSum") DFDataElement.textContent = Math.floor(data.precipSum) + "mm";
           else if (element.property === "sunrise") DFDataElement.textContent = data.sunrise;
           else if (element.property === "sunset") DFDataElement.textContent = data.sunset;
 

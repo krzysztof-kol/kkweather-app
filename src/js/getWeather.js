@@ -536,10 +536,10 @@ export const createDailyWeatherSection = (createDailyObject, createDailyWeatherP
           if (element.property === "day") DFDataElement.textContent = data.day;
           else if (element.property === "weathercode") setWeatherIcon(DFDataElement, data.weathercode, 1);
           else if (element.property === "date") DFDataElement.textContent = data.date;
-          else if (element.property === "tempMax") DFDataElement.textContent = data.tempMax;
-          else if (element.property === "tempMin") DFDataElement.textContent = data.tempMin;
-          else if (element.property === "precipProb") DFDataElement.textContent = data.precipProb;
-          else if (element.property === "precipSum") DFDataElement.textContent = data.precipSum;
+          else if (element.property === "tempMax") DFDataElement.textContent = Math.floor(data.tempMax);
+          else if (element.property === "tempMin") DFDataElement.textContent = Math.floor(data.tempMin);
+          else if (element.property === "precipProb") DFDataElement.textContent = Math.floor(data.precipProb);
+          else if (element.property === "precipSum") DFDataElement.textContent = Math.floor(data.precipSum);
           else if (element.property === "sunrise") DFDataElement.textContent = data.sunrise;
           else if (element.property === "sunset") DFDataElement.textContent = data.sunset;
 

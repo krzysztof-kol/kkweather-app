@@ -50,7 +50,7 @@ const elements = document.querySelectorAll(".skeleton");
 
 function removeSkeleton() {
   elements.forEach((element) => {
-    element.classList.remove("skeleton");
+    element.classList.remove("skeleton", "skeleton-loading-text");
   });
 }
 

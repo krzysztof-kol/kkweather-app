@@ -187,16 +187,11 @@ body::-ms-scrollbar-thumb {
 
 .icon-big {
   font-size: clamp(3rem, 20vw, 8rem);
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  text-justify: center;
-}
-
-.big-icon__container {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 2rem;
+  margin-top: 0rem;
+  margin-bottom: clamp(3rem, 1vh, 8rem);
+  display: flex;
+  align-items: center;
+  justify-content: start;
 }
 
 .current-weather-icon {
@@ -389,6 +384,7 @@ body::-ms-scrollbar-thumb {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 3rem;
 }
 
 .df__data-container.df__data-container-data {
@@ -410,6 +406,13 @@ body::-ms-scrollbar-thumb {
   align-items: center;
 }
 
+.df__icon.icon-small {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .df__icon-main {
   margin-right: 2rem;
   text-align: center;
@@ -424,7 +427,7 @@ body::-ms-scrollbar-thumb {
 .df__text {
   font-family: var(--font-family-normal);
   font-size: clamp(2rem, 1.2vw, 5rem);
-  margin-right: 4rem;
+  margin-right: clamp(2rem, 1.2vw, 5rem);
 }
 
 .daily-temp::after {
@@ -455,8 +458,8 @@ body::-ms-scrollbar-thumb {
 
   .df__data-container.df__data-container-data {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     row-gap: 2rem;
     column-gap: 1rem;
     justify-content: center;
@@ -476,18 +479,34 @@ body::-ms-scrollbar-thumb {
   }
 }
 
+@media screen and (max-width: 450px) {
+  .df__data-container.df__data-container-data {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 2rem;
+    column-gap: 1rem;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .df__data-container.df__data-container-data {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    row-gap: 2rem;
+    column-gap: 1rem;
+    justify-content: center;
+  }
+}
+
 /* HOURLY FORECAST */
 
 .hourly-forecast__section {
   max-height: 0;
   opacity: 0;
-
-  /* overflow: hidden; */
   transition: all 0.3s ease;
-  /* display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 50%;
-  gap: auto; */
   display: flex;
   overflow-x: scroll;
   overscroll-behavior-inline: contain;
@@ -550,14 +569,6 @@ body::-ms-scrollbar-thumb {
   margin-left: 0;
 }
 
-/* .hourly-precip-probability::after {
-  content: "%";
-}
-
-.hourly-precip-sum::after {
-  content: "mm";
-} */
-
 /* SUGGESTION LIST */
 
 .suggestion-list {
@@ -600,6 +611,10 @@ body::-ms-scrollbar-thumb {
   width: 80%;
 }
 
+.skeleton.skeleton-loading-text {
+  animation: skeleton-loading-text 1s infinite alternate;
+}
+
 .skeleton-icon {
   border-radius: 100%;
 }
@@ -627,9 +642,11 @@ body::-ms-scrollbar-thumb {
 @keyframes skeleton-loading-text {
   0% {
     color: hsl(0, 0%, 90%);
+    border: none;
   }
   100% {
     color: hsl(0, 0%, 75%);
+    border: none;
   }
 }
 

@@ -702,5 +702,5 @@ body::-ms-scrollbar-thumb {
   left: 0;
   text-align: center;
   font-size: clamp(1rem, 1vh, 2rem);
-  opacity: 0.1;
+  opacity: 0;
 }

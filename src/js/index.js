@@ -1,4 +1,4 @@
-import { getCoordinates } from "./getCoords.js";
+import { getCoordinates, hideAlertBar } from "./getCoords.js";
 import { getTimeData } from "./getTimeData.js";
 import {
   weatherData,
@@ -46,6 +46,7 @@ async function main() {
     const dailyElementParameters = await createDailyWeatherParams();
     const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
     removeSkeleton();
+    hideAlertBar();
   } catch (error) {
     console.log("Error:", error.message);
     return;

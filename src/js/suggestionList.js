@@ -46,11 +46,11 @@ export async function getSearchData(val) {
         region: element.admin1,
       };
 
+      hidePreloader();
       searchSuggestionList.push(suggestion);
     });
   }
 
-  console.log(searchSuggestionList);
   suggestionListOnPage.innerHTML = "";
   addElementsToSuggestionList(searchSuggestionList);
 }
@@ -64,6 +64,8 @@ export function addElementsToSuggestionList(elements) {
     const suggestionElement = document.createElement("li");
     suggestionElement.className = "suggestion-element";
     suggestionList.appendChild(suggestionElement);
+
+    selectOnArrow();
 
     suggestionElement.addEventListener("click", async () => {
       input.textContent = element.name;
@@ -106,6 +108,51 @@ function hidePreloader() {
   currentWeatherSection.style["opacity"] = "1";
   hourlyWeatherSection.style["opacity"] = "1";
   dailyWeatherSection.style["opacity"] = "1";
+}
+
+// przełączanie sugestii strzałkami
+
+function selectOnArrow() {
+  const suggestions = document.getElementsByClassName("suggestion-element");
+
+  let selectionIndex = -1;
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      selectionIndex = selectionIndex > 0 ? selectionIndex - 1 : suggestions.length - 1;
+      highlightSelectedSuggestion();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      selectionIndex = selectionIndex < suggestions.length - 1 ? selectionIndex + 1 : 0;
+      highlightSelectedSuggestion();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (selectionIndex >= 0) {
+        const selectedSuggestion = suggestions[selectionIndex];
+        const element = searchSuggestionList[selectionIndex];
+        input.textContent = element.name;
+        suggestionListOnPage.innerHTML = "";
+
+        suggestionData.latitude = element.latitude;
+        suggestionData.longitude = element.longitude;
+        suggestionData.timezone = element.timezone;
+
+        coordinates = { ...suggestionData };
+
+        showPreloader();
+        getWeatherDataForSuggestion(coordinates);
+      }
+    }
+  });
+
+  function highlightSelectedSuggestion() {
+    for (let i = 0; i < suggestions.length; i++) {
+      if (i === selectionIndex) {
+        suggestions[i].classList.add("selected");
+      } else suggestions[i].classList.remove("selected");
+    }
+  }
 }
 
 const getWeatherDataForSuggestion = async (coordinates) => {

@@ -10,7 +10,10 @@ import "./toggles.js";
 export const weatherData = async (coordinates) => {
   let latitude = coordinates.latitude;
   let longitude = coordinates.longitude;
-  let timezone = coordinates.timezone;
+  let timezone;
+
+  timezone = coordinates.timezone;
+  if (timezone === undefined) timezone = "auto";
 
   const weatherDataRaw = await fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,weathercode,surface_pressure,windspeed_10m,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_probability_max&current_weather=true&timezone=${timezone}`

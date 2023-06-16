@@ -44,7 +44,5 @@ export async function getTimeData(coordinates) {
   document.getElementById("current-time").textContent = currentTime;
   document.getElementById("current-date").textContent = currentDateDisplay;
 
-  console.log(dayWeek);
-
   return { weekNames, currentWeekDay, dayWeek, hour, currentMinute };
 }

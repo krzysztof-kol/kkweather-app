@@ -113,6 +113,10 @@ h1 {
   justify-content: left;
 }
 
+.selected {
+  color: var(--color-highlight);
+}
+
 .preloader {
   border: 5px solid var(--color-background-dark);
   border-top: 5px solid var(--color-highlight);

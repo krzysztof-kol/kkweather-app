@@ -1,27 +1,52 @@
-// import { getSearchData } from "./suggestionList.js";
+// import { showAlertBar } from "./renderingWithoutLocation.js";
+// import { alertBar } from "./renderingWithoutLocation.js";
+
+import { removeSkeleton } from "./index.js";
+import { currentWeatherSection, hourlyWeatherSection, dailyWeatherSection } from "./suggestionList.js";
+
+let alertBar = document.querySelector(".location-permission-info");
+
+export function showAlertBar() {
+  alertBar.style["opacity"] = "1";
+  removeSkeleton();
+  currentWeatherSection.style["opacity"] = "0";
+  hourlyWeatherSection.style["opacity"] = "0";
+  dailyWeatherSection.style["opacity"] = "0";
+}
+
+export const hideAlertBar = () => {
+  alertBar.style["opacity"] = "0";
+};
 
 let latitude, longitude, timezone;
 
-const success = (pos) => {
-  const coords = pos.coords;
-  console.log(coords);
-};
-
-const error = (err) => {
-  console.log(err);
-};
-
 function getLocation() {
-  return new Promise((success, error) => {
-    navigator.geolocation.getCurrentPosition(success, error);
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
 
+function handleLocationError(error, alert) {
+  if (error.code === 1) {
+    showAlertBar();
+    // console.log(error);
+  } else {
+    // Obsłuż inne błędy lokalizacji
+    console.log("Error retrieving location:", error);
+  }
+}
+
 export async function getCoordinates() {
-  const coords = await getLocation();
-  latitude = coords.coords.latitude;
-  longitude = coords.coords.longitude;
-  timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
-  let coordinates = { latitude, longitude, timezone };
-  return coordinates;
+  try {
+    const position = await getLocation();
+    const coords = position.coords;
+    latitude = coords.latitude;
+    longitude = coords.longitude;
+    timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let coordinates = { latitude, longitude, timezone };
+    return coordinates;
+  } catch (err) {
+    handleLocationError(err);
+    throw err;
+  }
 }

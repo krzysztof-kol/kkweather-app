@@ -693,10 +693,14 @@ body::-ms-scrollbar-thumb {
   }
 }
 
-/* --color-skeleton-light --color-skeleton-dark .skeleton {
-  display: none;
+.location-permission-info {
+  color: var(--color-background-light);
+  background: var(--color-highlight);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  font-size: clamp(1rem, 1vh, 2rem);
+  opacity: 0.1;
 }
-
-.skeleton {
-  display: block;
-} */

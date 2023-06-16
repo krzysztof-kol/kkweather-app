@@ -19,13 +19,20 @@ import {
 
 import { getSearchData } from "./suggestionList.js";
 import { getCityData } from "./getCity.js";
+// import { alertBar } from "./renderingWithoutLocation.js";
 
 const input = document.getElementById("h1__input");
 input.addEventListener("input", getSearchData);
 const suggestionListElement = document.querySelector(".suggestion-element");
 
 async function main() {
-  const coordinates = await getCoordinates();
+  try {
+    const coordinates = await getCoordinates();
+  } catch (error) {
+    console.log("Error:", error.message);
+    return;
+  }
+
   const timeData = await getTimeData(coordinates);
   await getCityData(coordinates);
   const currentWeatherData = await weatherData(coordinates);
@@ -48,10 +55,16 @@ async function main() {
 
 const elements = document.querySelectorAll(".skeleton");
 
-function removeSkeleton() {
+export function removeSkeleton() {
   elements.forEach((element) => {
     element.classList.remove("skeleton", "skeleton-loading-text");
   });
 }
+
+// try {
+//   await main();
+// } catch (error) {
+//   console.log("Error:", error);
+// }
 
 main();

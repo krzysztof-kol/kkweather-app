@@ -17,12 +17,16 @@ import {
   createDailyWeatherSection,
 } from "./getWeather.js";
 
-import { getCityData } from "./getCity.js";
+import { hideAlertBar } from "./renderingWithoutLocation.js";
 
 const input = document.getElementById("h1__input");
 const suggestionListOnPage = document.getElementById("result");
 input.removeEventListener("input", getSearchData);
 input.addEventListener("input", getSearchData);
+
+export const currentWeatherSection = document.querySelector("#current-weather__section");
+export const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
+export const dailyWeatherSection = document.querySelector("#daily-forecast");
 
 let searchSuggestionList = [];
 let suggestionData = {};
@@ -49,7 +53,6 @@ export async function getSearchData(val) {
         region: element.admin1,
       };
 
-      hidePreloader();
       searchSuggestionList.push(suggestion);
     });
   }
@@ -94,9 +97,6 @@ export function addElementsToSuggestionList(elements) {
 }
 
 const preloader = document.querySelector(".preloader");
-const currentWeatherSection = document.querySelector("#current-weather__section");
-const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
-const dailyWeatherSection = document.querySelector("#daily-forecast");
 
 function showPreloader() {
   preloader.style["display"] = "block";
@@ -180,4 +180,5 @@ const getWeatherDataForSuggestion = async (coordinates) => {
   const dailyElementParameters = createDailyWeatherParams();
   const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
   hidePreloader();
+  hideAlertBar();
 };

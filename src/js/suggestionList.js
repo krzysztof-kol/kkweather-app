@@ -21,6 +21,7 @@ import { getCityData } from "./getCity.js";
 
 const input = document.getElementById("h1__input");
 const suggestionListOnPage = document.getElementById("result");
+input.removeEventListener("input", getSearchData);
 input.addEventListener("input", getSearchData);
 
 let searchSuggestionList = [];
@@ -32,6 +33,8 @@ export async function getSearchData(val) {
 
   const data = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${userInput}&count=3&language=en&format=json`);
   const dataJson = await data.json();
+
+  suggestionListOnPage.innerHTML = "";
   searchSuggestionList = [];
 
   const suggestionArray = dataJson.results;
@@ -51,15 +54,17 @@ export async function getSearchData(val) {
     });
   }
 
-  suggestionListOnPage.innerHTML = "";
   addElementsToSuggestionList(searchSuggestionList);
-  selectOnArrow();
 }
 
 export function addElementsToSuggestionList(elements) {
   const suggestionList = document.createElement("ul");
   suggestionList.className = "suggestion-list";
   suggestionListOnPage.appendChild(suggestionList);
+
+  while (suggestionList.firstChild) {
+    suggestionList.firstChild.remove();
+  }
 
   elements.forEach((element) => {
     const suggestionElement = document.createElement("li");
@@ -111,50 +116,77 @@ function hidePreloader() {
 
 // przełączanie sugestii strzałkami
 
-function selectOnArrow() {
-  const suggestions = document.getElementsByClassName("suggestion-element");
+let suggestions = document.getElementsByClassName("suggestion-element");
 
-  let selectionIndex = -1;
+let selectionIndex = -1;
 
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      selectionIndex = selectionIndex > 0 ? selectionIndex - 1 : suggestions.length - 1;
-      highlightSelectedSuggestion();
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      selectionIndex = selectionIndex < suggestions.length - 1 ? selectionIndex + 1 : 0;
-      highlightSelectedSuggestion();
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (selectionIndex >= 0) {
-        const selectedSuggestion = suggestions[selectionIndex];
-        const element = searchSuggestionList[selectionIndex];
-        input.textContent = element.name;
-        suggestionListOnPage.innerHTML = "";
+input.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    selectionIndex = selectionIndex > 0 ? selectionIndex - 1 : suggestions.length - 1;
+    highlightSelectedSuggestion();
+    // suggestionSelected = true;
+  } else if (e.key === "ArrowDown") {
+    e.preventDefault();
+    selectionIndex = selectionIndex < suggestions.length - 1 ? selectionIndex + 1 : 0;
+    highlightSelectedSuggestion();
+    // suggestionSelected = true;
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    // suggestionSelected = true;
+    if (selectionIndex >= 0) {
+      const selectedSuggestion = suggestions[selectionIndex];
+      const element = searchSuggestionList[selectionIndex];
+      input.textContent = element.name;
+      suggestionListOnPage.innerHTML = "";
 
-        suggestionData.latitude = element.latitude;
-        suggestionData.longitude = element.longitude;
-        suggestionData.timezone = element.timezone;
+      suggestionData.latitude = element.latitude;
+      suggestionData.longitude = element.longitude;
+      suggestionData.timezone = element.timezone;
 
-        coordinates = { ...suggestionData };
+      coordinates = { ...suggestionData };
 
-        showPreloader();
-        getWeatherDataForSuggestion(coordinates);
-      }
+      console.log(searchSuggestionList);
+
+      showPreloader();
+      getWeatherDataEnter(coordinates);
+      selectionIndex = -1;
     }
-  });
+  }
+});
 
-  function highlightSelectedSuggestion() {
-    for (let i = 0; i < suggestions.length; i++) {
-      if (i === selectionIndex) {
-        suggestions[i].classList.add("selected");
-      } else suggestions[i].classList.remove("selected");
-    }
+function highlightSelectedSuggestion() {
+  for (let i = 0; i < suggestions.length; i++) {
+    if (i === selectionIndex) {
+      suggestions[i].classList.add("selected");
+    } else suggestions[i].classList.remove("selected");
   }
 }
 
 const getWeatherDataForSuggestion = async (coordinates) => {
+  await showPreloader();
+  const timeData = await getTimeData(coordinates);
+  console.log(timeData);
+  const currentWeatherData = await weatherData(coordinates);
+  console.log(currentWeatherData);
+  const currentWeather = currentWeatherParameters(currentWeatherData, timeData);
+  renderCurrentWeatherData(currentWeather);
+  const hourlyParameters = hourlyWeatherParameters(currentWeatherData);
+  const hourlyTimeArrays = hourlyTimeParametersArrays(hourlyParameters);
+  const hourlyParametersDisplay = hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
+  const hourlyObject = createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
+  const elementParameters = createElementParameters();
+  const hourlySection = createHourlySection(hourlyObject, elementParameters);
+
+  const dailyWeather = dailyWeatherData(currentWeatherData);
+  const dailyWeatherParameters = dailyWeatherDisplay(dailyWeather, timeData);
+  const dailyObject = createDailyObject(dailyWeatherParameters);
+  const dailyElementParameters = createDailyWeatherParams();
+  const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
+  hidePreloader();
+};
+
+const getWeatherDataEnter = async (coordinates) => {
   await showPreloader();
   const timeData = await getTimeData(coordinates);
   const currentWeatherData = await weatherData(coordinates);
@@ -174,7 +206,5 @@ const getWeatherDataForSuggestion = async (coordinates) => {
   const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
   hidePreloader();
 };
-
-console.log(currentWeatherParameters);
 
 //zapytać Łukasza o to jak było z promisem

@@ -125,15 +125,13 @@ input.addEventListener("keydown", (e) => {
     e.preventDefault();
     selectionIndex = selectionIndex > 0 ? selectionIndex - 1 : suggestions.length - 1;
     highlightSelectedSuggestion();
-    // suggestionSelected = true;
   } else if (e.key === "ArrowDown") {
     e.preventDefault();
     selectionIndex = selectionIndex < suggestions.length - 1 ? selectionIndex + 1 : 0;
     highlightSelectedSuggestion();
-    // suggestionSelected = true;
   } else if (e.key === "Enter") {
     e.preventDefault();
-    // suggestionSelected = true;
+
     if (selectionIndex >= 0) {
       const selectedSuggestion = suggestions[selectionIndex];
       const element = searchSuggestionList[selectionIndex];
@@ -149,7 +147,7 @@ input.addEventListener("keydown", (e) => {
       console.log(searchSuggestionList);
 
       showPreloader();
-      getWeatherDataEnter(coordinates);
+      getWeatherDataForSuggestion(coordinates);
       selectionIndex = -1;
     }
   }
@@ -166,29 +164,6 @@ function highlightSelectedSuggestion() {
 const getWeatherDataForSuggestion = async (coordinates) => {
   await showPreloader();
   const timeData = await getTimeData(coordinates);
-  console.log(timeData);
-  const currentWeatherData = await weatherData(coordinates);
-  console.log(currentWeatherData);
-  const currentWeather = currentWeatherParameters(currentWeatherData, timeData);
-  renderCurrentWeatherData(currentWeather);
-  const hourlyParameters = hourlyWeatherParameters(currentWeatherData);
-  const hourlyTimeArrays = hourlyTimeParametersArrays(hourlyParameters);
-  const hourlyParametersDisplay = hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
-  const hourlyObject = createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
-  const elementParameters = createElementParameters();
-  const hourlySection = createHourlySection(hourlyObject, elementParameters);
-
-  const dailyWeather = dailyWeatherData(currentWeatherData);
-  const dailyWeatherParameters = dailyWeatherDisplay(dailyWeather, timeData);
-  const dailyObject = createDailyObject(dailyWeatherParameters);
-  const dailyElementParameters = createDailyWeatherParams();
-  const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
-  hidePreloader();
-};
-
-const getWeatherDataEnter = async (coordinates) => {
-  await showPreloader();
-  const timeData = await getTimeData(coordinates);
   const currentWeatherData = await weatherData(coordinates);
   const currentWeather = currentWeatherParameters(currentWeatherData, timeData);
   renderCurrentWeatherData(currentWeather);
@@ -206,5 +181,3 @@ const getWeatherDataEnter = async (coordinates) => {
   const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
   hidePreloader();
 };
-
-//zapytać Łukasza o to jak było z promisem

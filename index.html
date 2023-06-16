@@ -24,12 +24,15 @@
 
       <div id = "h1__container">
         <span class = "skeleton skeleton-text-h1">The weather in</span>
-          <span class = "skeleton skeleton-text-h1" contenteditable="true" id="h1__input">Blabla</span>
+          <div class="search-field">
+            <span class = "search-field-input skeleton skeleton-text-h1" contenteditable="true" id="h1__input">Blabla</span>
+            <span class="preloader"></span>
+          </div>
           <div  id="result"></div>
         
         <span class = "skeleton skeleton-text-h1" id = "current-weather__description">is sunny</span>
       </div>
-      <section>
+      <section id = "current-weather__section">
         <div class="current-weather">
           <div class = "current-weather main-info">
               <div class=" big-icon__container"><i class=" skeleton skeleton-icon wi icon-big current-weather-icon"></i></div>

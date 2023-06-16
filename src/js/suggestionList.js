@@ -75,6 +75,7 @@ export function addElementsToSuggestionList(elements) {
 
       coordinates = { ...suggestionData };
 
+      showPreloader();
       getWeatherDataForSuggestion(coordinates);
     });
 
@@ -86,16 +87,29 @@ export function addElementsToSuggestionList(elements) {
   });
 }
 
-// const getWeatherDataForSuggestion = async (coordinates) => {
-//   const timeData = await getTimeData(coordinates);
-//   const weatherData = await getWeather(coordinates);
-//   await renderWeatherData(weatherData, coordinates);
-//   await renderHourlyWeatherData(weatherData, timeData);
-//   await renderDailyWeatherData(weatherData, coordinates);
-//   setInterval(getTimeData(coordinates), 60000);
-// };
+const preloader = document.querySelector(".preloader");
+const currentWeatherSection = document.querySelector("#current-weather__section");
+const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
+const dailyWeatherSection = document.querySelector("#daily-forecast");
+
+function showPreloader() {
+  preloader.style["display"] = "block";
+  input.style["width"] = "fit-content";
+  currentWeatherSection.style["opacity"] = "0.2";
+  hourlyWeatherSection.style["opacity"] = "0.2";
+  dailyWeatherSection.style["opacity"] = "0.2";
+}
+
+function hidePreloader() {
+  preloader.style["display"] = "none";
+  input.style["width"] = "100%";
+  currentWeatherSection.style["opacity"] = "1";
+  hourlyWeatherSection.style["opacity"] = "1";
+  dailyWeatherSection.style["opacity"] = "1";
+}
 
 const getWeatherDataForSuggestion = async (coordinates) => {
+  await showPreloader();
   const timeData = await getTimeData(coordinates);
   const currentWeatherData = await weatherData(coordinates);
   const currentWeather = currentWeatherParameters(currentWeatherData, timeData);
@@ -112,6 +126,7 @@ const getWeatherDataForSuggestion = async (coordinates) => {
   const dailyObject = createDailyObject(dailyWeatherParameters);
   const dailyElementParameters = createDailyWeatherParams();
   const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
+  hidePreloader();
 };
 
 //zapytać Łukasza o to jak było z promisem

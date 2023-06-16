@@ -29,10 +29,9 @@ function getLocation() {
 function handleLocationError(error, alert) {
   if (error.code === 1) {
     showAlertBar();
-    // console.log(error);
   } else {
-    // Obsłuż inne błędy lokalizacji
     console.log("Error retrieving location:", error);
+    console.log(error);
   }
 }
 

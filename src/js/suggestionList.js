@@ -175,4 +175,6 @@ const getWeatherDataForSuggestion = async (coordinates) => {
   hidePreloader();
 };
 
+console.log(currentWeatherParameters);
+
 //zapytać Łukasza o to jak było z promisem

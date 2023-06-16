@@ -53,6 +53,7 @@ export async function getSearchData(val) {
 
   suggestionListOnPage.innerHTML = "";
   addElementsToSuggestionList(searchSuggestionList);
+  selectOnArrow();
 }
 
 export function addElementsToSuggestionList(elements) {
@@ -64,8 +65,6 @@ export function addElementsToSuggestionList(elements) {
     const suggestionElement = document.createElement("li");
     suggestionElement.className = "suggestion-element";
     suggestionList.appendChild(suggestionElement);
-
-    selectOnArrow();
 
     suggestionElement.addEventListener("click", async () => {
       input.textContent = element.name;

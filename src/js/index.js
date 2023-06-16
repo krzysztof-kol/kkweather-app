@@ -28,29 +28,28 @@ const suggestionListElement = document.querySelector(".suggestion-element");
 async function main() {
   try {
     const coordinates = await getCoordinates();
+    const timeData = await getTimeData(coordinates);
+    await getCityData(coordinates);
+    const currentWeatherData = await weatherData(coordinates);
+    const currentWeather = await currentWeatherParameters(currentWeatherData, timeData);
+    renderCurrentWeatherData(currentWeather);
+    const hourlyParameters = await hourlyWeatherParameters(currentWeatherData);
+    const hourlyTimeArrays = await hourlyTimeParametersArrays(hourlyParameters);
+    const hourlyParametersDisplay = await hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
+    const hourlyObject = await createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
+    const elementParameters = await createElementParameters();
+    const hourlySection = await createHourlySection(hourlyObject, elementParameters);
+
+    const dailyWeather = await dailyWeatherData(currentWeatherData);
+    const dailyWeatherParameters = await dailyWeatherDisplay(dailyWeather, timeData);
+    const dailyObject = await createDailyObject(dailyWeatherParameters);
+    const dailyElementParameters = await createDailyWeatherParams();
+    const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
+    removeSkeleton();
   } catch (error) {
     console.log("Error:", error.message);
     return;
   }
-
-  const timeData = await getTimeData(coordinates);
-  await getCityData(coordinates);
-  const currentWeatherData = await weatherData(coordinates);
-  const currentWeather = await currentWeatherParameters(currentWeatherData, timeData);
-  renderCurrentWeatherData(currentWeather);
-  const hourlyParameters = await hourlyWeatherParameters(currentWeatherData);
-  const hourlyTimeArrays = await hourlyTimeParametersArrays(hourlyParameters);
-  const hourlyParametersDisplay = await hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
-  const hourlyObject = await createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
-  const elementParameters = await createElementParameters();
-  const hourlySection = await createHourlySection(hourlyObject, elementParameters);
-
-  const dailyWeather = await dailyWeatherData(currentWeatherData);
-  const dailyWeatherParameters = await dailyWeatherDisplay(dailyWeather, timeData);
-  const dailyObject = await createDailyObject(dailyWeatherParameters);
-  const dailyElementParameters = await createDailyWeatherParams();
-  const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
-  removeSkeleton();
 }
 
 const elements = document.querySelectorAll(".skeleton");

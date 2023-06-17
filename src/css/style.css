@@ -510,6 +510,7 @@ body::-ms-scrollbar-thumb {
   font-family: var(--font-family-normal);
   font-size: clamp(2rem, 1.2vw, 5rem);
   margin-right: clamp(2rem, 1.2vw, 5rem);
+  min-width: 6rem;
 }
 
 @media screen and (max-width: 940px) {

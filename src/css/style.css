@@ -311,11 +311,6 @@ body::-ms-scrollbar-thumb {
   justify-content: space-between;
 }
 
-.unit-buttons__container {
-  position: fixed;
-  right: 2rem;
-}
-
 .unit-button {
   border-radius: 100%;
   margin-right: 1rem;

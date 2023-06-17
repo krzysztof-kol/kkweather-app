@@ -15,10 +15,15 @@
     <script type = "module"  src = "src/js/suggestionList.js" defer></script>
   </head>
   <body>
+    <div class="location-permission-info text-normal">In order to automatically detect your location, you must give the appropriate permissions on your device or browser.</div>
     <header class="header">
-      <div class="location-permission-info text-normal">In order to automatically detect your location, you must give the appropriate permissions on your device or browser.</div>
+      
       <div class="logo__container">
         <img class="logo" src="/src/icons/logo.svg" alt="" />
+      </div>
+      <div class="unit-buttons__container">
+        <button class="unit-button-active  unit-button unit-button1">ºC</button>
+        <button class =" unit-button unit-button2">ºF</button>
       </div>
     </header>
     <main>
@@ -41,7 +46,7 @@
               <div class=" big-icon__container"><i class="skeleton skeleton-icon wi icon-big current-weather-icon wi-day-cloudy"></i></div>
               <div class="main-info__data">
                 <div class="number-big">
-                  <div  id="current-temp" class="skeleton number-big_text">17</div>
+                  <div  id="current-temp" class="skeleton number-big_text temperature">17</div>
                   <div class="date">
                     <div id = 'current-time' class="skeleton text-normal text-medium">May 6, 2023</div>
                     <div id = 'current-date' class="skeleton text-normal text-medium">Saturday 9:37PM</div>
@@ -54,37 +59,37 @@
                 <div class=" details__element text-normal text-medium">
                   <div class="skeleton details__label">High</div>
                   <div class = "skeleton text-bold">
-                    <span id ="current-high-temp" class=" details__data">30°C</span>
+                    <span id ="current-high-temp" class=" details__data temperature">30°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal text-medium">
                   <div  class="skeleton details__label">FL High</div>
                   <div class = "skeleton text-bold">
-                    <span id = "current-fl-high-temp" class="details__data">27°C</span>
+                    <span id = "current-fl-high-temp" class="details__data temperature">27°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal text-medium">
                   <div class="skeleton details__label">Wind</div>
                   <div class = "skeleton text-bold">
-                    <span id = "current-windspeed" class="details__data">13kh/h</span>
+                    <span id = "current-windspeed" class="details__data windspeed">13kh/h</span>
                   </div>
                 </div>
                 <div class="details__element text-normal text-medium">
                   <div class="skeleton details__label">Low</div>
                   <div class = "skeleton text-bold">
-                    <span id = "current-low-temp" class="details__data">21°C</span>
+                    <span id = "current-low-temp" class="details__data temperature">21°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal text-medium">
                   <div class="skeleton details__label">FL Low</div>
                   <div class = "skeleton text-bold">
-                    <span id = "current-fl-low-temp" class="details__data">21°C</span>
+                    <span id = "current-fl-low-temp" class="details__data temperature">21°C</span>
                   </div>
                 </div>
                 <div class="details__element text-normal text-medium">
                   <div class="skeleton details__label">Precip</div>
                   <div class = "skeleton text-bold">
-                    <span id = "current-precip" class="details__data">0.1mm</span>
+                    <span id = "current-precip" class="details__data precip">0.1mm</span>
                   </div>
                 </div>
               </div>

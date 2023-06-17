@@ -25,6 +25,14 @@ const input = document.getElementById("h1__input");
 input.addEventListener("input", getSearchData);
 const suggestionListElement = document.querySelector(".suggestion-element");
 
+export let temperature;
+export let precip;
+export let windspeed;
+
+export let temperatureArray;
+export let precipArray;
+export let windspeedArray;
+
 async function main() {
   try {
     const coordinates = await getCoordinates();
@@ -47,6 +55,14 @@ async function main() {
     const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
     removeSkeleton();
     hideAlertBar();
+    temperature = document.querySelectorAll(".temperature");
+    precip = document.querySelectorAll(".precip");
+    windspeed = document.querySelectorAll(".windspeed");
+
+    temperatureArray = Array.from(temperature);
+    precipArray = Array.from(precip);
+    windspeedArray = Array.from(windspeed);
+    // console.log(temperatureArray);
   } catch (error) {
     console.log("Error:", error.message);
     return;
@@ -60,11 +76,5 @@ export function removeSkeleton() {
     element.classList.remove("skeleton", "skeleton-loading-text");
   });
 }
-
-// try {
-//   await main();
-// } catch (error) {
-//   console.log("Error:", error);
-// }
 
 main();

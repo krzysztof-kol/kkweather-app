@@ -244,7 +244,7 @@ export const createElementParameters = () => {
       elements: [
         { class: "wi hourly-icon icon-small wi-thermometer" },
         {
-          class: "hourly-temp text-normal temperature__small",
+          class: "hourly-temp text-normal temperature__small temperature",
           property: "temperature",
         },
       ],
@@ -254,7 +254,7 @@ export const createElementParameters = () => {
       elements: [
         { class: "wi hourly-icon icon-small wi-humidity" },
         {
-          class: "hourly-precip-probability text-normal temperature__small",
+          class: "hourly-precip-probability text-normal temperature__small precip-prob",
           property: "precipProb",
         },
       ],
@@ -264,7 +264,7 @@ export const createElementParameters = () => {
       elements: [
         { class: "wi hourly-icon icon-small wi-rain" },
         {
-          class: "hourly-precip-sum text-normal temperature__small",
+          class: "hourly-precip-sum text-normal temperature__small precip",
           property: "precipSum",
         },
       ],
@@ -479,21 +479,24 @@ export const createDailyWeatherParams = () => {
       elements: [
         {
           class: "df__data",
-          elements: [{ class: "df__icon icon-small wi wi-thermometer" }, { class: "df__text daily-temp", property: "tempMax" }],
+          elements: [{ class: "df__icon icon-small wi wi-thermometer" }, { class: "df__text daily-temp temperature", property: "tempMax" }],
         },
         {
           class: "df__data",
-          elements: [{ class: "df__icon icon-small wi wi-thermometer-exterior" }, { class: "df__text daily-temp", property: "tempMin" }],
+          elements: [
+            { class: "df__icon icon-small wi wi-thermometer-exterior" },
+            { class: "df__text daily-temp temperature", property: "tempMin" },
+          ],
         },
         {
           class: "df__data",
-          elements: [{ class: "df__icon icon-small wi wi-rain" }, { class: "df__text daily-precip", property: "precipSum" }],
+          elements: [{ class: "df__icon icon-small wi wi-rain" }, { class: "df__text daily-precip precip", property: "precipSum" }],
         },
         {
           class: "df__data",
           elements: [
             { class: "df__icon icon-small wi wi-raindrop" },
-            { class: "df__text df__precip daily-precip-prob", property: "precipProb" },
+            { class: "df__text df__precip daily-precip-prob precip-prob", property: "precipProb" },
           ],
         },
         {

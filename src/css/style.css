@@ -302,6 +302,45 @@ body::-ms-scrollbar-thumb {
 
 /* CURRENT WEATHER */
 
+/* HEADER I BUTTONY */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unit-buttons__container {
+  position: fixed;
+  right: 2rem;
+}
+
+.unit-button {
+  border-radius: 100%;
+  margin-right: 1rem;
+  background-color: var(--color-background-dark);
+  color: var(--color-background-light);
+  font-family: var(--font-family-elegant);
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.unit-button1 {
+  right: 1rem;
+}
+.unit-button1 {
+  right: 1rem;
+}
+
+.unit-button-active,
+.unit-button-hover {
+  background-color: var(--color-highlight);
+}
+
 #current-weather__section {
   opacity: 1;
 }
@@ -666,6 +705,8 @@ body::-ms-scrollbar-thumb {
   height: 12rem;
   width: 12rem;
 }
+
+/* .skeleton- */
 
 @keyframes skeleton-loading {
   0% {

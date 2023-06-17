@@ -161,24 +161,45 @@ function highlightSelectedSuggestion() {
   }
 }
 
-const getWeatherDataForSuggestion = async (coordinates) => {
-  await showPreloader();
-  const timeData = await getTimeData(coordinates);
-  const currentWeatherData = await weatherData(coordinates);
-  const currentWeather = currentWeatherParameters(currentWeatherData, timeData);
-  renderCurrentWeatherData(currentWeather);
-  const hourlyParameters = hourlyWeatherParameters(currentWeatherData);
-  const hourlyTimeArrays = hourlyTimeParametersArrays(hourlyParameters);
-  const hourlyParametersDisplay = hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
-  const hourlyObject = createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
-  const elementParameters = createElementParameters();
-  const hourlySection = createHourlySection(hourlyObject, elementParameters);
+export let temperature;
+export let precip;
+export let windspeed;
 
-  const dailyWeather = dailyWeatherData(currentWeatherData);
-  const dailyWeatherParameters = dailyWeatherDisplay(dailyWeather, timeData);
-  const dailyObject = createDailyObject(dailyWeatherParameters);
-  const dailyElementParameters = createDailyWeatherParams();
-  const dailySection = createDailyWeatherSection(dailyObject, dailyElementParameters);
-  hidePreloader();
-  hideAlertBar();
+export let temperatureArray;
+export let precipArray;
+export let windspeedArray;
+
+const getWeatherDataForSuggestion = async (coordinates) => {
+  try {
+    await showPreloader();
+    const timeData = await getTimeData(coordinates);
+    const currentWeatherData = await weatherData(coordinates);
+    const currentWeather = await currentWeatherParameters(currentWeatherData, timeData);
+    renderCurrentWeatherData(currentWeather);
+    const hourlyParameters = await hourlyWeatherParameters(currentWeatherData);
+    const hourlyTimeArrays = await hourlyTimeParametersArrays(hourlyParameters);
+    const hourlyParametersDisplay = await hourlyTimeParametersDisplay(hourlyTimeArrays, timeData);
+    const hourlyObject = await createHourlyObject(hourlyParameters, hourlyParametersDisplay, timeData);
+    const elementParameters = await createElementParameters();
+    const hourlySection = await createHourlySection(hourlyObject, elementParameters);
+
+    const dailyWeather = await dailyWeatherData(currentWeatherData);
+    const dailyWeatherParameters = await dailyWeatherDisplay(dailyWeather, timeData);
+    const dailyObject = await createDailyObject(dailyWeatherParameters);
+    const dailyElementParameters = await createDailyWeatherParams();
+    const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
+    hidePreloader();
+    hideAlertBar();
+    temperature = document.querySelectorAll(".temperature");
+    precip = document.querySelectorAll(".precip");
+    windspeed = document.querySelectorAll(".windspeed");
+
+    temperatureArray = Array.from(temperature);
+    precipArray = Array.from(precip);
+    windspeedArray = Array.from(windspeed);
+    // console.log(temperatureArray);
+  } catch (error) {
+    console.log("Error:", error.message);
+    return;
+  }
 };

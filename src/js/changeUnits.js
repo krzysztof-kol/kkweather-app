@@ -46,7 +46,7 @@ export function changeUnitsToNormal() {
 
     originalPrecip.forEach((element, index) => {
       let text = element.textContent;
-      let number = parseFloat(text);
+      let number = parseInt(text);
       element.textContent = (number * 25.4).toFixed(2) + "mm";
     });
 

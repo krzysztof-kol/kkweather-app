@@ -73,7 +73,7 @@ const elements = document.querySelectorAll(".skeleton");
 
 export function removeSkeleton() {
   elements.forEach((element) => {
-    element.classList.remove("skeleton", "skeleton-loading-text");
+    element.classList.remove("skeleton", "skeleton-loading-text", "skeleton-unit-button", "skeleton-text-h1");
   });
 }
 

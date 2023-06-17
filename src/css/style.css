@@ -87,7 +87,7 @@ h1 {
   border: none;
   resize: none;
   overflow: hidden;
-  width: 100%;
+
   min-height: 1rem;
   color: var(--color-highlight);
   background: none;
@@ -680,7 +680,7 @@ body::-ms-scrollbar-thumb {
   box-sizing: border-box;
   opacity: 0.9;
   animation: skeleton-loading 1s linear infinite alternate;
-  width: 100%;
+  width: 80%;
 }
 
 .skeleton.btn {
@@ -690,7 +690,7 @@ body::-ms-scrollbar-thumb {
 
 .skeleton-text-h1:last-child {
   margin-bottom: 0;
-  width: 80%;
+  width: 30%;
 }
 
 .skeleton.skeleton-loading-text {
@@ -704,6 +704,10 @@ body::-ms-scrollbar-thumb {
 .skeleton.skeleton-icon {
   height: 12rem;
   width: 12rem;
+}
+
+.skeleton-unit-button {
+  display: none;
 }
 
 /* .skeleton- */

@@ -24,6 +24,28 @@ const suggestionListOnPage = document.getElementById("result");
 input.removeEventListener("input", getSearchData);
 input.addEventListener("input", getSearchData);
 
+let previousValue;
+let cityName;
+
+input.addEventListener("focus", () => {
+  if (input.textContent !== "") {
+    previousValue = input.textContent;
+    input.textContent = "";
+  }
+
+  if (input.textContent.trim() === "") {
+    return;
+  }
+});
+
+input.addEventListener("blur", () => {
+  if (input.textContent === "") {
+    input.textContent = previousValue;
+  } else {
+    return;
+  }
+});
+
 export const currentWeatherSection = document.querySelector("#current-weather__section");
 export const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
 export const dailyWeatherSection = document.querySelector("#daily-forecast");

@@ -104,6 +104,7 @@ h1 {
   font-size: clamp(2.8rem, 10vw, 6rem);
   font-family: var(--font-family-elegant);
   margin-block: clamp(2.8rem, 5vw, 6rem);
+  width: 100%;
 }
 
 .search-field {
@@ -111,6 +112,10 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: left;
+}
+
+.search-field-input {
+  width: 100%;
 }
 
 .selected {

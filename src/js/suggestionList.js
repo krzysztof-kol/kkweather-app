@@ -1,5 +1,6 @@
 import { getCoordinates } from "./getCoords.js";
 import { getTimeData } from "./getTimeData.js";
+
 import {
   weatherData,
   currentWeatherParameters,
@@ -18,14 +19,18 @@ import {
 } from "./getWeather.js";
 
 import { hideAlertBar } from "./renderingWithoutLocation.js";
+import { createArraysForUnits } from "./index.js";
+import { unitsType, isImperial, changeUnitsType, changeUnitsToImperial, changeUnitsToNormal } from "./changeUnits.js";
 
 const input = document.getElementById("h1__input");
 const suggestionListOnPage = document.getElementById("result");
 input.removeEventListener("input", getSearchData);
 input.addEventListener("input", getSearchData);
 
-let previousValue;
+let previousValue = input.textContent;
 let cityName;
+
+// export let isImperial = false;
 
 input.addEventListener("focus", () => {
   if (input.textContent !== "") {
@@ -33,7 +38,7 @@ input.addEventListener("focus", () => {
     input.textContent = "";
   }
 
-  if (input.textContent.trim() === "") {
+  if (input.textContent === "") {
     return;
   }
 });
@@ -108,6 +113,7 @@ export function addElementsToSuggestionList(elements) {
 
       showPreloader();
       getWeatherDataForSuggestion(coordinates);
+      if (isImperial === true) changeUnitsToImperial();
     });
 
     if (element.region) {
@@ -170,6 +176,7 @@ input.addEventListener("keydown", (e) => {
 
       showPreloader();
       getWeatherDataForSuggestion(coordinates);
+
       selectionIndex = -1;
     }
   }
@@ -193,8 +200,16 @@ export let windspeedArray;
 
 const getWeatherDataForSuggestion = async (coordinates) => {
   try {
+    temperature = 0;
+    precip = 0;
+    windspeed = 0;
+
+    temperatureArray = [];
+    precipArray = [];
+    windspeedArray = [];
     await showPreloader();
     const timeData = await getTimeData(coordinates);
+    // await getCityData(coordinates);
     const currentWeatherData = await weatherData(coordinates);
     const currentWeather = await currentWeatherParameters(currentWeatherData, timeData);
     renderCurrentWeatherData(currentWeather);
@@ -210,18 +225,25 @@ const getWeatherDataForSuggestion = async (coordinates) => {
     const dailyObject = await createDailyObject(dailyWeatherParameters);
     const dailyElementParameters = await createDailyWeatherParams();
     const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
-    hidePreloader();
-    hideAlertBar();
-    temperature = document.querySelectorAll(".temperature");
-    precip = document.querySelectorAll(".precip");
-    windspeed = document.querySelectorAll(".windspeed");
+    await createArraysForUnits();
+    // console.log("Isimperial: ", isImperial);
+    // console.log("Unitstype: ", unitsType);
 
-    temperatureArray = Array.from(temperature);
-    precipArray = Array.from(precip);
-    windspeedArray = Array.from(windspeed);
+    hidePreloader();
+
+    hideAlertBar();
+
     // console.log(temperatureArray);
   } catch (error) {
     console.log("Error:", error.message);
     return;
   }
+  // if (unitsType === true) {
+  //   changeUnitsToNormal();
+  //   // unitsType = true;
+  // } else if (unitsType === false) {
+  //   changeUnitsToImperial();
+  //   // unitsType = false;
+  // }
+  await changeUnitsType();
 };

@@ -1,6 +1,7 @@
 // import { changeUnits, changeUnitsToImperial, changeUnitsToNormal } from "./changeUnits.js";
-import { changeUnitsToImperial, changeUnitsToNormal } from "./changeUnits.js";
+import { changeUnitsToImperial, changeUnitsToNormal, changeUnitsType, unitsType } from "./changeUnits.js";
 import { temperature, precip, windspeed } from "./index.js";
+import { isImperial } from "./changeUnits.js";
 
 const hourlyForecastButton = document.querySelector(".btn");
 const hourlySection = document.querySelector(".hourly-forecast__section");
@@ -45,15 +46,14 @@ const unitButton2 = document.querySelector(".unit-button2");
 unitButton1.addEventListener("click", () => {
   unitButton2.classList.remove("unit-button-active");
   unitButton1.classList.add("unit-button-active");
-  // changeUnitsToNormal();
+
   changeUnitsToNormal();
-  // changeUnitsToNormal();
 });
 
 unitButton2.addEventListener("click", () => {
   unitButton1.classList.remove("unit-button-active");
   unitButton2.classList.add("unit-button-active");
-  // changeUnits();
+
   changeUnitsToImperial();
 });
 

@@ -19,7 +19,7 @@ import {
 
 import { getSearchData } from "./suggestionList.js";
 import { getCityData } from "./getCity.js";
-// import { alertBar } from "./renderingWithoutLocation.js";
+import { unitsType, changeUnitsType } from "./changeUnits.js";
 
 const input = document.getElementById("h1__input");
 input.addEventListener("input", getSearchData);
@@ -35,6 +35,13 @@ export let windspeedArray;
 
 async function main() {
   try {
+    // temperature = 0;
+    // precip = 0;
+    // windspeed = 0;
+
+    // temperatureArray = [];
+    // precipArray = [];
+    // windspeedArray = [];
     const coordinates = await getCoordinates();
     const timeData = await getTimeData(coordinates);
     await getCityData(coordinates);
@@ -53,16 +60,10 @@ async function main() {
     const dailyObject = await createDailyObject(dailyWeatherParameters);
     const dailyElementParameters = await createDailyWeatherParams();
     const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
+    await createArraysForUnits();
+
     removeSkeleton();
     hideAlertBar();
-    temperature = document.querySelectorAll(".temperature");
-    precip = document.querySelectorAll(".precip");
-    windspeed = document.querySelectorAll(".windspeed");
-
-    temperatureArray = Array.from(temperature);
-    precipArray = Array.from(precip);
-    windspeedArray = Array.from(windspeed);
-    // console.log(temperatureArray);
   } catch (error) {
     console.log("Error:", error.message);
     return;
@@ -75,6 +76,16 @@ export function removeSkeleton() {
   elements.forEach((element) => {
     element.classList.remove("skeleton", "skeleton-loading-text", "skeleton-unit-button", "skeleton-text-h1");
   });
+}
+
+export function createArraysForUnits() {
+  temperature = document.querySelectorAll(".temperature");
+  precip = document.querySelectorAll(".precip");
+  windspeed = document.querySelectorAll(".windspeed");
+
+  temperatureArray = Array.from(temperature);
+  precipArray = Array.from(precip);
+  windspeedArray = Array.from(windspeed);
 }
 
 main();

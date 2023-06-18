@@ -42,7 +42,7 @@ export function changeUnitsToC(t, p, w) {
   p.forEach((element, index) => {
     let text = element.textContent;
     let number = parseInt(text);
-    element.textContent = (number * 25.4).toFixed(2) + "mm";
+    element.textContent = number * 25.4 + "mm";
   });
 
   w.forEach((element, index) => {

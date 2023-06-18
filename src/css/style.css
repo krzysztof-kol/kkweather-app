@@ -96,7 +96,7 @@ h1 {
   align-content: center;
   box-sizing: border-box;
   /* height: auto; */
-  width: 100%;
+  /* width: 100%; */
 }
 
 #h1__container {

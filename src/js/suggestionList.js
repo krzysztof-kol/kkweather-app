@@ -47,11 +47,7 @@ input.addEventListener("click", () => {
 });
 
 input.addEventListener("blur", () => {
-  if (input.textContent === "") {
-    input.textContent = previousValue;
-  } else {
-    return;
-  }
+  input.textContent = previousValue;
 });
 
 input.addEventListener("click", () => {

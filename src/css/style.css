@@ -96,6 +96,7 @@ h1 {
   align-content: center;
   box-sizing: border-box;
   /* height: auto; */
+  width: 100%;
 }
 
 #h1__container {
@@ -112,11 +113,12 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: left;
-}
-
-.search-field-input {
   width: 100%;
 }
+
+/* .search-field-input {
+  width: 100%;
+} */
 
 .selected {
   color: var(--color-highlight);

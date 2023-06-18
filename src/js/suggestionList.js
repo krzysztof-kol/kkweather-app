@@ -19,21 +19,26 @@ import {
 } from "./getWeather.js";
 
 import { hideAlertBar } from "./renderingWithoutLocation.js";
-import { createArraysForUnits } from "./index.js";
+import { createArraysForUnits, input } from "./index.js";
 import { unitsType, isImperial, changeUnitsType, changeUnitsToImperial, changeUnitsToNormal } from "./changeUnits.js";
 
-const input = document.getElementById("h1__input");
+// const input = document.getElementById("h1__input");
+const searchField = document.querySelector("search-field-input");
 const suggestionListOnPage = document.getElementById("result");
 input.removeEventListener("input", getSearchData);
 input.addEventListener("input", getSearchData);
 
-let previousValue = input.textContent;
-let cityName;
+let previousValue = "";
 
 // export let isImperial = false;
 
+input.addEventListener("click", () => {
+  input = document.getElementById("#h1__input");
+});
+
 input.addEventListener("focus", () => {
   if (input.textContent !== "") {
+    // input = document.getElementById("h1__input");
     previousValue = input.textContent;
     input.textContent = "";
   }
@@ -159,6 +164,7 @@ input.addEventListener("keydown", (e) => {
     highlightSelectedSuggestion();
   } else if (e.key === "Enter") {
     e.preventDefault();
+    input.blur();
 
     if (selectionIndex >= 0) {
       const selectedSuggestion = suggestions[selectionIndex];

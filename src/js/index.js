@@ -21,8 +21,9 @@ import { getSearchData } from "./suggestionList.js";
 import { getCityData } from "./getCity.js";
 import { unitsType, changeUnitsType } from "./changeUnits.js";
 
-const input = document.getElementById("h1__input");
+export const input = document.getElementById("h1__input");
 input.addEventListener("input", getSearchData);
+
 const suggestionListElement = document.querySelector(".suggestion-element");
 
 export let temperature;

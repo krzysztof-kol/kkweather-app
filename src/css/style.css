@@ -116,9 +116,9 @@ h1 {
   width: 100%;
 }
 
-/* .search-field-input {
+.search-field-input {
   width: 100%;
-} */
+}
 
 .selected {
   color: var(--color-highlight);

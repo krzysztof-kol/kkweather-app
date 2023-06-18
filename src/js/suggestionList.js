@@ -32,18 +32,16 @@ let previousValue = "";
 
 // export let isImperial = false;
 
-input.addEventListener("click", () => {
-  input = document.getElementById("#h1__input");
-});
+// input.addEventListener("click", () => {
+//   input = document.getElementById("#h1__input");
+// });
 
-input.addEventListener("focus", () => {
+input.addEventListener("click", () => {
   if (input.textContent !== "") {
     // input = document.getElementById("h1__input");
     previousValue = input.textContent;
     input.textContent = "";
-  }
-
-  if (input.textContent === "") {
+  } else if (input.textContent === "") {
     return;
   }
 });
@@ -55,6 +53,21 @@ input.addEventListener("blur", () => {
     return;
   }
 });
+
+input.addEventListener("click", () => {
+  input.focus();
+  input.click();
+  input.textContent = " ";
+});
+
+// input.addEventListener("touchstart", (event) => {
+//   previousValue = input.textContent;
+//   input.textContent = "";
+// });
+
+// input.addEventListener("touchend", (event) => {
+//   event.preventDefault();
+// });
 
 export const currentWeatherSection = document.querySelector("#current-weather__section");
 export const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
@@ -164,7 +177,7 @@ input.addEventListener("keydown", (e) => {
     highlightSelectedSuggestion();
   } else if (e.key === "Enter") {
     e.preventDefault();
-    input.blur();
+    // input.blur();
 
     if (selectionIndex >= 0) {
       const selectedSuggestion = suggestions[selectionIndex];

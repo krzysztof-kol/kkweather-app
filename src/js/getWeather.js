@@ -212,7 +212,7 @@ export const createHourlyObject = (hourlyWeatherParameters, hourlyTimeParameters
     let data = {
       day: hourlyDayDisplay[i],
       hour: `${hourlyHourDisplay[i]}:${hourlyMinuteDisplay[i]}`,
-      temperature: hourlyTemperatureArray[i] + "°C",
+      temperature: Math.floor(hourlyTemperatureArray[i]) + "°C",
       precipProb: hourlyPrecipitationProbabilityArray[i] + "%",
       precip: hourlyPrecipitationSumArray[i] + "mm",
       weathercode: weatherCodeArray[i],

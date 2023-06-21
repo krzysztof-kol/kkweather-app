@@ -30,15 +30,8 @@ input.addEventListener("input", getSearchData);
 
 let previousValue = "";
 
-// export let isImperial = false;
-
-// input.addEventListener("click", () => {
-//   input = document.getElementById("#h1__input");
-// });
-
 input.addEventListener("click", () => {
   if (input.textContent !== "") {
-    // input = document.getElementById("h1__input");
     previousValue = input.textContent;
     input.textContent = "";
   } else if (input.textContent === "") {
@@ -49,21 +42,6 @@ input.addEventListener("click", () => {
 input.addEventListener("blur", () => {
   input.textContent = previousValue;
 });
-
-input.addEventListener("click", () => {
-  input.focus();
-  input.click();
-  input.textContent = " ";
-});
-
-// input.addEventListener("touchstart", (event) => {
-//   previousValue = input.textContent;
-//   input.textContent = "";
-// });
-
-// input.addEventListener("touchend", (event) => {
-//   event.preventDefault();
-// });
 
 export const currentWeatherSection = document.querySelector("#current-weather__section");
 export const hourlyWeatherSection = document.querySelector(".hourly-forecast__section");
@@ -191,6 +169,7 @@ input.addEventListener("keydown", (e) => {
 
       showPreloader();
       getWeatherDataForSuggestion(coordinates);
+      previousValue = input.textContent;
 
       selectionIndex = -1;
     }
@@ -241,24 +220,14 @@ const getWeatherDataForSuggestion = async (coordinates) => {
     const dailyElementParameters = await createDailyWeatherParams();
     const dailySection = await createDailyWeatherSection(dailyObject, dailyElementParameters);
     await createArraysForUnits();
-    // console.log("Isimperial: ", isImperial);
-    // console.log("Unitstype: ", unitsType);
 
     hidePreloader();
 
     hideAlertBar();
-
-    // console.log(temperatureArray);
   } catch (error) {
     console.log("Error:", error.message);
     return;
   }
-  // if (unitsType === true) {
-  //   changeUnitsToNormal();
-  //   // unitsType = true;
-  // } else if (unitsType === false) {
-  //   changeUnitsToImperial();
-  //   // unitsType = false;
-  // }
+
   await changeUnitsType();
 };
